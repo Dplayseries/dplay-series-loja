@@ -78,19 +78,20 @@ let verificando=false;
 async function acompanharPedido(){
  if(verificando||!pedidoAtual)return;
  verificando=true;
- for(let i=0;i<90;i++){
+ for(let i=0;i<450;i++){
    if(!pedidoAtual||modal.hidden)break;
    try{
      const url=API+'/publico/pedido/status?pedido_id='+encodeURIComponent(pedidoAtual.pedido_id)+'&resgate='+encodeURIComponent(pedidoAtual.resgate);
      const r=await fetch(url);const d=await r.json();
      if(r.ok&&d.status==='aprovado'){
-       statusEl.textContent='✓ Pagamento confirmado! Agora receba sua série no Telegram.';
+       statusEl.textContent='✓ Pagamento aprovado! Clique em RECEBER MINHA SÉRIE. O bot enviará seu convite individual no próprio chat do Telegram.';
        document.getElementById('pix-conteudo').hidden=true;
        let link=document.getElementById('resgatar-serie');
-       if(!link){link=document.createElement('a');link.id='resgatar-serie';link.className='buy';link.style.marginTop='14px';link.textContent='✓ RECEBER MINHA SÉRIE';statusEl.after(link);}
+       if(!link){link=document.createElement('a');link.id='resgatar-serie';link.className='buy';link.style.marginTop='14px';link.textContent='✓ RECEBER MINHA SÉRIE NO TELEGRAM';statusEl.after(link);}
        link.href=d.resgate_url;link.target='_blank';link.rel='noopener noreferrer';link.hidden=false;
        break;
      }
+     if(!r.ok){statusEl.textContent='Aguardando confirmação segura do pagamento...';}
    }catch(e){}
    await new Promise(resolve=>setTimeout(resolve,8000));
  }
