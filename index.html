@@ -10,6 +10,21 @@
 @media(max-width:650px){.wrap{padding:0 15px 45px}.top-inner{padding:10px 15px}.brand{font-size:14px}.brand img{width:39px;height:39px}.top-link{font-size:11px;padding:9px}.hero{grid-template-columns:1fr;margin-top:15px}.hero-copy{padding:28px 23px 18px}.hero h1{font-size:32px}.hero-image{height:210px;min-height:0;mask-image:linear-gradient(to bottom,transparent,#000 20%);object-position:center 43%}.section-head{margin:29px 0 15px}.section-head h2{font-size:17px}.section-head small{font-size:11px}.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.card{border-radius:14px}.info{padding:12px}.info h3{font-size:14px;min-height:38px}.genre{font-size:11px;margin-bottom:12px}.price{font-size:23px;margin-bottom:12px}.buy{font-size:11px;padding:13px 6px}.assurance{font-size:10px}.pill{font-size:9px;padding:5px 8px}}
 @media(max-width:370px){.grid{grid-template-columns:1fr}.card{max-width:330px}.info h3{min-height:0}}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{transition:none!important;scroll-behavior:auto!important}}
+
+[hidden]{display:none!important}.checkout-dialog{position:relative;max-width:470px;padding:30px;background:linear-gradient(155deg,#1e233d,#121526);border:1px solid #7249a5}
+.xclose{position:absolute;right:16px;top:13px;border:0;background:#30334e;color:#fff;border-radius:50%;width:34px;height:34px;cursor:pointer;font-size:25px;line-height:1}
+.checkout-dialog h2{font-size:25px;margin:13px 0 22px}
+.order-summary{display:flex;gap:16px;align-items:center;background:#282d45;padding:13px;border-radius:16px}
+.order-summary img{width:90px;height:126px;object-fit:cover;border-radius:10px}
+.order-summary div{display:flex;flex-direction:column;gap:12px;min-width:0}.order-summary strong{font-size:16px}.order-summary small{color:#bcb8d6}.order-summary b{font-size:24px;color:#37dc8d}
+.total{display:flex;align-items:center;justify-content:space-between;margin:25px 0 18px;color:#d3d1e9}.total strong{font-size:23px;color:white}
+.fineprint{text-align:center;font-size:12px!important;color:#aeb0c9!important;margin:17px 0 0}
+.checkout-sub{font-size:14px}.checkout-sub b{color:#42dc91}.payment-status{padding:19px;background:#292d47;border:1px solid #575a82;border-radius:13px;line-height:1.7;color:#eee9ff;margin:18px 0}
+.pix-qr{width:230px;height:230px;object-fit:contain;background:white;padding:12px;border-radius:14px;display:block;margin:20px auto}
+.pix-label{display:block;color:#f6a0e3;font-weight:700;margin:15px 0 8px}
+#pix-codigo{width:100%;resize:none;background:#292d47;border:1px solid #575a82;border-radius:12px;color:white;padding:12px;font:12px monospace;margin-bottom:12px}
+.back-btn{display:block;margin:20px auto 0;background:none;border:0;color:#c6b2ff;cursor:pointer;font-weight:700}
+@media(max-width:480px){.checkout-dialog{padding:23px 18px}.order-summary img{width:75px;height:108px}}
 </style>
 </head>
 <body>
@@ -19,12 +34,32 @@
 <section id="destaques"><div class="section-head"><h2>SÉRIES EM DESTAQUE</h2><small>Pacotes completos</small></div><div class="grid"><article class="card"><div class="poster"><img src="capa-filha-do-don.jpg" alt="Capa original da série A Filha Esquecida do Don" loading="lazy"><span class="pill">✦ EM DESTAQUE</span></div><div class="info"><h3>A Filha Esquecida do Don</h3><p class="genre">Drama · Pacote completo</p><span class="price-caption">Série completa por apenas</span><div class="price">R$ 4,00</div><button class="buy" type="button" id="comprar">▶ COMPRAR AGORA</button><div class="assurance">✦ Acesso digital após confirmação do pagamento</div></div></article></div></section>
 </main>
 <footer class="footer">© DPlay Series · Entretenimento digital<br>Precisa de ajuda? <a href="https://t.me/DPlayEpisodiosBot" target="_blank" rel="noopener noreferrer">Fale com nosso bot</a></footer>
-<div id="modal" class="modal" hidden role="dialog" aria-modal="true" aria-labelledby="modal-title"><div class="dialog"><h2 id="modal-title">Compra pelo Telegram</h2><p>Para receber a série automaticamente, primeiro identifique sua conta no Telegram. O pagamento Pix ainda está em preparação e nenhuma cobrança será feita nesta etapa.</p><a class="buy" href="https://t.me/DPlayEpisodiosBot?start=comprar_filha_do_don" target="_blank" rel="noopener noreferrer">CONTINUAR NO TELEGRAM</a><button id="fechar" class="close" type="button">Voltar à loja</button></div></div>
+<div id="modal" class="modal" hidden role="dialog" aria-modal="true" aria-labelledby="modal-title"><div class="dialog checkout-dialog">
+<button id="fechar" class="xclose" type="button" aria-label="Fechar">×</button>
+<div id="etapa-confirmar"><span class="eyebrow">✦ Checkout DPlay</span><h2 id="modal-title">Confirmar pedido</h2><div class="order-summary"><img src="capa-filha-do-don.jpg" alt="Capa de A Filha Esquecida do Don"><div><strong>A Filha Esquecida do Don</strong><small>Série completa · Acesso digital</small><b>R$ 4,00</b></div></div><div class="total"><span>Total a pagar</span><strong>R$ 4,00</strong></div><button id="gerar-pix" class="buy" type="button">◆ GERAR PIX — R$ 4,00</button><p class="fineprint">Pagamento protegido. Seu acesso será entregue pelo Telegram após a confirmação.</p></div>
+<div id="etapa-pix" hidden><span class="eyebrow">✦ Pagamento Pix</span><h2>Pagamento via Pix</h2><p class="checkout-sub">A Filha Esquecida do Don <b>— R$ 4,00</b></p><div id="payment-status" class="payment-status" role="status">Preparando checkout...</div><div id="pix-conteudo" hidden><img id="pix-qr" class="pix-qr" alt="QR Code Pix do Mercado Pago"><label for="pix-codigo" class="pix-label">Pix Copia e Cola</label><textarea id="pix-codigo" readonly rows="4"></textarea><button class="buy" id="copiar-pix" type="button">Copiar código PIX</button></div><button class="back-btn" id="voltar-confirmar" type="button">← Voltar ao pedido</button></div>
+</div></div>
 <script>
 const modal=document.getElementById('modal');
-document.getElementById('comprar').addEventListener('click',()=>{modal.hidden=false;document.getElementById('fechar').focus()});
-document.getElementById('fechar').addEventListener('click',()=>modal.hidden=true);
-modal.addEventListener('click',event=>{if(event.target===modal)modal.hidden=true});
-document.addEventListener('keydown',event=>{if(event.key==='Escape')modal.hidden=true});
+const confirmar=document.getElementById('etapa-confirmar');
+const pix=document.getElementById('etapa-pix');
+function abrirCheckout(){modal.hidden=false;confirmar.hidden=false;pix.hidden=true;document.getElementById('gerar-pix').focus();}
+function fecharCheckout(){modal.hidden=true;}
+document.getElementById('comprar').addEventListener('click',abrirCheckout);
+document.getElementById('fechar').addEventListener('click',fecharCheckout);
+document.getElementById('voltar-confirmar').addEventListener('click',()=>{confirmar.hidden=false;pix.hidden=true;});
+modal.addEventListener('click',event=>{if(event.target===modal)fecharCheckout()});
+document.addEventListener('keydown',event=>{if(event.key==='Escape')fecharCheckout()});
+document.getElementById('gerar-pix').addEventListener('click',()=>{
+ confirmar.hidden=true;pix.hidden=false;
+ document.getElementById('payment-status').textContent='O checkout está pronto, mas a geração de Pix ainda depende da ativação segura da API do Mercado Pago. Nenhuma cobrança foi criada.';
+ document.getElementById('pix-conteudo').hidden=true;
+});
+document.getElementById('copiar-pix').addEventListener('click',async()=>{
+ const codigo=document.getElementById('pix-codigo').value;
+ if(!codigo)return;
+ try{await navigator.clipboard.writeText(codigo);document.getElementById('copiar-pix').textContent='✓ Código copiado';}
+ catch{document.getElementById('pix-codigo').select();}
+});
 </script>
 </body></html>
