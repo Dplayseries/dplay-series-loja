@@ -23,7 +23,17 @@ document.addEventListener('click',e=>{const nav=e.target.closest('[data-tab]');i
 document.getElementById('search').addEventListener('input',filter);document.getElementById('closemodal').onclick=()=>document.getElementById('modal').classList.add('hidden');// O frontend não armazena tokens, chaves administrativas ou credenciais do Mercado Pago.
 // Ative a criação de pedidos apenas após implementar autenticação, validação de preço
 // e confirmação do pagamento no backend. Não use /admin/pedidos/teste no navegador.
+// Detecta Mini App somente quando o Telegram fornece initData autenticavel.
+const COMPRA_DENTRO_TELEGRAM=Boolean(tg?.initData && tg.initData.length);
 const PIX_CHECKOUT_ATIVO=false;
+const SITE_EXTERNO="https://dplayseries.github.io/dplay-series-loja/?comprar=1";
+function configurarPagamento(){
+ const botao=document.getElementById('checkout');
+ if(!botao)return;
+ botao.textContent=COMPRA_DENTRO_TELEGRAM?'Abrir site externo para pagar com Pix':'Pagar com Pix (em preparação)';
+ const status=document.getElementById('pixstatus');
+ if(status)status.textContent='Pix ainda indisponível';
+}
 function mostrarPix(dados){
   const metodo=dados||{};
   const codigo=typeof metodo.pix_copia_cola==='string'?metodo.pix_copia_cola:'';
@@ -46,12 +56,17 @@ document.getElementById('copyPix').onclick=async()=>{
 };
 document.getElementById('checkout').onclick=()=>{
   if(!cart.size){modal('Carrinho vazio','Escolha a série antes de continuar.');return;}
+  if(COMPRA_DENTRO_TELEGRAM){
+    modal('Pagamento no navegador externo','O Pix será feito somente no site externo. Se o link abrir dentro do Telegram, use o menu do navegador para abrir no Chrome ou outro navegador. Nenhuma cobrança será criada agora.');
+    window.open(SITE_EXTERNO,'_blank','noopener,noreferrer');
+    return;
+  }
   if(!PIX_CHECKOUT_ATIVO){
     document.getElementById('pixpanel').classList.remove('hidden');
     document.getElementById('pixstatus').textContent='Pagamento ainda indisponível';
-    modal('Integração Pix em andamento','A tela do Pix está preparada, mas o servidor ainda precisa de uma rota pública segura para criar pedidos. Nenhuma cobrança foi gerada.');
+    modal('Pix em preparação','O pagamento pelo Mercado Pago ainda não foi ativado. Nenhuma cobrança foi gerada.');
     return;
   }
   // A ativação requer uma rota segura no backend; não inserir DPLAY_ADMIN_KEY aqui.
-};document.getElementById('supportbtn').onclick=()=>{const url='https://t.me/DPlayEpisodiosBot';if(tg?.openTelegramLink)tg.openTelegramLink(url);else window.open(url,'_blank')};render();
+};document.getElementById('supportbtn').onclick=()=>{const url='https://t.me/DPlayEpisodiosBot';if(tg?.openTelegramLink)tg.openTelegramLink(url);else window.open(url,'_blank')};if(new URLSearchParams(location.search).get('comprar')==='1')cart.add('a');render();configurarPagamento();
 </script></body></html>
