@@ -56,7 +56,7 @@ const API='https://dplay-series-api.onrender.com';
 const statusEl=document.getElementById('payment-status');
 const btnPix=document.getElementById('gerar-pix');
 btnPix.addEventListener('click',async()=>{
- confirmar.hidden=true;pix.hidden=false;statusEl.textContent='Preparando seu pedido...';
+ confirmar.hidden=true;pix.hidden=false;document.getElementById('pix-conteudo').hidden=true;document.getElementById('pix-codigo').value='';const linkAnterior=document.getElementById('resgatar-serie');if(linkAnterior)linkAnterior.hidden=true;pedidoAtual=null;statusEl.textContent='Preparando seu pedido...';
  try{
    let r=await fetch(API+'/publico/pedido',{method:'POST'});
    let d=await r.json();if(!r.ok)throw Error(d.detail||'Não foi possível criar pedido');
