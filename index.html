@@ -36,7 +36,7 @@
 <footer class="footer">© DPlay Series · Entretenimento digital<br>Precisa de ajuda? <a href="https://t.me/dplaysuporteoficial" target="_blank" rel="noopener noreferrer">Falar com suporte</a></footer>
 <div id="modal" class="modal" hidden role="dialog" aria-modal="true" aria-labelledby="modal-title"><div class="dialog checkout-dialog">
 <button id="fechar" class="xclose" type="button" aria-label="Fechar">×</button>
-<div id="etapa-confirmar"><span class="eyebrow">✦ Checkout DPlay</span><h2 id="modal-title">Confirmar pedido</h2><div class="order-summary"><img src="capa-filha-do-don.jpg" alt="Capa de A Filha Esquecida do Don"><div><strong>A Filha Esquecida do Don</strong><small>Série completa · Acesso digital</small><b>R$ 4,00</b></div></div><div class="total"><span>Total a pagar</span><strong>R$ 4,00</strong></div><label for="email-pagador" class="pix-label">Seu e-mail para o pagamento</label><input id="email-pagador" type="email" autocomplete="email" required placeholder="voce@exemplo.com" style="width:100%;padding:13px;border-radius:12px;border:1px solid #575a82;background:#292d47;color:white;margin-bottom:14px"><button id="gerar-pix" class="buy" type="button">◆ GERAR PIX — R$ 4,00</button><p class="fineprint">Pagamento no site. Após a confirmação, toque em Receber minha série para abrir o Telegram uma única vez.</p></div>
+<div id="etapa-confirmar"><span class="eyebrow">✦ Checkout DPlay</span><h2 id="modal-title">Confirmar pedido</h2><div class="order-summary"><img src="capa-filha-do-don.jpg" alt="Capa de A Filha Esquecida do Don"><div><strong>A Filha Esquecida do Don</strong><small>Série completa · Acesso digital</small><b>R$ 4,00</b></div></div><div class="total"><span>Total a pagar</span><strong>R$ 4,00</strong></div><button id="gerar-pix" class="buy" type="button">◆ GERAR PIX — R$ 4,00</button><p class="fineprint">Pagamento no site. Após a confirmação, toque em Receber minha série para abrir o Telegram uma única vez.</p></div>
 <div id="etapa-pix" hidden><span class="eyebrow">✦ Pagamento Pix</span><h2>Pagamento via Pix</h2><p class="checkout-sub">A Filha Esquecida do Don <b>— R$ 4,00</b></p><div id="payment-status" class="payment-status" role="status">Preparando checkout...</div><div id="pix-conteudo" hidden><img id="pix-qr" class="pix-qr" alt="QR Code Pix do Mercado Pago"><label for="pix-codigo" class="pix-label">Pix Copia e Cola</label><textarea id="pix-codigo" readonly rows="4"></textarea><button class="buy" id="copiar-pix" type="button">Copiar código PIX</button></div><button class="back-btn" id="voltar-confirmar" type="button">← Voltar ao pedido</button></div>
 </div></div>
 <script>
@@ -56,15 +56,13 @@ const API='https://dplay-series-api.onrender.com';
 const statusEl=document.getElementById('payment-status');
 const btnPix=document.getElementById('gerar-pix');
 btnPix.addEventListener('click',async()=>{
- const emailEl=document.getElementById('email-pagador');
- if(!emailEl.reportValidity())return;
  confirmar.hidden=true;pix.hidden=false;statusEl.textContent='Preparando seu pedido...';
  try{
    let r=await fetch(API+'/publico/pedido',{method:'POST'});
    let d=await r.json();if(!r.ok)throw Error(d.detail||'Não foi possível criar pedido');
    pedidoAtual=d;
    statusEl.textContent='Pedido registrado. Preparando Pix...';
-   r=await fetch(API+'/publico/pix',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({pedido_id:d.pedido_id,resgate:d.resgate,email_pagador:emailEl.value.trim()})});
+   r=await fetch(API+'/publico/pix',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({pedido_id:d.pedido_id,resgate:d.resgate})});
    const p=await r.json();if(!r.ok)throw Error(p.detail||'Pix indisponível');
    document.getElementById('pix-codigo').value=p.pix_copia_cola;
    const qr=document.getElementById('pix-qr');
