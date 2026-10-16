@@ -36,7 +36,7 @@
 <footer class="footer">© DPlay Series · Entretenimento digital<br>Precisa de ajuda? <a href="https://t.me/DPlayEpisodiosBot" target="_blank" rel="noopener noreferrer">Fale com nosso bot</a></footer>
 <div id="modal" class="modal" hidden role="dialog" aria-modal="true" aria-labelledby="modal-title"><div class="dialog checkout-dialog">
 <button id="fechar" class="xclose" type="button" aria-label="Fechar">×</button>
-<div id="etapa-confirmar"><span class="eyebrow">✦ Checkout DPlay</span><h2 id="modal-title">Confirmar pedido</h2><div class="order-summary"><img src="capa-filha-do-don.jpg" alt="Capa de A Filha Esquecida do Don"><div><strong>A Filha Esquecida do Don</strong><small>Série completa · Acesso digital</small><b>R$ 4,00</b></div></div><div class="total"><span>Total a pagar</span><strong>R$ 4,00</strong></div><button id="gerar-pix" class="buy" type="button">◆ GERAR PIX — R$ 4,00</button><p class="fineprint">Pagamento protegido. Seu acesso será entregue pelo Telegram após a confirmação.</p></div>
+<div id="etapa-confirmar"><span class="eyebrow">✦ Checkout DPlay</span><h2 id="modal-title">Confirmar pedido</h2><div class="order-summary"><img src="capa-filha-do-don.jpg" alt="Capa de A Filha Esquecida do Don"><div><strong>A Filha Esquecida do Don</strong><small>Série completa · Acesso digital</small><b>R$ 4,00</b></div></div><div class="total"><span>Total a pagar</span><strong>R$ 4,00</strong></div><div class="login-area"><p class="fineprint">Conecte sua conta Telegram para receber a série automaticamente após a compra.</p><div id="telegram-login"></div><p id="login-status" class="fineprint" role="status">Aguardando identificação...</p></div><button id="gerar-pix" class="buy" type="button" disabled>◆ GERAR PIX — R$ 4,00</button><p class="fineprint">Pagamento protegido. Seu acesso será entregue pelo Telegram após a confirmação.</p></div>
 <div id="etapa-pix" hidden><span class="eyebrow">✦ Pagamento Pix</span><h2>Pagamento via Pix</h2><p class="checkout-sub">A Filha Esquecida do Don <b>— R$ 4,00</b></p><div id="payment-status" class="payment-status" role="status">Preparando checkout...</div><div id="pix-conteudo" hidden><img id="pix-qr" class="pix-qr" alt="QR Code Pix do Mercado Pago"><label for="pix-codigo" class="pix-label">Pix Copia e Cola</label><textarea id="pix-codigo" readonly rows="4"></textarea><button class="buy" id="copiar-pix" type="button">Copiar código PIX</button></div><button class="back-btn" id="voltar-confirmar" type="button">← Voltar ao pedido</button></div>
 </div></div>
 <script>
@@ -50,9 +50,9 @@ document.getElementById('fechar').addEventListener('click',fecharCheckout);
 document.getElementById('voltar-confirmar').addEventListener('click',()=>{confirmar.hidden=false;pix.hidden=true;});
 modal.addEventListener('click',event=>{if(event.target===modal)fecharCheckout()});
 document.addEventListener('keydown',event=>{if(event.key==='Escape')fecharCheckout()});
-document.getElementById('gerar-pix').addEventListener('click',()=>{
+document.getElementById('gerar-pix').addEventListener('click',async()=>{
  confirmar.hidden=true;pix.hidden=false;
- document.getElementById('payment-status').textContent='O checkout está pronto, mas a geração de Pix ainda depende da ativação segura da API do Mercado Pago. Nenhuma cobrança foi criada.';
+ document.getElementById('payment-status').textContent='Registrando pedido...'; try {const r=await fetch('https://dplay-series-api.onrender.com/loja/pedido',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({sessao:window.dplaySessao})});const d=await r.json();if(!r.ok)throw Error(d.detail||'Falha ao registrar pedido');document.getElementById('payment-status').textContent='Pedido '+d.pedido_id+' registrado. Pix ainda não habilitado; nenhuma cobrança criada.';}catch(e){document.getElementById('payment-status').textContent=e.message;}
  document.getElementById('pix-conteudo').hidden=true;
 });
 document.getElementById('copiar-pix').addEventListener('click',async()=>{
@@ -61,5 +61,7 @@ document.getElementById('copiar-pix').addEventListener('click',async()=>{
  try{await navigator.clipboard.writeText(codigo);document.getElementById('copiar-pix').textContent='✓ Código copiado';}
  catch{document.getElementById('pix-codigo').select();}
 });
+window.onTelegramAuth=async function(user){const s=document.getElementById('login-status');s.textContent='Validando sua conta...';try{const r=await fetch('https://dplay-series-api.onrender.com/loja/telegram/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({dados:user})});const d=await r.json();if(!r.ok)throw Error(d.detail||'Não foi possível autenticar');window.dplaySessao=d.sessao;s.textContent='✓ Telegram conectado. Pedido pode ser registrado.';document.getElementById('gerar-pix').disabled=false;}catch(e){s.textContent=e.message;}};
+const widget=document.createElement('script');widget.async=true;widget.src='https://telegram.org/js/telegram-widget.js?22';widget.setAttribute('data-telegram-login','DPlayEpisodiosBot');widget.setAttribute('data-size','large');widget.setAttribute('data-userpic','false');widget.setAttribute('data-onauth','onTelegramAuth(user)');widget.setAttribute('data-request-access','write');document.getElementById('telegram-login').appendChild(widget);
 </script>
 </body></html>
