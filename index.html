@@ -64,12 +64,30 @@ body{background:radial-gradient(ellipse 750px 420px at 52% -100px,#2b164e 0%,tra
 .search-topbar .search-area input{padding:11px 0;font-size:14px}
 }
 </style>
-</head>
+<style>
+/* Banner oficial integrado à loja premium */
+.dplay-showcase{margin:18px 0 30px;border-radius:22px;overflow:hidden;border:1px solid #8142bf;background:#0e0a20;box-shadow:0 18px 55px #0009,0 0 35px #ac36d625}
+.dplay-showcase-art{background:#090618;position:relative;line-height:0}
+.dplay-showcase-art img{display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:contain}
+.dplay-showcase-footer{padding:16px 22px;display:flex;justify-content:space-between;align-items:center;gap:18px;background:linear-gradient(115deg,#120c2d,#241039 64%,#150c2e);border-top:1px solid #603a87}
+.dplay-showcase-message{display:flex;align-items:center;gap:9px;flex-wrap:wrap;color:#f9e9ff;font-weight:850;font-size:11px;letter-spacing:1.3px}
+.dplay-showcase-message small{font-size:12px;color:#c4b5d7;letter-spacing:0;font-weight:500;flex-basis:100%;padding-left:17px}
+.dplay-live-dot{width:8px;height:8px;border-radius:50%;background:#e64cda;box-shadow:0 0 13px #f23bd9;flex:none}
+.dplay-showcase-button{flex:none;border-radius:13px;padding:12px 17px;background:linear-gradient(110deg,#6d47fa,#d32fca);color:white;font-weight:800;font-size:13px;box-shadow:0 5px 19px #bc35e24d;white-space:nowrap}
+.dplay-showcase-button:hover{filter:brightness(1.12)}
+@media(max-width:650px){.dplay-showcase{margin:12px 0 24px;border-radius:17px}.dplay-showcase-footer{padding:12px;gap:9px}.dplay-showcase-message{font-size:9px;letter-spacing:.55px;gap:6px}.dplay-showcase-message small{font-size:10px;padding-left:14px}.dplay-showcase-button{font-size:11px;padding:11px 12px;border-radius:10px}}
+</style></head>
 <body>
 <header class="top"><div class="top-inner"><a class="brand" href="#inicio" aria-label="DPlay Series início"><img src="dplay-identidade.png" alt="Identidade DPlay"><span>DPLAY <span>SERIES</span></span></a><div class="top-actions"><span class="top-premium">✦ SEU CINEMA PARTICULAR</span><button type="button" class="search-shortcut" aria-label="Ir para pesquisa" onclick="document.getElementById('busca-topo').scrollIntoView({behavior:'smooth',block:'start'});setTimeout(()=>document.getElementById('pesquisar-series').focus(),350)">⌕</button><a class="top-link" href="https://t.me/dplaysuporteoficial" target="_blank" rel="noopener noreferrer">Ajuda ↗</a></div></div></header>
 <div class="search-topbar" id="busca-topo"><div class="search-topbar-inner"><label class="search-area" for="pesquisar-series"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-4-4"></path></svg><input id="pesquisar-series" type="search" placeholder="Pesquisar pelo nome da série..." autocomplete="off" enterkeyhint="search" aria-label="Pesquisar séries"><button id="limpar-pesquisa" class="search-clear" type="button" aria-label="Limpar pesquisa" hidden>×</button></label></div></div>
 <main class="wrap" id="inicio">
-<div class="welcome-line"><span>✦ BEM-VINDO À DPLAY</span><span>ENTRETENIMENTO SEM LIMITES</span></div><section class="hero" aria-label="DPlay Entretenimento"><div class="hero-copy"><span class="eyebrow">✦ DPlay entretenimento</span><h1>Histórias que <span class="gradient">viciam.</span><br>Preços que surpreendem.</h1><p>Descubra sua próxima obsessão. Séries completas, pagamento fácil e acesso pelo Telegram.</p><div class="hero-benefits"><span>✓ R$ 4 por série</span><span>✓ Pix seguro</span><span>✓ Acesso digital</span></div><a class="hero-cta" href="#destaques">✦ Explorar séries</a></div><img class="hero-image" src="dplay-identidade.png" alt="Arte oficial DPlay Entretenimento"></section>
+<div class="welcome-line"><span>✦ BEM-VINDO À DPLAY</span><span>ENTRETENIMENTO SEM LIMITES</span></div><section class="dplay-showcase" aria-label="Banner oficial DPlay Entretenimento">
+  <div class="dplay-showcase-art"><img src="dplay-banner-premium.webp" alt="DPlay Entretenimento: séries, doramas, animes e histórias incríveis" fetchpriority="high"></div>
+  <div class="dplay-showcase-footer">
+    <div class="dplay-showcase-message"><span class="dplay-live-dot"></span><span>SEU PRÓXIMO VÍCIO COMEÇA AQUI</span><small>Escolha sua história favorita no catálogo</small></div>
+    <a class="dplay-showcase-button" href="#destaques">Explorar séries <span aria-hidden="true">↗</span></a>
+  </div>
+</section>
 <section id="destaques"><div class="section-head"><div><span class="section-kicker">EXPLORE O CATÁLOGO</span><h2>Escolha sua próxima <em>história</em></h2></div><small>✦ Séries completas</small></div><div class="chips"><a class="chip active" href="#destaques">✦ Todas as séries</a><a class="chip" href="#destaques" onclick="document.getElementById('pesquisar-series').focus()">⌕ Encontrar título</a><a class="chip" href="https://t.me/dplaysuporteoficial" target="_blank" rel="noopener noreferrer">♡ Precisa de ajuda?</a></div><p id="resultado-pesquisa" class="search-feedback" role="status" aria-live="polite"></p><p id="nenhuma-serie" class="search-empty" hidden>Nenhuma série encontrada. Tente outro nome.</p><div class="grid"><article class="card"><div class="poster"><img src="capa-filha-do-don.jpg" alt="Capa original da série A Filha Esquecida do Don" loading="lazy"><span class="pill">✦ EM DESTAQUE</span></div><div class="info"><h3>A Filha Esquecida do Don</h3><p class="genre">Drama · Pacote completo</p><span class="price-caption">Série completa por apenas</span><div class="price">R$ 4,00</div><button class="buy" type="button" id="comprar">▶ COMPRAR AGORA</button><div class="assurance">✦ Acesso digital após confirmação do pagamento</div></div></article></div></section>
 </main><nav class="mobile-nav" aria-label="Navegação rápida"><a href="#inicio" class="nav-active"><span>⌂</span>Início</a><a href="#destaques"><span>▦</span>Catálogo</a><a href="#busca-topo" onclick="setTimeout(()=>document.getElementById('pesquisar-series').focus(),200)"><span>⌕</span>Buscar</a><a href="https://t.me/dplaysuporteoficial" target="_blank" rel="noopener noreferrer"><span>♧</span>Suporte</a></nav>
 <footer class="footer">© DPlay Series · Entretenimento digital<br>Precisa de ajuda? <a href="https://t.me/dplaysuporteoficial" target="_blank" rel="noopener noreferrer">Falar com suporte</a></footer>
