@@ -43,9 +43,22 @@
 const modal=document.getElementById('modal');
 const confirmar=document.getElementById('etapa-confirmar');
 const pix=document.getElementById('etapa-pix');
-function abrirCheckout(){modal.hidden=false;confirmar.hidden=false;pix.hidden=true;document.getElementById('email-error').hidden=true;document.getElementById('payer-email').focus();}
+let serieSelecionada=null;
+function abrirCheckout(serie=null){
+  serieSelecionada=serie;
+  const titulo=serie ? serie.titulo : 'A Filha Esquecida do Don';
+  const capa=serie ? API+'/catalogo/capa/'+encodeURIComponent(serie.id) : 'capa-filha-do-don.jpg';
+  document.querySelector('.order-summary img').src=capa;
+  document.querySelector('.order-summary img').alt='Capa de '+titulo;
+  document.querySelector('.order-summary strong').textContent=titulo;
+  document.querySelector('.checkout-sub').replaceChildren(document.createTextNode(titulo+' '));
+  const preco=document.createElement('b');preco.textContent='— R$ 4,00';document.querySelector('.checkout-sub').append(preco);
+  modal.hidden=false;confirmar.hidden=false;pix.hidden=true;
+  document.getElementById('email-error').hidden=true;
+  document.getElementById('payer-email').focus();
+}
 function fecharCheckout(){modal.hidden=true;}
-document.getElementById('comprar').addEventListener('click',abrirCheckout);
+document.getElementById('comprar').addEventListener('click',()=>abrirCheckout());
 document.getElementById('fechar').addEventListener('click',fecharCheckout);
 document.getElementById('voltar-confirmar').addEventListener('click',()=>{confirmar.hidden=false;pix.hidden=true;});
 modal.addEventListener('click',event=>{if(event.target===modal)fecharCheckout()});
@@ -70,7 +83,7 @@ btnPix.addEventListener('click',async()=>{
   btnPix.disabled=true;
  confirmar.hidden=true;pix.hidden=false;document.getElementById('pix-conteudo').hidden=true;document.getElementById('pix-codigo').value='';const linkAnterior=document.getElementById('resgatar-serie');if(linkAnterior)linkAnterior.hidden=true;pedidoAtual=null;statusEl.textContent='Preparando seu pedido...';
  try{
-   let r=await fetch(API+'/publico/pedido',{method:'POST'});
+   let r=await fetch(API+'/publico/pedido',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(serieSelecionada?{serie_id:serieSelecionada.id}:{})});
    let d=await r.json();if(!r.ok)throw Error(d.detail||'Não foi possível criar pedido');
    pedidoAtual=d;
    statusEl.textContent='Pedido registrado. Preparando Pix...';
@@ -115,7 +128,7 @@ document.getElementById('copiar-pix').addEventListener('click',async()=>{
 });
 
 // Catálogo dinâmico: lê as séries cadastradas pelo painel Android.
-// Compras de novas séries permanecem desativadas até a API associar pedido e canal.
+// Cada pedido e vinculado a uma serie validada no servidor.
 (function carregarCatalogoDplay(){
   const API_CATALOGO='https://dplay-series-api.onrender.com';
   const grade=document.querySelector('#destaques .grid');
@@ -144,10 +157,10 @@ document.getElementById('copiar-pix').addEventListener('click',async()=>{
         const genre=document.createElement('p');genre.className='genre';genre.textContent='Pacote completo';
         const caption=document.createElement('span');caption.className='price-caption';caption.textContent='Série completa por apenas';
         const price=document.createElement('div');price.className='price';price.textContent='R$ 4,00';
-        const button=document.createElement('button');button.className='buy';button.type='button';button.disabled=true;
-        button.textContent='EM BREVE';button.style.cssText='opacity:.55;cursor:not-allowed';
-        button.title='Pagamento desta série será liberado após integração da entrega';
-        const note=document.createElement('div');note.className='assurance';note.textContent='✦ Compra disponível em breve';
+        const button=document.createElement('button');button.className='buy';button.type='button';
+        button.textContent='▶ COMPRAR AGORA';
+        button.addEventListener('click',()=>abrirCheckout({id:String(serie.id),titulo:serie.titulo}));
+        const note=document.createElement('div');note.className='assurance';note.textContent='✦ Acesso digital após confirmação do pagamento';
         info.append(title,genre,caption,price,button,note);card.append(poster,info);grade.append(card);
       }
       if(!data.series.length)aviso.textContent='';
