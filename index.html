@@ -104,8 +104,10 @@ body{background:radial-gradient(ellipse 750px 420px at 52% -100px,#2b164e 0%,tra
 <footer class="footer">© DPlay Series · Entretenimento digital<br>Precisa de ajuda? <a href="https://t.me/dplaysuporteoficial" target="_blank" rel="noopener noreferrer">Falar com suporte</a></footer>
 <div id="modal" class="modal" hidden role="dialog" aria-modal="true" aria-labelledby="modal-title"><div class="dialog checkout-dialog">
 <button id="fechar" class="xclose" type="button" aria-label="Fechar">×</button>
-<div id="etapa-confirmar"><span class="eyebrow">✦ Checkout DPlay</span><h2 id="modal-title">Confirmar pedido</h2><div class="order-summary"><img src="capa-filha-do-don.jpg" alt="Capa de A Filha Esquecida do Don"><div><strong>A Filha Esquecida do Don</strong><small>Série completa · Acesso digital</small><b>R$ 4,00</b></div></div><div class="total"><span>Total a pagar</span><strong>R$ 4,00</strong></div><label class="email-label" for="payer-email">Seu e-mail para o pagamento</label><input class="email-input" id="payer-email" name="email" type="email" inputmode="email" autocomplete="email" maxlength="254" placeholder="voce@exemplo.com" required aria-describedby="email-help email-error"><p class="email-help" id="email-help">Usado para processar o Pix pelo Mercado Pago. Não é necessário criar uma conta.</p><p class="email-error" id="email-error" role="alert" hidden></p><button id="gerar-pix" class="buy" type="button">◆ GERAR PIX — R$ 4,00</button><p class="fineprint">Pagamento no site. Após a confirmação, toque em Receber minha série para abrir o Telegram uma única vez.</p></div>
-<div id="etapa-pix" hidden><span class="eyebrow">✦ Pagamento Pix</span><h2>Pagamento via Pix</h2><p class="checkout-sub">A Filha Esquecida do Don <b>— R$ 4,00</b></p><div id="payment-status" class="payment-status" role="status">Preparando checkout...</div><div id="pix-conteudo" hidden><img id="pix-qr" class="pix-qr" alt="QR Code Pix do Mercado Pago"><label for="pix-codigo" class="pix-label">Pix Copia e Cola</label><textarea id="pix-codigo" readonly rows="4"></textarea><button class="buy" id="copiar-pix" type="button">Copiar código PIX</button></div><button class="back-btn" id="voltar-confirmar" type="button">← Voltar ao pedido</button></div>
+<div id="etapa-confirmar"><span class="eyebrow">✦ Checkout DPlay</span><h2 id="modal-title">Confirmar pedido</h2><div class="order-summary"><img src="capa-filha-do-don.jpg" alt="Capa de A Filha Esquecida do Don"><div><strong>A Filha Esquecida do Don</strong><small>Série completa · Acesso digital</small><b>R$ 4,00</b></div></div><div class="total"><span>Total a pagar</span><strong>R$ 4,00</strong></div><button id="gerar-pix" class="buy" type="button">◆ GERAR PIX — R$ 4,00</button><p class="fineprint">Pagamento no site. Após a confirmação, toque em Receber minha série para abrir o Telegram uma única vez.</p></div>
+<div id="etapa-pix" hidden><span class="eyebrow">✦ Pagamento Pix</span><h2>Pagamento via Pix</h2><p class="checkout-sub">A Filha Esquecida do Don <b>— R$ 4,00</b></p><div id="payment-status" class="payment-status" role="status">Preparando checkout...</div><div id="pix-conteudo" hidden><img id="pix-qr" class="pix-qr" alt="QR Code Pix do Mercado Pago"><label for="pix-codigo" class="pix-label">Pix Copia e Cola</label><textarea id="pix-codigo" readonly rows="4"></textarea><button class="buy" id="copiar-pix" type="button">Copiar código PIX</button>
+<a id="lembrete-telegram" class="buy" target="_blank" rel="noopener noreferrer" hidden style="display:block;text-align:center;margin-top:12px;background:linear-gradient(110deg,#6138b6,#a72bc5);text-decoration:none">🔔 Receber lembrete no Telegram</a>
+<p style="font-size:12px;color:#c7b7d6;margin:8px 0 0">Opcional: apenas 1 aviso se o Pix continuar pendente após 30 minutos.</p></div><button class="back-btn" id="voltar-confirmar" type="button">← Voltar ao pedido</button></div>
 </div></div>
 <script>
 const modal=document.getElementById('modal');
@@ -122,8 +124,8 @@ function abrirCheckout(serie=null){
   document.querySelector('.checkout-sub').replaceChildren(document.createTextNode(titulo+' '));
   const preco=document.createElement('b');preco.textContent='— R$ 4,00';document.querySelector('.checkout-sub').append(preco);
   modal.hidden=false;confirmar.hidden=false;pix.hidden=true;
-  document.getElementById('email-error').hidden=true;
-  document.getElementById('payer-email').focus();
+  
+  document.getElementById('gerar-pix').focus();
 }
 function fecharCheckout(){modal.hidden=true;}
 document.getElementById('comprar').addEventListener('click',()=>abrirCheckout());
@@ -137,17 +139,6 @@ const API='https://dplay-series-api.onrender.com';
 const statusEl=document.getElementById('payment-status');
 const btnPix=document.getElementById('gerar-pix');
 btnPix.addEventListener('click',async()=>{
-  const emailInput=document.getElementById('payer-email');
-  const emailError=document.getElementById('email-error');
-  const payerEmail=emailInput.value.trim().toLowerCase();
-  emailError.hidden=true;
-  emailInput.value=payerEmail;
-  if(!emailInput.checkValidity()||payerEmail.length<5){
-    emailError.textContent='Informe um e-mail válido para gerar o Pix.';
-    emailError.hidden=false;
-    emailInput.focus();
-    return;
-  }
   btnPix.disabled=true;
  confirmar.hidden=true;pix.hidden=false;document.getElementById('pix-conteudo').hidden=true;document.getElementById('pix-codigo').value='';const linkAnterior=document.getElementById('resgatar-serie');if(linkAnterior)linkAnterior.hidden=true;pedidoAtual=null;statusEl.textContent='Preparando seu pedido...';
  try{
@@ -155,11 +146,14 @@ btnPix.addEventListener('click',async()=>{
    let d=await r.json();if(!r.ok)throw Error(d.detail||'Não foi possível criar pedido');
    pedidoAtual=d;
    statusEl.textContent='Pedido registrado. Preparando Pix...';
-   r=await fetch(API+'/publico/pix',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({pedido_id:d.pedido_id,resgate:d.resgate,payer_email:payerEmail})});
+   r=await fetch(API+'/publico/pix',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({pedido_id:d.pedido_id,resgate:d.resgate})});
    const p=await r.json();if(!r.ok)throw Error(p.detail||'Pix indisponível');
    document.getElementById('pix-codigo').value=p.pix_copia_cola;
    const qr=document.getElementById('pix-qr');
    if(p.pix_qr_code_base64){qr.src='data:image/png;base64,'+p.pix_qr_code_base64;qr.hidden=false;}else{qr.hidden=true;}
+   const lembrete=document.getElementById('lembrete-telegram');
+   lembrete.href='https://t.me/DPlayEpisodiosBot?start=lemb_'+encodeURIComponent(d.resgate);
+   lembrete.hidden=false;
    document.getElementById('pix-conteudo').hidden=false;
    statusEl.textContent='Pix gerado. Aguardando confirmação automática do Mercado Pago.';
    acompanharPedido();
