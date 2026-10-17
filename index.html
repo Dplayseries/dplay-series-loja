@@ -76,7 +76,18 @@ body{background:radial-gradient(ellipse 750px 420px at 52% -100px,#2b164e 0%,tra
 .dplay-showcase-button{flex:none;border-radius:13px;padding:12px 17px;background:linear-gradient(110deg,#6d47fa,#d32fca);color:white;font-weight:800;font-size:13px;box-shadow:0 5px 19px #bc35e24d;white-space:nowrap}
 .dplay-showcase-button:hover{filter:brightness(1.12)}
 @media(max-width:650px){.dplay-showcase{margin:12px 0 24px;border-radius:17px}.dplay-showcase-footer{padding:12px;gap:9px}.dplay-showcase-message{font-size:9px;letter-spacing:.55px;gap:6px}.dplay-showcase-message small{font-size:10px;padding-left:14px}.dplay-showcase-button{font-size:11px;padding:11px 12px;border-radius:10px}}
-</style></head>
+</style>
+<style>
+/* DPlay: rolagem do checkout Pix em telas pequenas e Mini App Telegram */
+.modal{box-sizing:border-box;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;align-items:start;justify-items:center;padding:12px 12px max(24px,env(safe-area-inset-bottom))}
+.modal .dialog{box-sizing:border-box;max-height:calc(100dvh - 24px);overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;margin:auto 0;min-height:0}
+@supports not (height:100dvh){.modal .dialog{max-height:calc(100vh - 24px)}}
+#pix-conteudo{padding-bottom:12px}
+#pix-conteudo .pix-qr{width:min(100%,230px);height:auto;max-height:230px;object-fit:contain;margin:14px auto}
+#copiar-pix{position:relative;z-index:1;touch-action:manipulation}
+@media(max-width:650px){.modal{padding:8px 10px max(20px,env(safe-area-inset-bottom))}.modal .dialog{max-height:calc(100dvh - 16px);padding:18px 16px}.modal .dialog .pix-qr{max-height:210px;width:min(100%,210px)}}
+</style>
+</head>
 <body>
 <header class="top"><div class="top-inner"><a class="brand" href="#inicio" aria-label="DPlay Series início"><img src="dplay-identidade.png" alt="Identidade DPlay"><span>DPLAY <span>SERIES</span></span></a><div class="top-actions"><span class="top-premium">✦ SEU CINEMA PARTICULAR</span><button type="button" class="search-shortcut" aria-label="Ir para pesquisa" onclick="document.getElementById('busca-topo').scrollIntoView({behavior:'smooth',block:'start'});setTimeout(()=>document.getElementById('pesquisar-series').focus(),350)">⌕</button><a class="top-link" href="https://t.me/dplaysuporteoficial" target="_blank" rel="noopener noreferrer">Ajuda ↗</a></div></div></header>
 <div class="search-topbar" id="busca-topo"><div class="search-topbar-inner"><label class="search-area" for="pesquisar-series"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-4-4"></path></svg><input id="pesquisar-series" type="search" placeholder="Pesquisar pelo nome da série..." autocomplete="off" enterkeyhint="search" aria-label="Pesquisar séries"><button id="limpar-pesquisa" class="search-clear" type="button" aria-label="Limpar pesquisa" hidden>×</button></label></div></div>
@@ -84,7 +95,7 @@ body{background:radial-gradient(ellipse 750px 420px at 52% -100px,#2b164e 0%,tra
 <div class="welcome-line"><span>✦ BEM-VINDO À DPLAY</span><span>ENTRETENIMENTO SEM LIMITES</span></div><section class="dplay-showcase" aria-label="Banner oficial DPlay Entretenimento">
   <div class="dplay-showcase-art"><img src="dplay-banner-premium.webp" alt="DPlay Entretenimento: séries, doramas, animes e histórias incríveis" fetchpriority="high"></div>
   <div class="dplay-showcase-footer">
-    <div class="dplay-showcase-message"><span class="dplay-live-dot"></span><span>SEU PRÓXIMO VÍCIO COMEÇA AQUI</span><small>Escolha sua história favorita no catálogo</small></div>
+    <div class="dplay-showcase-message"><span class="dplay-live-dot"></span><span>HISTÓRIAS QUE ENCANTAM</span><small>Encontre sua próxima história favorita</small></div>
     <a class="dplay-showcase-button" href="#destaques">Explorar séries <span aria-hidden="true">↗</span></a>
   </div>
 </section>
