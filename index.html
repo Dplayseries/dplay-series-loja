@@ -113,5 +113,48 @@ document.getElementById('copiar-pix').addEventListener('click',async()=>{
  try{await navigator.clipboard.writeText(codigo);document.getElementById('copiar-pix').textContent='✓ Código copiado';}
  catch{document.getElementById('pix-codigo').select();}
 });
+
+// Catálogo dinâmico: lê as séries cadastradas pelo painel Android.
+// Compras de novas séries permanecem desativadas até a API associar pedido e canal.
+(function carregarCatalogoDplay(){
+  const API_CATALOGO='https://dplay-series-api.onrender.com';
+  const grade=document.querySelector('#destaques .grid');
+  if(!grade)return;
+  const aviso=document.createElement('p');
+  aviso.id='catalogo-aviso';
+  aviso.style.cssText='color:#b5b6d0;font-size:13px;margin-top:16px';
+  grade.after(aviso);
+  const timeout=setTimeout(()=>controller.abort(),18000);
+  const controller=new AbortController();
+  fetch(API_CATALOGO+'/catalogo/series',{signal:controller.signal,cache:'no-store'})
+    .then(async r=>{if(!r.ok)throw new Error('API indisponível');return r.json()})
+    .then(data=>{
+      if(!Array.isArray(data.series))throw new Error('Resposta inválida');
+      for(const serie of data.series){
+        if(!serie||typeof serie.titulo!=='string'||!serie.id)continue;
+        const card=document.createElement('article');card.className='card';
+        const poster=document.createElement('div');poster.className='poster';
+        const img=document.createElement('img');
+        img.src=API_CATALOGO+'/catalogo/capa/'+encodeURIComponent(String(serie.id));
+        img.alt='Capa de '+serie.titulo;img.loading='lazy';
+        poster.append(img);
+        const pill=document.createElement('span');pill.className='pill';pill.textContent='✦ NOVA SÉRIE';poster.append(pill);
+        const info=document.createElement('div');info.className='info';
+        const title=document.createElement('h3');title.textContent=serie.titulo;
+        const genre=document.createElement('p');genre.className='genre';genre.textContent='Pacote completo';
+        const caption=document.createElement('span');caption.className='price-caption';caption.textContent='Série completa por apenas';
+        const price=document.createElement('div');price.className='price';price.textContent='R$ 4,00';
+        const button=document.createElement('button');button.className='buy';button.type='button';button.disabled=true;
+        button.textContent='EM BREVE';button.style.cssText='opacity:.55;cursor:not-allowed';
+        button.title='Pagamento desta série será liberado após integração da entrega';
+        const note=document.createElement('div');note.className='assurance';note.textContent='✦ Compra disponível em breve';
+        info.append(title,genre,caption,price,button,note);card.append(poster,info);grade.append(card);
+      }
+      if(!data.series.length)aviso.textContent='';
+    })
+    .catch(()=>{aviso.textContent='Não foi possível carregar as novas séries agora. Tente atualizar a página.'})
+    .finally(()=>clearTimeout(timeout));
+})();
+
 </script>
 </body></html>
