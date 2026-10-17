@@ -25,14 +25,53 @@
 #pix-codigo{width:100%;resize:none;background:#292d47;border:1px solid #575a82;border-radius:12px;color:white;padding:12px;font:12px monospace;margin-bottom:12px}
 .email-label{display:block;color:#e5dcff;font-size:13px;font-weight:700;margin:18px 0 7px}.email-input{width:100%;padding:13px 14px;background:#292d47;color:#fff;border:1px solid #74749c;border-radius:11px;font:inherit}.email-input:focus{outline:2px solid #b48aff;outline-offset:2px}.email-help{font-size:12px!important;margin:7px 0 15px!important;color:#bcb8d6!important}.email-error{color:#ffb7bd!important;font-size:12px!important;margin:7px 0!important}.back-btn{display:block;margin:20px auto 0;background:none;border:0;color:#c6b2ff;cursor:pointer;font-weight:700}
 @media(max-width:480px){.checkout-dialog{padding:23px 18px}.order-summary img{width:75px;height:108px}}
+/* Busca do catálogo, otimizada para Android e Mini App */
+.search-area{margin:17px 0 18px;display:flex;align-items:center;gap:10px;background:#191b37;border:1px solid #63528f;border-radius:14px;padding:0 14px;transition:border-color .2s}
+.search-area:focus-within{border-color:#cf74f5;box-shadow:0 0 0 3px #a65af522}
+.search-area svg{flex:none;color:#c7b3f4}
+.search-area input{width:100%;min-width:0;border:0;outline:0;background:transparent;color:#fff;font:inherit;font-size:15px;padding:15px 0}
+.search-area input::placeholder{color:#a9a3c9}
+.search-clear{background:none;border:0;color:#e7d6ff;font-size:21px;cursor:pointer;padding:7px;min-width:35px}
+.search-clear[hidden]{display:none}
+.search-feedback{color:#c8c0df;font-size:12px;margin:-8px 0 16px}
+.search-empty{padding:22px;text-align:center;border:1px dashed #645184;border-radius:14px;color:#c8c0df}
+.search-empty[hidden]{display:none}
+<style>
+
+/* DPLAY PREMIUM MOBILE DESIGN — camada visual; checkout e API originais preservados */
+:root{--bg:#090a13;--panel:#151625;--panel2:#1e1c32;--text:#faf8ff;--muted:#aaa6c1;--violet:#8d43f7;--pink:#ff38a8;--blue:#5a50f6;--line:#302b47}
+body{background:radial-gradient(ellipse 750px 420px at 52% -100px,#2b164e 0%,transparent 75%),#090a13;color:#faf8ff;padding-bottom:75px}
+.wrap{max-width:1180px;padding:0 24px 70px}.top{background:#0c0c17ef;border-color:#29233e}.top-inner{max-width:1180px;padding:12px 24px}.brand{font-size:16px;letter-spacing:1.5px}.brand img{border-color:#fa4cbe;box-shadow:0 0 0 3px #ff38a81c}.brand span span{color:#fb63c5}.top-actions{display:flex;align-items:center;gap:20px}.top-premium{font-size:10px;letter-spacing:1.5px;color:#a99bbd}.top-link{border:1px solid #5c3b7b;background:#21172d;font-weight:700}.search-shortcut{background:#21172d;color:#f4d7ff;border:1px solid #5c3b7b;border-radius:11px;width:37px;height:37px;font-size:28px;cursor:pointer;line-height:1}
+.welcome-line{display:flex;justify-content:space-between;margin:27px 0 13px;font-size:10px;letter-spacing:2px;font-weight:800;color:#df9cfa}.welcome-line span:last-child{color:#80758d}
+.hero{margin-top:0;min-height:355px;border:1px solid #7c347e;background:linear-gradient(110deg,#160e29 0%,#23123a 60%,#431539 100%);box-shadow:0 25px 80px #0008,0 0 65px #b32e7b17;border-radius:25px}.hero:before{background:radial-gradient(circle at 78% 40%,#f93b9840,transparent 55%)}.hero-copy{padding:43px 46px}.hero h1{font-size:clamp(30px,4vw,49px);letter-spacing:-1.8px}.gradient{background:linear-gradient(90deg,#fff,#f9a3e3,#fa4ea5);-webkit-background-clip:text;background-clip:text}.hero p{color:#d2c2df}.hero-image{object-fit:contain;mask-image:linear-gradient(to right,transparent,#000 20%);padding:28px;filter:drop-shadow(0 10px 32px #f33c8b50)}.hero-cta{background:linear-gradient(100deg,#fc3ca8,#a53ef5);box-shadow:0 10px 30px #f43ca94a}.hero-benefits{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}.hero-benefits span{background:#ffffff10;border:1px solid #ffffff20;border-radius:30px;padding:7px 10px;font-size:11px;color:#eed9ed}
+.section-head{margin:44px 0 20px}.section-head h2{font-size:clamp(22px,3vw,31px);border:0;padding:0;letter-spacing:-.8px}.section-head h2 em{font-style:normal;color:#fa61bf}.section-kicker{display:block;font-size:10px;letter-spacing:2.2px;color:#b777ee;font-weight:900;margin-bottom:8px}.chips{display:flex;gap:9px;overflow:auto;scrollbar-width:none;padding:0 0 18px}.chips::-webkit-scrollbar{display:none}.chip{white-space:nowrap;font-size:12px;border:1px solid #39334b;padding:10px 15px;border-radius:30px;background:#171622;color:#d4cee5}.chip.active{background:#4b1f57;border-color:#b44aaf;color:white;font-weight:800}
+.search-area{background:#191723;border:1px solid #3b314c;border-radius:16px;box-shadow:0 9px 30px #0002;margin-bottom:22px}.search-area:focus-within{border-color:#f052b7;box-shadow:0 0 0 3px #ed4bac20}.search-area svg{color:#e981cd}.search-area input{font-size:14px}.grid{grid-template-columns:repeat(auto-fill,minmax(205px,1fr));gap:17px}.card{border:1px solid #332c4d;background:#151524;border-radius:17px;box-shadow:0 15px 35px #0005}.poster{aspect-ratio:2/2.85}.pill{border-color:#fc61bd;background:#25152fdf;font-size:9px}.info{padding:16px}.info h3{font-size:15px;min-height:40px}.genre{font-size:11px}.price-caption{color:#aca4c4}.price{font-size:25px;color:#fa70c8}.buy{background:linear-gradient(100deg,#f13aab,#913cf0);box-shadow:0 8px 22px #a332ad40;font-size:12px;padding:13px 8px}.assurance{font-size:10px;color:#a8a1b8}.footer{padding-bottom:40px}.mobile-nav{display:none}.modal{z-index:40}.checkout-dialog{border-color:#c052a8}
+@media(max-width:650px){body{padding-bottom:78px}.wrap{padding:0 13px 35px}.top-inner{padding:10px 13px}.brand{font-size:13px}.brand img{width:39px;height:39px}.top-premium,.top-link{display:none}.welcome-line{margin:16px 0 10px;font-size:8px;letter-spacing:1px}.hero{grid-template-columns:1fr;min-height:0;border-radius:20px}.hero-copy{padding:28px 23px 10px}.hero h1{font-size:32px}.hero p{font-size:13px;margin-bottom:5px}.hero-benefits{margin-top:14px}.hero-benefits span{font-size:9px;padding:6px 8px}.hero-image{height:170px;min-height:0;mask-image:linear-gradient(to bottom,transparent,#000 25%);padding:5px 35px 10px}.hero-cta{padding:11px 18px;font-size:12px}.section-head{margin:29px 0 17px}.section-head h2{font-size:23px}.section-head small{font-size:10px}.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}.info{padding:12px}.info h3{font-size:12px;min-height:36px}.price{font-size:22px}.buy{font-size:10px}.assurance{font-size:9px}.mobile-nav{position:fixed;display:flex;z-index:15;bottom:0;left:0;right:0;background:#11111cf5;border-top:1px solid #3b294c;justify-content:space-around;padding:10px 4px max(9px,env(safe-area-inset-bottom));backdrop-filter:blur(16px)}.mobile-nav a{display:flex;flex-direction:column;align-items:center;gap:3px;color:#a9a0bc;font-size:10px;min-width:60px}.mobile-nav a span{font-size:25px;line-height:1}.mobile-nav a.nav-active{color:#ff58b7}.footer{padding-bottom:20px}}
+@media(max-width:370px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.card{max-width:none}.welcome-line span:last-child{display:none}}
+
+</style>
+
+<style>
+/* Busca sempre visível no topo, inclusive no Mini App do Telegram */
+.search-topbar{position:sticky;top:69px;z-index:9;background:#0c0c17f5;border-bottom:1px solid #312440;padding:9px 15px;backdrop-filter:blur(14px)}
+.search-topbar-inner{max-width:1132px;margin:auto}
+.search-topbar .search-area{margin:0;background:#20182b;border:1px solid #a24aab;display:flex;min-height:48px}
+.search-topbar .search-area input{font-size:15px}
+.search-shortcut{display:flex;align-items:center;justify-content:center}
+@media(max-width:650px){
+.search-topbar{top:59px;padding:8px 13px}
+.search-topbar .search-area{min-height:46px}
+.search-topbar .search-area input{padding:11px 0;font-size:14px}
+}
 </style>
 </head>
 <body>
-<header class="top"><div class="top-inner"><a class="brand" href="#inicio" aria-label="DPlay Series início"><img src="dplay-identidade.png" alt="Identidade DPlay"><span>DPLAY <span>SERIES</span></span></a><a class="top-link" href="https://t.me/dplaysuporteoficial" target="_blank" rel="noopener noreferrer">✦ Suporte</a></div></header>
+<header class="top"><div class="top-inner"><a class="brand" href="#inicio" aria-label="DPlay Series início"><img src="dplay-identidade.png" alt="Identidade DPlay"><span>DPLAY <span>SERIES</span></span></a><div class="top-actions"><span class="top-premium">✦ SEU CINEMA PARTICULAR</span><button type="button" class="search-shortcut" aria-label="Ir para pesquisa" onclick="document.getElementById('busca-topo').scrollIntoView({behavior:'smooth',block:'start'});setTimeout(()=>document.getElementById('pesquisar-series').focus(),350)">⌕</button><a class="top-link" href="https://t.me/dplaysuporteoficial" target="_blank" rel="noopener noreferrer">Ajuda ↗</a></div></div></header>
+<div class="search-topbar" id="busca-topo"><div class="search-topbar-inner"><label class="search-area" for="pesquisar-series"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-4-4"></path></svg><input id="pesquisar-series" type="search" placeholder="Pesquisar pelo nome da série..." autocomplete="off" enterkeyhint="search" aria-label="Pesquisar séries"><button id="limpar-pesquisa" class="search-clear" type="button" aria-label="Limpar pesquisa" hidden>×</button></label></div></div>
 <main class="wrap" id="inicio">
-<section class="hero" aria-label="DPlay Entretenimento"><div class="hero-copy"><span class="eyebrow">✦ DPlay entretenimento</span><h1>Sua próxima história <span class="gradient">começa aqui.</span></h1><p>Emoção, suspense e histórias que prendem você do primeiro ao último episódio.</p><a class="hero-cta" href="#destaques">✦ Explorar séries</a></div><img class="hero-image" src="dplay-identidade.png" alt="Arte oficial DPlay Entretenimento"></section>
-<section id="destaques"><div class="section-head"><h2>SÉRIES EM DESTAQUE</h2><small>Pacotes completos</small></div><div class="grid"><article class="card"><div class="poster"><img src="capa-filha-do-don.jpg" alt="Capa original da série A Filha Esquecida do Don" loading="lazy"><span class="pill">✦ EM DESTAQUE</span></div><div class="info"><h3>A Filha Esquecida do Don</h3><p class="genre">Drama · Pacote completo</p><span class="price-caption">Série completa por apenas</span><div class="price">R$ 4,00</div><button class="buy" type="button" id="comprar">▶ COMPRAR AGORA</button><div class="assurance">✦ Acesso digital após confirmação do pagamento</div></div></article></div></section>
-</main>
+<div class="welcome-line"><span>✦ BEM-VINDO À DPLAY</span><span>ENTRETENIMENTO SEM LIMITES</span></div><section class="hero" aria-label="DPlay Entretenimento"><div class="hero-copy"><span class="eyebrow">✦ DPlay entretenimento</span><h1>Histórias que <span class="gradient">viciam.</span><br>Preços que surpreendem.</h1><p>Descubra sua próxima obsessão. Séries completas, pagamento fácil e acesso pelo Telegram.</p><div class="hero-benefits"><span>✓ R$ 4 por série</span><span>✓ Pix seguro</span><span>✓ Acesso digital</span></div><a class="hero-cta" href="#destaques">✦ Explorar séries</a></div><img class="hero-image" src="dplay-identidade.png" alt="Arte oficial DPlay Entretenimento"></section>
+<section id="destaques"><div class="section-head"><div><span class="section-kicker">EXPLORE O CATÁLOGO</span><h2>Escolha sua próxima <em>história</em></h2></div><small>✦ Séries completas</small></div><div class="chips"><a class="chip active" href="#destaques">✦ Todas as séries</a><a class="chip" href="#destaques" onclick="document.getElementById('pesquisar-series').focus()">⌕ Encontrar título</a><a class="chip" href="https://t.me/dplaysuporteoficial" target="_blank" rel="noopener noreferrer">♡ Precisa de ajuda?</a></div><p id="resultado-pesquisa" class="search-feedback" role="status" aria-live="polite"></p><p id="nenhuma-serie" class="search-empty" hidden>Nenhuma série encontrada. Tente outro nome.</p><div class="grid"><article class="card"><div class="poster"><img src="capa-filha-do-don.jpg" alt="Capa original da série A Filha Esquecida do Don" loading="lazy"><span class="pill">✦ EM DESTAQUE</span></div><div class="info"><h3>A Filha Esquecida do Don</h3><p class="genre">Drama · Pacote completo</p><span class="price-caption">Série completa por apenas</span><div class="price">R$ 4,00</div><button class="buy" type="button" id="comprar">▶ COMPRAR AGORA</button><div class="assurance">✦ Acesso digital após confirmação do pagamento</div></div></article></div></section>
+</main><nav class="mobile-nav" aria-label="Navegação rápida"><a href="#inicio" class="nav-active"><span>⌂</span>Início</a><a href="#destaques"><span>▦</span>Catálogo</a><a href="#busca-topo" onclick="setTimeout(()=>document.getElementById('pesquisar-series').focus(),200)"><span>⌕</span>Buscar</a><a href="https://t.me/dplaysuporteoficial" target="_blank" rel="noopener noreferrer"><span>♧</span>Suporte</a></nav>
 <footer class="footer">© DPlay Series · Entretenimento digital<br>Precisa de ajuda? <a href="https://t.me/dplaysuporteoficial" target="_blank" rel="noopener noreferrer">Falar com suporte</a></footer>
 <div id="modal" class="modal" hidden role="dialog" aria-modal="true" aria-labelledby="modal-title"><div class="dialog checkout-dialog">
 <button id="fechar" class="xclose" type="button" aria-label="Fechar">×</button>
@@ -127,6 +166,29 @@ document.getElementById('copiar-pix').addEventListener('click',async()=>{
  catch{document.getElementById('pix-codigo').select();}
 });
 
+// Busca local e instantânea: funciona também nas séries carregadas pela API.
+const pesquisaSeries=document.getElementById('pesquisar-series');
+const limparPesquisa=document.getElementById('limpar-pesquisa');
+const resultadoPesquisa=document.getElementById('resultado-pesquisa');
+const nenhumaSerie=document.getElementById('nenhuma-serie');
+function normalizarBusca(valor){return String(valor||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLocaleLowerCase('pt-BR').trim();}
+function filtrarSeries(){
+  const busca=normalizarBusca(pesquisaSeries.value);
+  const cards=document.querySelectorAll('#destaques .grid .card');
+  let encontrados=0;
+  for(const card of cards){
+    const titulo=card.querySelector('h3')?.textContent||'';
+    const corresponde=normalizarBusca(titulo).includes(busca);
+    card.hidden=!corresponde;
+    if(corresponde)encontrados++;
+  }
+  limparPesquisa.hidden=!pesquisaSeries.value;
+  resultadoPesquisa.textContent=busca?`${encontrados} ${encontrados===1?'série encontrada':'séries encontradas'}`:'';
+  nenhumaSerie.hidden=!(busca&&encontrados===0);
+}
+pesquisaSeries.addEventListener('input',filtrarSeries);
+limparPesquisa.addEventListener('click',()=>{pesquisaSeries.value='';filtrarSeries();pesquisaSeries.focus();});
+
 // Catálogo dinâmico: lê as séries cadastradas pelo painel Android.
 // Cada pedido e vinculado a uma serie validada no servidor.
 (function carregarCatalogoDplay(){
@@ -164,6 +226,7 @@ document.getElementById('copiar-pix').addEventListener('click',async()=>{
         info.append(title,genre,caption,price,button,note);card.append(poster,info);grade.append(card);
       }
       if(!data.series.length)aviso.textContent='';
+      filtrarSeries();
     })
     .catch(()=>{aviso.textContent='Não foi possível carregar as novas séries agora. Tente atualizar a página.'})
     .finally(()=>clearTimeout(timeout));
