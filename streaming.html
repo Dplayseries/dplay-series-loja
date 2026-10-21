@@ -52,7 +52,28 @@
           if(!response.ok)throw new Error('indisponivel');
           const payload=await response.json();episodes.replaceChildren();
           if(!Array.isArray(payload.episodios)||!payload.episodios.length){episodes.textContent='Episódios ainda não disponíveis no streaming.';return;}
-          for(const episode of payload.episodios){const line=document.createElement('p');line.textContent=String(episode.titulo||episode.chave||'Episódio');episodes.append(line);}
+          for(const episode of payload.episodios){
+            const line=document.createElement('div');
+            const play=document.createElement('button');play.type='button';play.className='episode-button';play.textContent='▶ '+String(episode.titulo||episode.chave||'Episódio');
+            const player=document.createElement('div');player.hidden=true;
+            play.addEventListener('click',async()=>{
+              if(!player.hidden){player.replaceChildren();player.hidden=true;return;}
+              play.disabled=true;
+              try{
+                const controller=new AbortController();const timer=setTimeout(()=>controller.abort(),10000);
+                let resp;
+                try{resp=await fetch('https://dplay-series-api.onrender.com/streaming/play/'+encodeURIComponent(String(item.id))+'/'+encodeURIComponent(String(episode.chave)),{headers:{'X-Telegram-Init-Data':initData},cache:'no-store',signal:controller.signal});}
+                finally{clearTimeout(timer);}
+                if(!resp.ok)throw new Error('Player indisponível');
+                const data=await resp.json();
+                if(typeof data.url!=='string'||!data.url.startsWith('https://player.mediadelivery.net/embed/'))throw new Error('Link inválido');
+                const frame=document.createElement('iframe');frame.src=data.url;frame.title='Reproduzir episódio';frame.allow='autoplay; encrypted-media; picture-in-picture; fullscreen';frame.allowFullscreen=true;frame.referrerPolicy='strict-origin-when-cross-origin';frame.style.cssText='width:100%;aspect-ratio:16/9;border:0;border-radius:10px';
+                player.replaceChildren(frame);player.hidden=false;
+              }catch(e){player.textContent='Reprodução ainda indisponível para este episódio.';player.hidden=false;}
+              finally{play.disabled=false;}
+            });
+            line.append(play,player);episodes.append(line);
+          }
         }catch(e){episodes.textContent='Não foi possível consultar os episódios agora.';}
         finally{btn.disabled=false;}
       });
