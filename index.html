@@ -98,13 +98,13 @@ body{background:radial-gradient(ellipse 750px 420px at 52% -100px,#2b164e 0%,tra
     <a class="dplay-showcase-button" href="#destaques">Explorar séries <span aria-hidden="true">↗</span></a>
   </div>
 </section>
-<section id="destaques"><div class="section-head"><div><span class="section-kicker">EXPLORE O CATÁLOGO</span><h2>Escolha sua próxima <em>história</em></h2></div><small id="total-series" aria-live="polite">Consultando catálogo...</small></div><div class="chips"><a class="chip active" href="#destaques">✦ Todas as séries</a><a class="chip" href="#destaques" onclick="document.getElementById('pesquisar-series').focus()">⌕ Encontrar título</a><a class="chip" href="https://t.me/dplaysuporteoficial" target="_blank" rel="noopener noreferrer">♡ Precisa de ajuda?</a></div><p id="resultado-pesquisa" class="search-feedback" role="status" aria-live="polite"></p><p id="nenhuma-serie" class="search-empty" hidden>Nenhuma série encontrada. Tente outro nome.</p><div class="grid"><article class="card"><div class="poster"><img src="capa-filha-do-don.jpg" alt="Capa original da série A Filha Esquecida do Don" loading="lazy"><span class="pill">✦ EM DESTAQUE</span></div><div class="info"><h3>A Filha Esquecida do Don</h3><p class="genre">Drama · Pacote completo</p><span class="price-caption">Série completa por apenas</span><div class="price">R$ 4,00</div><button class="buy" type="button" id="comprar">▶ COMPRAR AGORA</button><div class="assurance">✦ Acesso digital após confirmação do pagamento</div></div></article></div></section>
+<section id="destaques"><div class="section-head"><div><span class="section-kicker">EXPLORE O CATÁLOGO</span><h2>Escolha sua próxima <em>história</em></h2></div><small id="total-series" aria-live="polite">Consultando catálogo...</small></div><div class="chips"><a class="chip active" href="#destaques">✦ Todas as séries</a><a class="chip" href="#destaques" onclick="document.getElementById('pesquisar-series').focus()">⌕ Encontrar título</a><a class="chip" href="https://t.me/dplaysuporteoficial" target="_blank" rel="noopener noreferrer">♡ Precisa de ajuda?</a></div><p id="resultado-pesquisa" class="search-feedback" role="status" aria-live="polite"></p><p id="nenhuma-serie" class="search-empty" hidden>Nenhuma série encontrada. Tente outro nome.</p><div class="grid"></div></section>
 </main><nav class="mobile-nav" aria-label="Navegação rápida"><a href="#inicio" class="nav-active"><span>⌂</span>Início</a><a href="#destaques"><span>▦</span>Catálogo</a><a href="#busca-topo" onclick="setTimeout(()=>document.getElementById('pesquisar-series').focus(),200)"><span>⌕</span>Buscar</a><a href="https://t.me/dplaysuporteoficial" target="_blank" rel="noopener noreferrer"><span>♧</span>Suporte</a></nav>
 <footer class="footer">© DPlay Series · Entretenimento digital<br>Precisa de ajuda? <a href="https://t.me/dplaysuporteoficial" target="_blank" rel="noopener noreferrer">Falar com suporte</a></footer>
 <div id="modal" class="modal" hidden role="dialog" aria-modal="true" aria-labelledby="modal-title"><div class="dialog checkout-dialog">
 <button id="fechar" class="xclose" type="button" aria-label="Fechar">×</button>
-<div id="etapa-confirmar"><span class="eyebrow">✦ Checkout DPlay</span><h2 id="modal-title">Confirmar pedido</h2><div class="order-summary"><img src="capa-filha-do-don.jpg" alt="Capa de A Filha Esquecida do Don"><div><strong>A Filha Esquecida do Don</strong><small>Série completa · Acesso digital</small><b>R$ 4,00</b></div></div><div class="total"><span>Total a pagar</span><strong>R$ 4,00</strong></div><button id="gerar-pix" class="buy" type="button">◆ GERAR PIX — R$ 4,00</button><p class="fineprint">Pagamento no site. Após a confirmação, toque em Receber minha série para abrir o Telegram uma única vez.</p></div>
-<div id="etapa-pix" hidden><span class="eyebrow">✦ Pagamento Pix</span><h2>Pagamento via Pix</h2><p class="checkout-sub">A Filha Esquecida do Don <b>— R$ 4,00</b></p><div id="payment-status" class="payment-status" role="status">Preparando checkout...</div><div id="pix-conteudo" hidden><img id="pix-qr" class="pix-qr" alt="QR Code Pix do Mercado Pago"><label for="pix-codigo" class="pix-label">Pix Copia e Cola</label><textarea id="pix-codigo" readonly rows="4"></textarea><button class="buy" id="copiar-pix" type="button">Copiar código PIX</button>
+<div id="etapa-confirmar"><span class="eyebrow">✦ Checkout DPlay</span><h2 id="modal-title">Confirmar pedido</h2><div class="order-summary"><img src="" alt="Capa da série selecionada"><div><strong>Série selecionada</strong><small>Série completa · Acesso digital</small><b>R$ 4,00</b></div></div><div class="total"><span>Total a pagar</span><strong>R$ 4,00</strong></div><button id="gerar-pix" class="buy" type="button">◆ GERAR PIX — R$ 4,00</button><p class="fineprint">Pagamento no site. Após a confirmação, toque em Receber minha série para abrir o Telegram uma única vez.</p></div>
+<div id="etapa-pix" hidden><span class="eyebrow">✦ Pagamento Pix</span><h2>Pagamento via Pix</h2><p class="checkout-sub">Série selecionada <b>— R$ 4,00</b></p><div id="payment-status" class="payment-status" role="status">Preparando checkout...</div><div id="pix-conteudo" hidden><img id="pix-qr" class="pix-qr" alt="QR Code Pix do Mercado Pago"><label for="pix-codigo" class="pix-label">Pix Copia e Cola</label><textarea id="pix-codigo" readonly rows="4"></textarea><button class="buy" id="copiar-pix" type="button">Copiar código PIX</button>
 <a id="lembrete-telegram" class="buy" target="_blank" rel="noopener noreferrer" hidden style="display:block;text-align:center;margin-top:12px;background:linear-gradient(110deg,#6138b6,#a72bc5);text-decoration:none">🔔 Receber lembrete no Telegram</a>
 <p style="font-size:12px;color:#c7b7d6;margin:8px 0 0">Opcional: apenas 1 aviso se o Pix continuar pendente após 30 minutos.</p></div><button class="back-btn" id="voltar-confirmar" type="button">← Voltar ao pedido</button></div>
 </div></div>
@@ -115,8 +115,8 @@ const pix=document.getElementById('etapa-pix');
 let serieSelecionada=null;
 function abrirCheckout(serie=null){
   serieSelecionada=serie;
-  const titulo=serie ? serie.titulo : 'A Filha Esquecida do Don';
-  const capa=serie ? API+'/catalogo/capa/'+encodeURIComponent(serie.id) : 'capa-filha-do-don.jpg';
+  const titulo=serie ? serie.titulo : 'Série selecionada';
+  const capa=serie ? API+'/catalogo/capa/'+encodeURIComponent(serie.id) : '';
   document.querySelector('.order-summary img').src=capa;
   document.querySelector('.order-summary img').alt='Capa de '+titulo;
   document.querySelector('.order-summary strong').textContent=titulo;
@@ -127,7 +127,7 @@ function abrirCheckout(serie=null){
   document.getElementById('gerar-pix').focus();
 }
 function fecharCheckout(){modal.hidden=true;}
-document.getElementById('comprar').addEventListener('click',()=>abrirCheckout());
+
 document.getElementById('fechar').addEventListener('click',fecharCheckout);
 document.getElementById('voltar-confirmar').addEventListener('click',()=>{confirmar.hidden=false;pix.hidden=true;});
 modal.addEventListener('click',event=>{if(event.target===modal)fecharCheckout()});
@@ -231,13 +231,14 @@ limparPesquisa.addEventListener('click',()=>{pesquisaSeries.value='';filtrarSeri
       if(total)total.textContent=data.series.length.toLocaleString('pt-BR')+' '+(data.series.length===1?'série disponível':'séries disponíveis');
       for(const serie of data.series){
         if(!serie||typeof serie.titulo!=='string'||!serie.id)continue;
+        if(normalizarBusca(serie.titulo).includes('filha esquecida do don'))continue;
         const card=document.createElement('article');card.className='card';
         const poster=document.createElement('div');poster.className='poster';
         const img=document.createElement('img');
         img.src=API_CATALOGO+'/catalogo/capa/'+encodeURIComponent(String(serie.id));
         img.alt='Capa de '+serie.titulo;img.loading='lazy';
         poster.append(img);
-        const pill=document.createElement('span');pill.className='pill';pill.textContent='✦ NOVA SÉRIE';poster.append(pill);
+        const pill=document.createElement('span');pill.className='pill';pill.textContent=String(serie.id)==='22356138-e079-4888-b387-6877ee2d9c7a'?'★ MAIS VENDIDA':'✦ NOVA SÉRIE';poster.append(pill);
         const info=document.createElement('div');info.className='info';
         const title=document.createElement('h3');title.textContent=serie.titulo;
         const genre=document.createElement('p');genre.className='genre';genre.textContent='Pacote completo';
