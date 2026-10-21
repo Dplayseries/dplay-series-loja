@@ -34,11 +34,11 @@
     if(!response.ok){throw new Error('http');}
     const data=await response.json();
     if(!Array.isArray(data.series) || !data.series.length){status.textContent='Nenhuma compra aprovada vinculada a este Telegram foi encontrada.';return;}
-    status.textContent='Estas são suas séries confirmadas. A reprodução no site será disponibilizada após os testes.';
+    status.textContent='Suas séries compradas aparecem aqui. Os episódios ainda não liberados estarão marcados como Disponível em breve.';
     for(const item of data.series){
       const card=document.createElement('article');card.className='serie';
       const title=document.createElement('h3');title.textContent=String(item.titulo||'Série');
-      const availability=document.createElement('span');availability.textContent='Streaming em preparação';
+      const availability=document.createElement('span');availability.textContent='Disponível em breve';
       const btn=document.createElement('button');btn.type='button';btn.className='episode-button';btn.textContent='Ver episódios';
       const episodes=document.createElement('div');episodes.className='episode-list';episodes.hidden=true;
       btn.addEventListener('click',async()=>{
@@ -51,7 +51,7 @@
           finally{clearTimeout(timer);}
           if(!response.ok)throw new Error('indisponivel');
           const payload=await response.json();episodes.replaceChildren();
-          if(!Array.isArray(payload.episodios)||!payload.episodios.length){episodes.textContent='Episódios ainda não disponíveis no streaming.';return;}
+          if(!Array.isArray(payload.episodios)||!payload.episodios.length){episodes.textContent='Disponível em breve — estamos preparando os episódios para assistir.';return;}
           for(const episode of payload.episodios){
             const line=document.createElement('div');
             const play=document.createElement('button');play.type='button';play.className='episode-button';play.textContent='▶ '+String(episode.titulo||episode.chave||'Episódio');
