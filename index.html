@@ -98,7 +98,7 @@ body{background:radial-gradient(ellipse 750px 420px at 52% -100px,#2b164e 0%,tra
     <a class="dplay-showcase-button" href="#destaques">Explorar séries <span aria-hidden="true">↗</span></a>
   </div>
 </section>
-<section id="destaques"><div class="section-head"><div><span class="section-kicker">EXPLORE O CATÁLOGO</span><h2>Escolha sua próxima <em>história</em></h2></div><small>✦ Séries completas</small></div><div class="chips"><a class="chip active" href="#destaques">✦ Todas as séries</a><a class="chip" href="#destaques" onclick="document.getElementById('pesquisar-series').focus()">⌕ Encontrar título</a><a class="chip" href="https://t.me/dplaysuporteoficial" target="_blank" rel="noopener noreferrer">♡ Precisa de ajuda?</a></div><p id="resultado-pesquisa" class="search-feedback" role="status" aria-live="polite"></p><p id="nenhuma-serie" class="search-empty" hidden>Nenhuma série encontrada. Tente outro nome.</p><div class="grid"><article class="card"><div class="poster"><img src="capa-filha-do-don.jpg" alt="Capa original da série A Filha Esquecida do Don" loading="lazy"><span class="pill">✦ EM DESTAQUE</span></div><div class="info"><h3>A Filha Esquecida do Don</h3><p class="genre">Drama · Pacote completo</p><span class="price-caption">Série completa por apenas</span><div class="price">R$ 4,00</div><button class="buy" type="button" id="comprar">▶ COMPRAR AGORA</button><div class="assurance">✦ Acesso digital após confirmação do pagamento</div></div></article></div></section>
+<section id="destaques"><div class="section-head"><div><span class="section-kicker">EXPLORE O CATÁLOGO</span><h2>Escolha sua próxima <em>história</em></h2></div><small id="total-series" aria-live="polite">Consultando catálogo...</small></div><div class="chips"><a class="chip active" href="#destaques">✦ Todas as séries</a><a class="chip" href="#destaques" onclick="document.getElementById('pesquisar-series').focus()">⌕ Encontrar título</a><a class="chip" href="https://t.me/dplaysuporteoficial" target="_blank" rel="noopener noreferrer">♡ Precisa de ajuda?</a></div><p id="resultado-pesquisa" class="search-feedback" role="status" aria-live="polite"></p><p id="nenhuma-serie" class="search-empty" hidden>Nenhuma série encontrada. Tente outro nome.</p><div class="grid"><article class="card"><div class="poster"><img src="capa-filha-do-don.jpg" alt="Capa original da série A Filha Esquecida do Don" loading="lazy"><span class="pill">✦ EM DESTAQUE</span></div><div class="info"><h3>A Filha Esquecida do Don</h3><p class="genre">Drama · Pacote completo</p><span class="price-caption">Série completa por apenas</span><div class="price">R$ 4,00</div><button class="buy" type="button" id="comprar">▶ COMPRAR AGORA</button><div class="assurance">✦ Acesso digital após confirmação do pagamento</div></div></article></div></section>
 </main><nav class="mobile-nav" aria-label="Navegação rápida"><a href="#inicio" class="nav-active"><span>⌂</span>Início</a><a href="#destaques"><span>▦</span>Catálogo</a><a href="#busca-topo" onclick="setTimeout(()=>document.getElementById('pesquisar-series').focus(),200)"><span>⌕</span>Buscar</a><a href="https://t.me/dplaysuporteoficial" target="_blank" rel="noopener noreferrer"><span>♧</span>Suporte</a></nav>
 <footer class="footer">© DPlay Series · Entretenimento digital<br>Precisa de ajuda? <a href="https://t.me/dplaysuporteoficial" target="_blank" rel="noopener noreferrer">Falar com suporte</a></footer>
 <div id="modal" class="modal" hidden role="dialog" aria-modal="true" aria-labelledby="modal-title"><div class="dialog checkout-dialog">
@@ -227,6 +227,8 @@ limparPesquisa.addEventListener('click',()=>{pesquisaSeries.value='';filtrarSeri
     .then(async r=>{if(!r.ok)throw new Error('API indisponível');return r.json()})
     .then(data=>{
       if(!Array.isArray(data.series))throw new Error('Resposta inválida');
+      const total=document.getElementById('total-series');
+      if(total)total.textContent=data.series.length.toLocaleString('pt-BR')+' '+(data.series.length===1?'série disponível':'séries disponíveis');
       for(const serie of data.series){
         if(!serie||typeof serie.titulo!=='string'||!serie.id)continue;
         const card=document.createElement('article');card.className='card';
@@ -250,7 +252,7 @@ limparPesquisa.addEventListener('click',()=>{pesquisaSeries.value='';filtrarSeri
       if(!data.series.length)aviso.textContent='';
       filtrarSeries();
     })
-    .catch(()=>{aviso.textContent='Não foi possível carregar as novas séries agora. Tente atualizar a página.'})
+    .catch(()=>{const total=document.getElementById('total-series');if(total)total.textContent='Catálogo indisponível';aviso.textContent='Não foi possível carregar as novas séries agora. Tente atualizar a página.'})
     .finally(()=>clearTimeout(timeout));
 })();
 
