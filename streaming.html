@@ -2,7 +2,7 @@
 <html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#090b1e"><title>DPlay Series | Streaming</title>
 <style>
-:root{color-scheme:dark}*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 40% -10%,#3f2378,#090b1e 55%);color:#faf8ff;font:16px system-ui,-apple-system,Segoe UI,sans-serif;min-height:100vh}header{border-bottom:1px solid #40345b;padding:20px max(24px,calc((100vw - 1024px)/2))}a{color:#dcb8ff}main{max-width:960px;margin:0 auto;padding:46px 24px}h1{font-size:clamp(32px,6vw,52px);margin:12px 0}p{line-height:1.65;color:#cbc4df}.tag{display:inline-block;background:#432568;color:#efe1ff;border:1px solid #8352c5;border-radius:999px;padding:7px 12px;font-size:13px}.panel{border:1px solid #4e3c70;background:#1b1733;padding:25px;border-radius:18px;margin:30px 0}.actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:24px}.button{background:#8850ea;color:white;padding:13px 18px;border-radius:12px;font-weight:700;text-decoration:none}.button.secondary{border:1px solid #8e6dbd;background:transparent}small{color:#c8b8df}#status{font-size:14px}.series-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:14px}.serie{padding:16px;background:#282044;border:1px solid #594777;border-radius:14px}.serie h3{font-size:16px;margin:0 0 12px}.serie span{font-size:13px;color:#c3b1dc}
+:root{color-scheme:dark}*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 40% -10%,#3f2378,#090b1e 55%);color:#faf8ff;font:16px system-ui,-apple-system,Segoe UI,sans-serif;min-height:100vh}header{border-bottom:1px solid #40345b;padding:20px max(24px,calc((100vw - 1024px)/2))}a{color:#dcb8ff}main{max-width:960px;margin:0 auto;padding:46px 24px}h1{font-size:clamp(32px,6vw,52px);margin:12px 0}p{line-height:1.65;color:#cbc4df}.tag{display:inline-block;background:#432568;color:#efe1ff;border:1px solid #8352c5;border-radius:999px;padding:7px 12px;font-size:13px}.panel{border:1px solid #4e3c70;background:#1b1733;padding:25px;border-radius:18px;margin:30px 0}.actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:24px}.button{background:#8850ea;color:white;padding:13px 18px;border-radius:12px;font-weight:700;text-decoration:none}.button.secondary{border:1px solid #8e6dbd;background:transparent}small{color:#c8b8df}#status{font-size:14px}.series-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:14px}.serie{padding:16px;background:#282044;border:1px solid #594777;border-radius:14px}.serie h3{font-size:16px;margin:0 0 12px}.serie span{font-size:13px;color:#c3b1dc}.episode-button{margin-top:12px;border:1px solid #775ba5;background:#39285b;border-radius:10px;color:white;padding:10px 12px;cursor:pointer;width:100%}.episode-list{margin-top:10px;font-size:14px;line-height:1.5;color:#e0d4f2}.episode-list p{margin:7px 0}
 </style></head><body>
 <header><strong>DPlay <span style="color:#c6a0ff">Series</span></strong></header>
 <main><span class="tag">Em preparação</span><h1>Sua biblioteca, onde você estiver.</h1>
@@ -39,7 +39,24 @@
       const card=document.createElement('article');card.className='serie';
       const title=document.createElement('h3');title.textContent=String(item.titulo||'Série');
       const availability=document.createElement('span');availability.textContent='Streaming em preparação';
-      card.append(title,availability);container.append(card);
+      const btn=document.createElement('button');btn.type='button';btn.className='episode-button';btn.textContent='Ver episódios';
+      const episodes=document.createElement('div');episodes.className='episode-list';episodes.hidden=true;
+      btn.addEventListener('click',async()=>{
+        if(!episodes.hidden){episodes.hidden=true;return;}
+        episodes.hidden=false;episodes.textContent='Buscando episódios...';btn.disabled=true;
+        try{
+          const controller=new AbortController();const timer=setTimeout(()=>controller.abort(),10000);
+          let response;
+          try{response=await fetch('https://dplay-series-api.onrender.com/streaming/episodios/'+encodeURIComponent(String(item.id)),{headers:{'X-Telegram-Init-Data':initData},cache:'no-store',signal:controller.signal});}
+          finally{clearTimeout(timer);}
+          if(!response.ok)throw new Error('indisponivel');
+          const payload=await response.json();episodes.replaceChildren();
+          if(!Array.isArray(payload.episodios)||!payload.episodios.length){episodes.textContent='Episódios ainda não disponíveis no streaming.';return;}
+          for(const episode of payload.episodios){const line=document.createElement('p');line.textContent=String(episode.titulo||episode.chave||'Episódio');episodes.append(line);}
+        }catch(e){episodes.textContent='Não foi possível consultar os episódios agora.';}
+        finally{btn.disabled=false;}
+      });
+      card.append(title,availability,btn,episodes);container.append(card);
     }
   }catch(e){status.textContent='Não foi possível carregar suas séries agora. Você ainda pode acessar suas compras pelo bot Telegram.';}
 })();
