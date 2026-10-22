@@ -98,6 +98,15 @@ body{background:radial-gradient(ellipse 750px 420px at 52% -100px,#2b164e 0%,tra
     <a class="dplay-showcase-button" href="#destaques">Explorar séries <span aria-hidden="true">↗</span></a>
   </div>
 </section>
+<section id="grupo-vip" aria-label="Grupo VIP DPlay" style="margin:28px 0;padding:20px;border:2px solid #d74de5;border-radius:22px;background:linear-gradient(125deg,#29154e,#101029 75%);box-shadow:0 12px 35px #af29ff28">
+<div style="display:flex;gap:22px;align-items:center;flex-wrap:wrap">
+<img src="grupo-vip.svg" width="210" height="210" loading="lazy" alt="Capa oficial Grupo VIP DPlay" style="object-fit:contain;border-radius:16px;max-width:40%;height:auto">
+<div style="flex:1;min-width:200px"><div style="color:#ed84ff;font-size:.8rem;font-weight:800;letter-spacing:.13em">👑 ACESSO EXCLUSIVO</div>
+<h2 style="font-size:clamp(1.5rem,4vw,2.4rem);margin:9px 0">Grupo VIP DPlay</h2>
+<p style="color:#d6d2ef;line-height:1.6">Séries, doramas, minisséries e animes em um só lugar. Acesso ao grupo privado com convite exclusivo enviado ao seu Telegram após confirmação do pagamento.</p>
+<p style="font-size:2rem;font-weight:900;color:#ff7dec;margin:10px 0">R$ 19,90 <small style="font-size:.8rem;color:#d6d2ef;font-weight:400">pagamento único</small></p>
+<p style="font-size:.83rem;color:#c9bddf">🔒 Link por 5 minutos · Entrada aprovada somente para o comprador</p>
+<button type="button" class="buy" onclick="abrirCheckout(null,true)" style="margin-top:10px;max-width:300px">👑 QUERO ACESSAR O VIP</button></div></div></section>
 <section id="destaques"><div class="section-head"><div><span class="section-kicker">EXPLORE O CATÁLOGO</span><h2>Escolha sua próxima <em>história</em></h2></div><small id="total-series" aria-live="polite">Consultando catálogo...</small></div><div class="chips"><a class="chip active" href="#destaques">✦ Todas as séries</a><a class="chip" href="#destaques" onclick="document.getElementById('pesquisar-series').focus()">⌕ Encontrar título</a><a class="chip" href="https://t.me/dplaysuporteoficial" target="_blank" rel="noopener noreferrer">♡ Precisa de ajuda?</a></div><p id="resultado-pesquisa" class="search-feedback" role="status" aria-live="polite"></p><p id="nenhuma-serie" class="search-empty" hidden>Nenhuma série encontrada. Tente outro nome.</p><div class="grid"></div></section>
 </main><nav class="mobile-nav" aria-label="Navegação rápida"><a href="#inicio" class="nav-active"><span>⌂</span>Início</a><a href="#destaques"><span>▦</span>Catálogo</a><a href="#busca-topo" onclick="setTimeout(()=>document.getElementById('pesquisar-series').focus(),200)"><span>⌕</span>Buscar</a><a href="https://t.me/dplaysuporteoficial" target="_blank" rel="noopener noreferrer"><span>♧</span>Suporte</a></nav>
 <footer class="footer">© DPlay Series · Entretenimento digital<br>Precisa de ajuda? <a href="https://t.me/dplaysuporteoficial" target="_blank" rel="noopener noreferrer">Falar com suporte</a></footer>
@@ -113,15 +122,20 @@ const modal=document.getElementById('modal');
 const confirmar=document.getElementById('etapa-confirmar');
 const pix=document.getElementById('etapa-pix');
 let serieSelecionada=null;
-function abrirCheckout(serie=null){
+let vipSelecionado=false;
+function abrirCheckout(serie=null,vip=false){
   serieSelecionada=serie;
-  const titulo=serie ? serie.titulo : 'Série selecionada';
-  const capa=serie ? API+'/catalogo/capa/'+encodeURIComponent(serie.id) : '';
+  vipSelecionado=vip;
+  const titulo=vip ? 'Grupo VIP DPlay' : (serie ? serie.titulo : 'Série selecionada');
+  const capa=vip ? 'grupo-vip.svg' : (serie ? API+'/catalogo/capa/'+encodeURIComponent(serie.id) : '');
   document.querySelector('.order-summary img').src=capa;
   document.querySelector('.order-summary img').alt='Capa de '+titulo;
   document.querySelector('.order-summary strong').textContent=titulo;
   document.querySelector('.checkout-sub').replaceChildren(document.createTextNode(titulo+' '));
-  const preco=document.createElement('b');preco.textContent='— R$ 4,00';document.querySelector('.checkout-sub').append(preco);
+  const preco=document.createElement('b');preco.textContent=vip?'— R$ 19,90':'— R$ 4,00';document.querySelector('.checkout-sub').append(preco);
+  document.querySelector('.order-summary b').textContent=vip?'R$ 19,90':'R$ 4,00';
+  document.querySelector('.total strong').textContent=vip?'R$ 19,90':'R$ 4,00';
+  document.getElementById('gerar-pix').textContent=vip?'◆ GERAR PIX — R$ 19,90':'◆ GERAR PIX — R$ 4,00';
   modal.hidden=false;confirmar.hidden=false;pix.hidden=true;
   
   document.getElementById('gerar-pix').focus();
@@ -141,7 +155,7 @@ btnPix.addEventListener('click',async()=>{
   btnPix.disabled=true;
  confirmar.hidden=true;pix.hidden=false;document.getElementById('pix-conteudo').hidden=true;document.getElementById('pix-codigo').value='';const linkAnterior=document.getElementById('resgatar-serie');if(linkAnterior)linkAnterior.hidden=true;pedidoAtual=null;statusEl.textContent='Preparando seu pedido...';
  try{
-   let r=await fetch(API+'/publico/pedido',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(serieSelecionada?{serie_id:serieSelecionada.id}:{})});
+   let r=await fetch(API+'/publico/pedido',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(vipSelecionado?{produto:'grupo_vip_dplay'}:(serieSelecionada?{serie_id:serieSelecionada.id}:{}))});
    let d=await r.json();if(!r.ok)throw Error(d.detail||'Não foi possível criar pedido');
    pedidoAtual=d;
    statusEl.textContent='Pedido registrado. Preparando Pix...';
