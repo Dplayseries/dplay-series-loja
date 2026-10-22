@@ -116,7 +116,7 @@ body{background:radial-gradient(ellipse 750px 420px at 52% -100px,#2b164e 0%,tra
 <footer class="footer">© DPlay Series · Entretenimento digital<br>Precisa de ajuda? <a href="https://t.me/dplaysuporteoficial" target="_blank" rel="noopener noreferrer">Falar com suporte</a></footer>
 <div id="modal" class="modal" hidden role="dialog" aria-modal="true" aria-labelledby="modal-title"><div class="dialog checkout-dialog">
 <button id="fechar" class="xclose" type="button" aria-label="Fechar">×</button>
-<div id="etapa-confirmar"><span class="eyebrow">✦ Checkout DPlay</span><h2 id="modal-title">Confirmar pedido</h2><div class="order-summary"><img src="" alt="Capa da série selecionada"><div><strong>Série selecionada</strong><small>Série completa · Acesso digital</small><b>R$ 4,00</b></div></div><div class="total"><span>Total a pagar</span><strong>R$ 4,00</strong></div><button id="gerar-pix" class="buy" type="button">◆ GERAR PIX — R$ 4,00</button><p class="fineprint">Pagamento no site. Após a confirmação, toque em Receber minha série para abrir o Telegram uma única vez.</p></div>
+<div id="etapa-confirmar"><span class="eyebrow">✦ Checkout DPlay</span><h2 id="modal-title">Confirmar pedido</h2><div class="order-summary"><img src="" alt="Capa da série selecionada"><div><strong>Série selecionada</strong><small>Série completa · Acesso digital</small><b>R$ 4,00</b></div></div><div class="total"><span>Total a pagar</span><strong>R$ 4,00</strong></div><button id="gerar-pix" class="buy" type="button">◆ GERAR PIX — R$ 4,00</button><p class="fineprint">Pagamento no site. Após a confirmação, abra sua série pela opção disponível: nuvem ou Telegram.</p></div>
 <div id="etapa-pix" hidden><span class="eyebrow">✦ Pagamento Pix</span><h2>Pagamento via Pix</h2><p class="checkout-sub">Série selecionada <b>— R$ 4,00</b></p><div id="payment-status" class="payment-status" role="status">Preparando checkout...</div><div id="pix-conteudo" hidden><img id="pix-qr" class="pix-qr" alt="QR Code Pix do Mercado Pago"><label for="pix-codigo" class="pix-label">Pix Copia e Cola</label><textarea id="pix-codigo" readonly rows="4"></textarea><button class="buy" id="copiar-pix" type="button">Copiar código PIX</button>
 <a id="lembrete-telegram" class="buy" target="_blank" rel="noopener noreferrer" hidden style="display:block;text-align:center;margin-top:12px;background:linear-gradient(110deg,#6138b6,#a72bc5);text-decoration:none">🔔 Receber lembrete no Telegram</a>
 <p style="font-size:12px;color:#c7b7d6;margin:8px 0 0">Opcional: apenas 1 aviso se o Pix continuar pendente após 30 minutos.</p></div><button class="back-btn" id="voltar-confirmar" type="button">← Voltar ao pedido</button></div>
@@ -227,12 +227,18 @@ async function acompanharPedido(){
      const url=API+'/publico/pedido/status?pedido_id='+encodeURIComponent(pedidoAtual.pedido_id)+'&resgate='+encodeURIComponent(pedidoAtual.resgate);
      const r=await fetch(url);const d=await r.json();
      if(r.ok&&d.status==='aprovado'){
-       statusEl.textContent='✓ Pagamento aprovado! Clique em RECEBER MINHA SÉRIE. O bot enviará seu convite individual no próprio chat do Telegram.';
+       const cloud=d.rota_entrega==='nuvem'&&typeof d.acesso_url==='string'&&d.acesso_url.startsWith('https://dplayseries.github.io/dplay-series-loja/streaming.html#');
+       statusEl.textContent=cloud?'✓ Pagamento aprovado! Abrindo sua série na nuvem...':'✓ Pagamento aprovado! Seu acesso está liberado. Abra pelo botão abaixo.';
        document.getElementById('pix-conteudo').hidden=true;
        let link=document.getElementById('resgatar-serie');
        if(!link){link=document.createElement('a');link.id='resgatar-serie';link.className='buy';link.style.marginTop='14px';statusEl.after(link);}
-       link.textContent=vipSelecionado?'👑 ENTRAR NO GRUPO VIP':'✓ RECEBER MINHA SÉRIE NO TELEGRAM';
-       link.href=d.resgate_url;link.target='_blank';link.rel='noopener noreferrer';link.hidden=false;
+       link.textContent=cloud?'▶ ASSISTIR MINHA SÉRIE':(vipSelecionado?'👑 ENTRAR NO GRUPO VIP':'✓ RECEBER MINHA SÉRIE NO TELEGRAM');
+       link.href=cloud?d.acesso_url:d.resgate_url;link.target=cloud?'_self':'_blank';link.rel='noopener noreferrer';link.hidden=false;
+       let alternative=document.getElementById('acesso-nuvem');
+       if(!alternative){alternative=document.createElement('a');alternative.id='acesso-nuvem';alternative.className='back-btn';link.after(alternative);}
+       alternative.hidden=cloud||!d.nuvem_url;
+       if(d.nuvem_url){alternative.href=d.nuvem_url;alternative.textContent='Assistir pela nuvem';alternative.rel='noreferrer';}
+       if(cloud){setTimeout(()=>{if(!modal.hidden)location.assign(d.acesso_url);},1500);}
        break;
      }
      if(!r.ok){statusEl.textContent='Aguardando confirmação segura do pagamento...';}

@@ -1,84 +1,82 @@
 <!doctype html>
-<html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#090b1e"><title>DPlay Series | Streaming</title>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="referrer" content="no-referrer"><meta name="theme-color" content="#090b1e"><title>DPlay | Minha série</title>
 <style>
-:root{color-scheme:dark}*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 40% -10%,#3f2378,#090b1e 55%);color:#faf8ff;font:16px system-ui,-apple-system,Segoe UI,sans-serif;min-height:100vh}header{border-bottom:1px solid #40345b;padding:20px max(24px,calc((100vw - 1024px)/2))}a{color:#dcb8ff}main{max-width:960px;margin:0 auto;padding:46px 24px}h1{font-size:clamp(32px,6vw,52px);margin:12px 0}p{line-height:1.65;color:#cbc4df}.tag{display:inline-block;background:#432568;color:#efe1ff;border:1px solid #8352c5;border-radius:999px;padding:7px 12px;font-size:13px}.panel{border:1px solid #4e3c70;background:#1b1733;padding:25px;border-radius:18px;margin:30px 0}.actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:24px}.button{background:#8850ea;color:white;padding:13px 18px;border-radius:12px;font-weight:700;text-decoration:none}.button.secondary{border:1px solid #8e6dbd;background:transparent}small{color:#c8b8df}#status{font-size:14px}.series-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:14px}.serie{padding:16px;background:#282044;border:1px solid #594777;border-radius:14px}.serie h3{font-size:16px;margin:0 0 12px}.serie span{font-size:13px;color:#c3b1dc}.episode-button{margin-top:12px;border:1px solid #775ba5;background:#39285b;border-radius:10px;color:white;padding:10px 12px;cursor:pointer;width:100%}.episode-list{margin-top:10px;font-size:14px;line-height:1.5;color:#e0d4f2}.episode-list p{margin:7px 0}
-</style></head><body>
-<header><strong>DPlay <span style="color:#c6a0ff">Series</span></strong></header>
-<main><span class="tag">Em preparação</span><h1>Sua biblioteca, onde você estiver.</h1>
-<p>Estamos preparando uma nova forma de assistir às séries adquiridas na DPlay, diretamente pelo navegador, sem aplicativo adicional.</p>
-<section class="panel" aria-label="Estado do streaming">
-<h2>Streaming protegido</h2><p>Enquanto a nova experiência passa por testes, as compras e entregas continuam pelo Telegram, como de costume.</p>
-<p id="status" role="status">A reprodução pelo site ainda não está disponível.</p>
-<div class="actions"><a class="button" href="./index.html">Voltar à loja</a><a class="button secondary" href="https://t.me/DPlayEpisodiosBot">Acessar meu pedido pelo Telegram</a></div>
-</section><section class="panel" aria-label="Minhas compras"><h2>Minhas séries</h2><p id="biblioteca-status" role="status">Abra pelo botão do bot Telegram para consultar suas compras.</p><div class="series-grid" id="minhas-series"></div></section><small>Novas funcionalidades só serão liberadas após verificação de pagamento e segurança. Nenhuma compra adicional é necessária para consultar os pedidos já vinculados ao Telegram.</small>
-</main>
-<script src="https://telegram.org/js/telegram-web-app.js"></script>
-<script>
+:root{color-scheme:dark}*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 40% -10%,#3f2378,#090b1e 55%);color:#faf8ff;font:16px system-ui;min-height:100vh}header{border-bottom:1px solid #40345b;padding:20px 24px}main{max-width:960px;margin:auto;padding:38px 24px}h1{font-size:clamp(28px,6vw,48px);margin:14px 0}p{line-height:1.6;color:#cbc4df}.tag{border:1px solid #8352c5;background:#432568;border-radius:999px;padding:7px 12px;font-size:13px}.panel{border:1px solid #4e3c70;background:#1b1733;padding:24px;border-radius:18px;margin:24px 0}.actions{display:flex;gap:12px;flex-wrap:wrap}.button,button{display:inline-block;background:#8850ea;color:white;padding:13px 18px;border:0;border-radius:12px;font:700 15px system-ui;text-decoration:none;cursor:pointer}.secondary{border:1px solid #8e6dbd;background:transparent}a{color:#dcb8ff}.episodes{display:grid;gap:12px;margin-top:20px}.episode{text-align:left;width:100%}iframe{width:100%;aspect-ratio:16/9;border:0;border-radius:12px}small{color:#c8b8df}button:disabled{opacity:.5}#player:empty{display:none}
+</style></head><body><header><strong>DPlay Series</strong></header><main>
+<span class="tag" id="badge">Seu acesso DPlay</span><h1 id="title">Minhas séries</h1>
+<p id="status" role="status">Consultando seu acesso...</p>
+<section class="panel"><div id="player"></div><div id="episodes" class="episodes"></div><div id="purchases"></div></section>
+<div class="actions"><a class="button secondary" href="./index.html">Voltar à loja</a><a class="button secondary" id="telegram" href="https://t.me/DPlayEpisodiosBot">Abrir no Telegram</a><button id="save" class="secondary" hidden>Copiar meu link de acesso</button></div>
+<p><small>O mesmo pedido mantém seu acesso. Quando uma opção estiver indisponível, use a alternativa liberada para sua série. Guarde seu link de compra e não o compartilhe.</small></p>
+</main><script>
 (async function(){
-  const status=document.getElementById('biblioteca-status');
-  const container=document.getElementById('minhas-series');
-  const tg=window.Telegram?.WebApp;
-  const initData=tg?.initData;
-  if(!initData){status.textContent='Para consultar suas compras, abra esta página pelo botão Minhas Séries do bot DPlay no Telegram.';return;}
-  try{
-    tg.ready();
-    const controller=new AbortController();
-    const timeout=setTimeout(()=>controller.abort(),12000);
-    let response;
-    try{
-      response=await fetch('https://dplay-series-api.onrender.com/streaming/minha-biblioteca',{headers:{'X-Telegram-Init-Data':initData},signal:controller.signal,cache:'no-store'});
-    }finally{clearTimeout(timeout);}
-    if(response.status===503){status.textContent='Sua biblioteca está em preparação. Os acessos já adquiridos continuam disponíveis pelo bot.';return;}
-    if(response.status===401){status.textContent='Sua sessão expirou. Feche e abra novamente pelo bot Telegram.';return;}
-    if(!response.ok){throw new Error('http');}
-    const data=await response.json();
-    if(!Array.isArray(data.series) || !data.series.length){status.textContent='Nenhuma compra aprovada vinculada a este Telegram foi encontrada.';return;}
-    status.textContent='Suas séries compradas aparecem aqui. Os episódios ainda não liberados estarão marcados como Disponível em breve.';
-    for(const item of data.series){
-      const card=document.createElement('article');card.className='serie';
-      const title=document.createElement('h3');title.textContent=String(item.titulo||'Série');
-      const availability=document.createElement('span');availability.textContent='Disponível em breve';
-      const btn=document.createElement('button');btn.type='button';btn.className='episode-button';btn.textContent='Ver episódios';
-      const episodes=document.createElement('div');episodes.className='episode-list';episodes.hidden=true;
-      btn.addEventListener('click',async()=>{
-        if(!episodes.hidden){episodes.hidden=true;return;}
-        episodes.hidden=false;episodes.textContent='Buscando episódios...';btn.disabled=true;
-        try{
-          const controller=new AbortController();const timer=setTimeout(()=>controller.abort(),10000);
-          let response;
-          try{response=await fetch('https://dplay-series-api.onrender.com/streaming/episodios/'+encodeURIComponent(String(item.id)),{headers:{'X-Telegram-Init-Data':initData},cache:'no-store',signal:controller.signal});}
-          finally{clearTimeout(timer);}
-          if(!response.ok)throw new Error('indisponivel');
-          const payload=await response.json();episodes.replaceChildren();
-          if(!Array.isArray(payload.episodios)||!payload.episodios.length){episodes.textContent='Disponível em breve — estamos preparando os episódios para assistir.';return;}
-          for(const episode of payload.episodios){
-            const line=document.createElement('div');
-            const play=document.createElement('button');play.type='button';play.className='episode-button';play.textContent='▶ '+String(episode.titulo||episode.chave||'Episódio');
-            const player=document.createElement('div');player.hidden=true;
-            play.addEventListener('click',async()=>{
-              if(!player.hidden){player.replaceChildren();player.hidden=true;return;}
-              play.disabled=true;
-              try{
-                const controller=new AbortController();const timer=setTimeout(()=>controller.abort(),10000);
-                let resp;
-                try{resp=await fetch('https://dplay-series-api.onrender.com/streaming/play/'+encodeURIComponent(String(item.id))+'/'+encodeURIComponent(String(episode.chave)),{headers:{'X-Telegram-Init-Data':initData},cache:'no-store',signal:controller.signal});}
-                finally{clearTimeout(timer);}
-                if(!resp.ok)throw new Error('Player indisponível');
-                const data=await resp.json();
-                if(typeof data.url!=='string'||!data.url.startsWith('https://player.mediadelivery.net/embed/'))throw new Error('Link inválido');
-                const frame=document.createElement('iframe');frame.src=data.url;frame.title='Reproduzir episódio';frame.allow='autoplay; encrypted-media; picture-in-picture; fullscreen';frame.allowFullscreen=true;frame.referrerPolicy='strict-origin-when-cross-origin';frame.style.cssText='width:100%;aspect-ratio:16/9;border:0;border-radius:10px';
-                player.replaceChildren(frame);player.hidden=false;
-              }catch(e){player.textContent='Reprodução ainda indisponível para este episódio.';player.hidden=false;}
-              finally{play.disabled=false;}
-            });
-            line.append(play,player);episodes.append(line);
-          }
-        }catch(e){episodes.textContent='Não foi possível consultar os episódios agora.';}
-        finally{btn.disabled=false;}
-      });
-      card.append(title,availability,btn,episodes);container.append(card);
-    }
-  }catch(e){status.textContent='Não foi possível carregar suas séries agora. Você ainda pode acessar suas compras pelo bot Telegram.';}
+'use strict';
+const API='https://dplay-series-api.onrender.com';
+const status=document.getElementById('status'), episodes=document.getElementById('episodes'), player=document.getElementById('player');
+const fragment=new URLSearchParams(location.hash.slice(1));
+const receipt={pedido_id:fragment.get('pedido'),resgate:fragment.get('resgate')};
+let initData='';
+async function request(path,body){
+ const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),20000);
+ try{
+  const headers=body?{'Content-Type':'application/json'}:{'X-Telegram-Init-Data':initData};
+  const response=await fetch(API+path,{method:body?'POST':'GET',headers,body:body?JSON.stringify(body):undefined,cache:'no-store',signal:controller.signal});
+  const data=await response.json();
+  if(!response.ok)throw new Error(typeof data.detail==='string'?data.detail:'Não foi possível consultar seu acesso.');
+  return data;
+ }finally{clearTimeout(timer);}
+}
+function renderEpisodes(items,play){
+ episodes.replaceChildren();player.replaceChildren();
+ if(!items.length){status.textContent='Sua compra foi localizada. O vídeo ainda não está disponível na nuvem; use a opção Telegram.';return;}
+ for(const item of items){
+  const button=document.createElement('button');button.className='episode';button.textContent='▶ '+String(item.titulo||item.chave||'Assistir');
+  button.addEventListener('click',async()=>{
+   button.disabled=true;status.textContent='Abrindo o vídeo...';
+   try{
+    const data=await play(item.chave),url=new URL(data.url);
+    if(url.origin!=='https://player.mediadelivery.net'||!url.pathname.startsWith('/embed/'))throw new Error('Player indisponível.');
+    const frame=document.createElement('iframe');frame.src=url.href;frame.title=String(item.titulo||'Série DPlay');
+    frame.allow='autoplay; encrypted-media; picture-in-picture; fullscreen';frame.allowFullscreen=true;frame.referrerPolicy='strict-origin-when-cross-origin';
+    player.replaceChildren(frame);status.textContent='Sua série está liberada na nuvem.';frame.scrollIntoView({behavior:'smooth',block:'center'});
+   }catch(error){status.textContent=error.message||'Vídeo indisponível. Tente a opção Telegram.';}
+   finally{button.disabled=false;}
+  });
+  episodes.append(button);
+ }
+ status.textContent='Pagamento confirmado. Escolha o vídeo para assistir.';
+ document.getElementById('badge').textContent='Acesso liberado';
+}
+try{
+ if(receipt.pedido_id&&receipt.resgate){
+  const data=await request('/streaming/compra',receipt);
+  document.getElementById('title').textContent=String(data.titulo||'Minha série');
+  document.getElementById('telegram').href=data.telegram_url;
+  renderEpisodes(data.episodios||[],key=>request('/streaming/compra/play',{...receipt,episodio_chave:key}));
+  const save=document.getElementById('save');save.hidden=false;
+  save.addEventListener('click',async()=>{try{await navigator.clipboard.writeText(location.href);save.textContent='Link copiado';}catch{status.textContent='Guarde o endereço desta página para acessar novamente.';}});
+  return;
+ }
+ await new Promise((resolve,reject)=>{const script=document.createElement('script');script.src='https://telegram.org/js/telegram-web-app.js';script.onload=resolve;script.onerror=reject;document.head.append(script);});
+ initData=window.Telegram?.WebApp?.initData||'';
+ if(!initData){status.textContent='Abra o link recebido após o pagamento ou toque em Minhas Séries no bot Telegram.';return;}
+ window.Telegram.WebApp.ready();
+ const library=await request('/streaming/minha-biblioteca');
+ if(!library.series?.length){status.textContent='Nenhuma compra aprovada foi encontrada nesta conta.';return;}
+ status.textContent='Selecione uma das suas séries.';
+ for(const item of library.series){
+  const button=document.createElement('button');button.className='episode';button.textContent=String(item.titulo||'Série');
+  button.addEventListener('click',async()=>{
+   button.disabled=true;
+   try{
+    const data=await request('/streaming/episodios/'+encodeURIComponent(item.id));
+    document.getElementById('title').textContent=String(item.titulo);
+    renderEpisodes(data.episodios||[],key=>request('/streaming/play/'+encodeURIComponent(item.id)+'/'+encodeURIComponent(key)));
+   }catch(error){status.textContent=error.message;}
+   finally{button.disabled=false;}
+  });
+  document.getElementById('purchases').append(button);
+ }
+}catch(error){status.textContent=error.message||'Não foi possível abrir sua série agora. Seu pedido continua registrado.';}
 })();
 </script></body></html>
