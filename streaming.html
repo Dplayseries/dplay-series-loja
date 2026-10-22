@@ -49,6 +49,7 @@ function renderEpisodes(items,play){
 }
 try{
  if(receipt.pedido_id&&receipt.resgate){
+  document.getElementById('telegram').href='https://t.me/DPlayEpisodiosBot?start=r_'+encodeURIComponent(receipt.resgate);
   const data=await request('/streaming/compra',receipt);
   document.getElementById('title').textContent=String(data.titulo||'Minha série');
   document.getElementById('telegram').href=data.telegram_url;
