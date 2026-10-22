@@ -16,10 +16,9 @@ jobs:
           const fs=require('fs'),vm=require('vm');
           for(const path of ['index.html','streaming.html']){
             const html=fs.readFileSync(path,'utf8');
-            for(const match of html.matchAll(/<script(?:\\s[^>]*)?>([\\s\\S]*?)<\\/script>/g)){
-              new vm.Script(match[1],{filename:path});
-            }
+            const scripts=[...html.matchAll(new RegExp('<script[^>]*>([^]*?)</script>','g'))];
+            if(!scripts.length)throw new Error('No scripts found: '+path);
+            for(const match of scripts)new vm.Script(match[1],{filename:path});
             console.log(path+': scripts validos');
           }
           NODE
-
