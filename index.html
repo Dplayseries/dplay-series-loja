@@ -131,8 +131,13 @@ function abrirCheckout(serie=null,vip=false){
   document.querySelector('.order-summary img').src=capa;
   document.querySelector('.order-summary img').alt='Capa de '+titulo;
   document.querySelector('.order-summary strong').textContent=titulo;
-  document.querySelector('.checkout-sub').replaceChildren(document.createTextNode(titulo+' '));
-  const preco=document.createElement('b');preco.textContent=vip?'— R$ 19,90':'— R$ 4,00';document.querySelector('.checkout-sub').append(preco);
+  document.querySelectorAll('.checkout-sub').forEach((element)=>{
+    element.replaceChildren(document.createTextNode(titulo+' '));
+    const preco=document.createElement('b');
+    preco.textContent=vip?'— R$ 19,90':'— R$ 4,00';
+    element.append(preco);
+  });
+  document.querySelector('.order-summary small').textContent=vip?'Grupo privado · Acesso individual':'Série completa · Acesso digital';
   document.querySelector('.order-summary b').textContent=vip?'R$ 19,90':'R$ 4,00';
   document.querySelector('.total strong').textContent=vip?'R$ 19,90':'R$ 4,00';
   document.getElementById('gerar-pix').textContent=vip?'◆ GERAR PIX — R$ 19,90':'◆ GERAR PIX — R$ 4,00';
