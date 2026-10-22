@@ -121,6 +121,7 @@ body{background:radial-gradient(ellipse 750px 420px at 52% -100px,#2b164e 0%,tra
 <a id="lembrete-telegram" class="buy" target="_blank" rel="noopener noreferrer" hidden style="display:block;text-align:center;margin-top:12px;background:linear-gradient(110deg,#6138b6,#a72bc5);text-decoration:none">🔔 Receber lembrete no Telegram</a>
 <p style="font-size:12px;color:#c7b7d6;margin:8px 0 0">Opcional: apenas 1 aviso se o Pix continuar pendente após 30 minutos.</p></div><button class="back-btn" id="voltar-confirmar" type="button">← Voltar ao pedido</button></div>
 </div></div>
+<script async src="https://telegram.org/js/telegram-web-app.js"></script>
 <script>
 const modal=document.getElementById('modal');
 const confirmar=document.getElementById('etapa-confirmar');
@@ -200,7 +201,10 @@ btnPix.addEventListener('click',async()=>{
   btnPix.disabled=true;
  confirmar.hidden=true;pix.hidden=false;document.getElementById('pix-conteudo').hidden=true;document.getElementById('pix-codigo').value='';const linkAnterior=document.getElementById('resgatar-serie');if(linkAnterior)linkAnterior.hidden=true;pedidoAtual=null;statusEl.textContent='Preparando seu pedido...';
  try{
-   let r=await fetch(API+'/publico/pedido',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(vipSelecionado?{produto:'grupo_vip_dplay'}:(serieSelecionada?{serie_id:serieSelecionada.id}:{}))});
+   const checkoutData=vipSelecionado?{produto:'grupo_vip_dplay'}:(serieSelecionada?{serie_id:serieSelecionada.id}:{});
+   const signedTelegramData=window.Telegram?.WebApp?.initData;
+   if(signedTelegramData)checkoutData.init_data=signedTelegramData;
+   let r=await fetch(API+'/publico/pedido',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(checkoutData)});
    let d=await r.json();if(!r.ok)throw Error(d.detail||'Não foi possível criar pedido');
    pedidoAtual=d;
    statusEl.textContent='Pedido registrado. Preparando Pix...';
