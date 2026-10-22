@@ -107,8 +107,8 @@ body{background:radial-gradient(ellipse 750px 420px at 52% -100px,#2b164e 0%,tra
 <p style="font-size:2rem;font-weight:900;color:#ff7dec;margin:10px 0">R$ 19,90 <small style="font-size:.8rem;color:#d6d2ef;font-weight:400">por mês</small></p>
 <p style="font-size:.83rem;color:#c9bddf">🔒 Link por 5 minutos · Entrada aprovada somente para o comprador</p>
 <button type="button" class="buy" onclick="abrirCheckout(null,true)" style="margin-top:10px;max-width:300px">👑 QUERO ACESSAR O VIP</button></div></div></section>
-<section id="top-semana" style="margin:36px 0" aria-label="Top 5 mais assistidas">
-<div class="section-head"><div><span class="section-kicker">🔥 DESTAQUES DPLAY</span><h2>Top 5 <em>mais assistidas</em></h2></div><small>Seleção DPlay</small></div>
+<section id="top-semana" hidden style="margin:36px 0" aria-label="Mais assistidas">
+<div class="section-head"><div><span class="section-kicker">🔥 PREFERIDAS DOS CLIENTES</span><h2>Mais <em>assistidas</em></h2></div><small>Baseado em compras confirmadas</small></div>
 <div id="top-semana-lista" style="display:flex;overflow-x:auto;gap:18px;padding:16px 5px 24px;scroll-snap-type:x mandatory" aria-live="polite"><p style="color:#c9bddf">Carregando ranking...</p></div>
 </section>
 <section id="destaques"><div class="section-head"><div><span class="section-kicker">EXPLORE O CATÁLOGO</span><h2>Escolha sua próxima <em>história</em></h2></div><small id="total-series" aria-live="polite">Consultando catálogo...</small></div><div class="chips"><a class="chip active" href="#destaques">✦ Todas as séries</a><a class="chip" href="#destaques" onclick="document.getElementById('pesquisar-series').focus()">⌕ Encontrar título</a><a class="chip" href="https://t.me/dplaysuporteoficial" target="_blank" rel="noopener noreferrer">♡ Precisa de ajuda?</a></div><p id="resultado-pesquisa" class="search-feedback" role="status" aria-live="polite"></p><p id="nenhuma-serie" class="search-empty" hidden>Nenhuma série encontrada. Tente outro nome.</p><div class="grid"></div></section>
@@ -159,47 +159,39 @@ let pedidoAtual=null;
 // Pagamentos ficam indisponíveis enquanto a API estiver em homologação.
 const API='https://dplay-series-api.onrender.com';
 async function atualizarTopSemana(){
+ const secao=document.getElementById('top-semana');
  const lista=document.getElementById('top-semana-lista');
- const titulos=[
-  'Eu era a cura para a insônia dele',
-  'Não vou mais ser a reserva',
-  'Casada com o rei dragão',
-  'Meu marido fez o céu se render',
-  'Mamãe você esqueceu de mim e do papai'
- ];
- const normalizar=t=>String(t||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim();
- let series=[];
+ secao.hidden=true;
  try{
-  const resposta=await fetch(API+'/catalogo/series',{cache:'no-store'});
-  if(resposta.ok){const dados=await resposta.json();series=Array.isArray(dados.series)?dados.series:[];}
- }catch(e){console.warn('Capas do Top 5 indisponíveis:',e);}
- lista.replaceChildren();
- titulos.forEach((titulo,indice)=>{
-  const serie=series.find(item=>normalizar(item.titulo)===normalizar(titulo));
-  const card=document.createElement(serie?'button':'div');
-  if(serie)card.type='button';
-  card.style.cssText='flex:0 0 174px;max-width:45vw;background:#151832;border:1px solid #443867;border-radius:16px;color:white;padding:8px;position:relative;text-align:left;scroll-snap-align:start'+(serie?';cursor:pointer':'');
-  const poster=document.createElement('div');
-  poster.style.cssText='width:100%;aspect-ratio:3/4;border-radius:11px;background:linear-gradient(145deg,#351d59,#17172d);position:relative;overflow:hidden;display:grid;place-items:center';
-  if(serie){
+  const [rankingResp,catalogoResp]=await Promise.all([
+   fetch(API+'/catalogo/mais-assistidas',{cache:'no-store'}),
+   fetch(API+'/catalogo/series',{cache:'no-store'})
+  ]);
+  if(!rankingResp.ok||!catalogoResp.ok)return;
+  const ranking=await rankingResp.json(), catalogo=await catalogoResp.json();
+  if(!ranking.exibir||!Array.isArray(ranking.series)||!ranking.series.length)return;
+  const series=Array.isArray(catalogo.series)?catalogo.series:[];
+  lista.replaceChildren();
+  ranking.series.forEach((item,indice)=>{
+   const serie=series.find(s=>String(s.id)===String(item.id));
+   if(!serie)return;
+   const card=document.createElement('button');
+   card.type='button';
+   card.style.cssText='flex:0 0 174px;max-width:45vw;background:#151832;border:1px solid #443867;border-radius:16px;color:white;padding:8px;position:relative;cursor:pointer;text-align:left;scroll-snap-align:start';
    const img=document.createElement('img');
    img.src=API+'/catalogo/capa/'+encodeURIComponent(serie.id);
-   img.alt='Capa de '+titulo;img.loading='lazy';
-   img.style.cssText='width:100%;height:100%;object-fit:cover';
-   poster.append(img);
-  }else{
-   const simbolo=document.createElement('span');simbolo.textContent='DPLAY';
-   simbolo.style.cssText='color:#dd9bfa;font-size:20px;font-weight:900;letter-spacing:2px';
-   poster.append(simbolo);
-  }
-  const numero=document.createElement('span');numero.textContent=String(indice+1);
-  numero.style.cssText='position:absolute;bottom:55px;left:0;font-size:94px;font-weight:1000;line-height:1;color:#fff;-webkit-text-stroke:3px #853bff;text-shadow:0 5px 18px #000;pointer-events:none';
-  const nome=document.createElement('div');nome.textContent=titulo;
-  nome.style.cssText='font-size:13px;font-weight:750;min-height:42px;margin:8px 4px 0';
-  card.append(poster,numero,nome);
-  if(serie)card.addEventListener('click',()=>abrirCheckout(serie));
-  lista.append(card);
- });
+   img.alt='Capa de '+serie.titulo;img.loading='lazy';
+   img.style.cssText='width:100%;aspect-ratio:3/4;object-fit:cover;border-radius:11px;display:block';
+   const numero=document.createElement('span');numero.textContent=String(indice+1);
+   numero.style.cssText='position:absolute;bottom:55px;left:0;font-size:94px;font-weight:1000;line-height:1;color:#fff;-webkit-text-stroke:3px #853bff;text-shadow:0 5px 18px #000;pointer-events:none';
+   const nome=document.createElement('div');nome.textContent=serie.titulo;
+   nome.style.cssText='font-size:13px;font-weight:750;min-height:42px;margin:8px 4px 0';
+   card.append(img,numero,nome);
+   card.addEventListener('click',()=>abrirCheckout(serie));
+   lista.append(card);
+  });
+  secao.hidden=lista.children.length===0;
+ }catch(e){secao.hidden=true;}
 }
 atualizarTopSemana();
 const statusEl=document.getElementById('payment-status');
