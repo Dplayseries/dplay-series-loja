@@ -190,7 +190,8 @@ async function acompanharPedido(){
        statusEl.textContent='✓ Pagamento aprovado! Clique em RECEBER MINHA SÉRIE. O bot enviará seu convite individual no próprio chat do Telegram.';
        document.getElementById('pix-conteudo').hidden=true;
        let link=document.getElementById('resgatar-serie');
-       if(!link){link=document.createElement('a');link.id='resgatar-serie';link.className='buy';link.style.marginTop='14px';link.textContent='✓ RECEBER MINHA SÉRIE NO TELEGRAM';statusEl.after(link);}
+       if(!link){link=document.createElement('a');link.id='resgatar-serie';link.className='buy';link.style.marginTop='14px';statusEl.after(link);}
+       link.textContent=vipSelecionado?'👑 ENTRAR NO GRUPO VIP':'✓ RECEBER MINHA SÉRIE NO TELEGRAM';
        link.href=d.resgate_url;link.target='_blank';link.rel='noopener noreferrer';link.hidden=false;
        break;
      }
