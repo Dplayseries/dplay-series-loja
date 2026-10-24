@@ -224,7 +224,7 @@ let verificando=false;
 async function acompanharPedido(){
  if(verificando||!pedidoAtual)return;
  verificando=true;
- for(let i=0;i<450;i++){
+ for(let i=0;i<240;i++){
    if(!pedidoAtual||modal.hidden)break;
    try{
      const url=API+'/publico/pedido/status?pedido_id='+encodeURIComponent(pedidoAtual.pedido_id)+'&resgate='+encodeURIComponent(pedidoAtual.resgate);
@@ -246,7 +246,7 @@ async function acompanharPedido(){
      }
      if(!r.ok){statusEl.textContent='Aguardando confirmação segura do pagamento...';}
    }catch(e){}
-   await new Promise(resolve=>setTimeout(resolve,8000));
+   await new Promise(resolve=>setTimeout(resolve,15000+Math.floor(Math.random()*3000)));
  }
  verificando=false;
 }
