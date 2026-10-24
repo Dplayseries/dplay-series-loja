@@ -13,7 +13,7 @@
 </head>
 <body>
 <a class="skip-link" href="#destaques">Pular para o catálogo</a>
-<header class="top"><div class="top-inner"><a class="brand" href="#inicio" aria-label="DPlay Series início"><img src="dplay-identidade.png" alt="Identidade DPlay"><span>DPLAY <span>SERIES</span></span></a><div class="top-actions"><span class="top-premium">SEU MOMENTO DPLAY</span><button type="button" class="search-shortcut" aria-label="Ir para pesquisa" onclick="document.getElementById('busca-topo').scrollIntoView({behavior:'smooth',block:'start'});setTimeout(()=>document.getElementById('pesquisar-series').focus(),350)">⌕</button><a class="top-link" href="./streaming.html" aria-label="Minhas Séries">Minhas Séries</a><a class="top-link" href="https://t.me/dplaysuporteoficial" target="_blank" rel="noopener noreferrer">Fale com a DPlay ↗</a></div></div></header>
+<header class="top"><div class="top-inner"><a class="brand" href="#inicio" aria-label="DPlay Series início"><img src="dplay-identidade.png" alt="Identidade DPlay"><span>DPLAY <span>SERIES</span></span></a><div class="top-actions"><span class="top-premium">SEU MOMENTO DPLAY</span><button type="button" class="search-shortcut" aria-label="Ir para pesquisa" onclick="document.getElementById('busca-topo').scrollIntoView({behavior:'smooth',block:'start'});setTimeout(()=>document.getElementById('pesquisar-series').focus(),350)">⌕</button><a class="top-link" href="./streaming.html" aria-label="Já comprei, minhas séries">Já comprei · Minhas séries</a><a class="top-link" href="https://t.me/dplaysuporteoficial" target="_blank" rel="noopener noreferrer">Fale com a DPlay ↗</a></div></div></header>
 <div class="search-topbar" id="busca-topo"><div class="search-topbar-inner"><label class="search-area" for="pesquisar-series"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-4-4"></path></svg><input id="pesquisar-series" type="search" placeholder="Qual história você procura?" autocomplete="off" enterkeyhint="search" aria-label="Pesquisar séries"><button id="limpar-pesquisa" class="search-clear" type="button" aria-label="Limpar pesquisa" hidden>×</button></label></div></div>
 <main class="wrap" id="inicio">
 <div class="welcome-line"><span>SEU CANTINHO DE HISTÓRIAS</span><span>PREPARE A PIPOCA, A ESCOLHA É SUA</span></div>
@@ -58,7 +58,7 @@
 </main><nav class="mobile-nav" aria-label="Navegação rápida">
 <a href="#inicio" class="nav-active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="m3 10 9-7 9 7v10H3Z"></path><path d="M9 20v-7h6v7"></path></svg>Início</a>
 <a href="#destaques"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1.5"></rect><rect x="14" y="3" width="7" height="7" rx="1.5"></rect><rect x="3" y="14" width="7" height="7" rx="1.5"></rect><rect x="14" y="14" width="7" height="7" rx="1.5"></rect></svg>Catálogo</a>
-<a href="./streaming.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="3"></rect><path d="m10 9 5 3-5 3Z"></path></svg>Minhas séries</a>
+<a href="./streaming.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="3"></rect><path d="m10 9 5 3-5 3Z"></path></svg>Já comprei</a>
 <a href="https://t.me/dplaysuporteoficial" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M4 13v-2a8 8 0 0 1 16 0v2"></path><rect x="2" y="11" width="4" height="7" rx="2"></rect><rect x="18" y="11" width="4" height="7" rx="2"></rect><path d="M18 18c0 3-3 3-6 3"></path></svg>Suporte</a>
 </nav>
 <footer class="footer"><div><strong>DPlay Series</strong><br>Histórias para acompanhar o seu momento.</div><div>Precisou de uma mão? <a href="https://t.me/dplaysuporteoficial" target="_blank" rel="noopener noreferrer">Fale com a gente ↗</a><br>© DPlay Series · Entretenimento digital</div></footer>
@@ -67,7 +67,7 @@
 <div id="etapa-confirmar"><span class="eyebrow">✦ Checkout DPlay</span><h2 id="modal-title">Confirmar pedido</h2><div class="order-summary"><img src="" alt="Capa da série selecionada"><div><strong>Série selecionada</strong><small>Série completa · Acesso digital</small><b>R$ 4,00</b></div></div><div class="total"><span>Total a pagar</span><strong>R$ 4,00</strong></div><button id="gerar-pix" class="buy" type="button">◆ GERAR PIX — R$ 4,00</button><p class="fineprint">Pagamento no site. Após a confirmação, abra sua série pela opção disponível: nuvem ou Telegram.</p></div>
 <div id="etapa-pix" hidden><span class="eyebrow">✦ Pagamento Pix</span><h2>Pagamento via Pix</h2><p class="checkout-sub">Série selecionada <b>— R$ 4,00</b></p><div id="payment-status" class="payment-status" role="status">Preparando checkout...</div><div id="pix-conteudo" hidden><img id="pix-qr" class="pix-qr" alt="QR Code Pix do Mercado Pago"><label for="pix-codigo" class="pix-label">Pix Copia e Cola</label><textarea id="pix-codigo" readonly rows="4"></textarea><button class="buy" id="copiar-pix" type="button">Copiar código PIX</button>
 <a id="lembrete-telegram" class="buy" target="_blank" rel="noopener noreferrer" hidden style="display:block;text-align:center;margin-top:12px;background:linear-gradient(110deg,#6138b6,#a72bc5);text-decoration:none">🔔 Receber lembrete no Telegram</a>
-<p style="font-size:12px;color:#c7b7d6;margin:8px 0 0">Opcional: apenas 1 aviso se o Pix continuar pendente após 30 minutos.</p></div><button class="back-btn" id="voltar-confirmar" type="button">← Voltar ao pedido</button></div>
+<p style="font-size:14px;color:#c7b7d6;margin:8px 0 0">Opcional: apenas 1 aviso se o Pix continuar pendente após 30 minutos.</p></div><a class="buy" id="meu-pedido" hidden style="display:block;text-align:center;margin-top:14px;text-decoration:none">Acompanhar minha compra</a><button class="back-btn" id="copiar-acesso" type="button" hidden>Copiar link da minha compra</button><button class="back-btn" id="tentar-pix" type="button" hidden>Tentar gerar Pix novamente</button><button class="back-btn" id="voltar-confirmar" type="button">← Voltar ao pedido</button></div>
 </div></div>
 <script async src="https://telegram.org/js/telegram-web-app.js"></script>
 <script>
@@ -156,29 +156,69 @@ async function atualizarTopSemana(series){
 }
 const statusEl=document.getElementById('payment-status');
 const btnPix=document.getElementById('gerar-pix');
-btnPix.addEventListener('click',async()=>{
-  btnPix.disabled=true;
- confirmar.hidden=true;pix.hidden=false;document.getElementById('pix-conteudo').hidden=true;document.getElementById('pix-codigo').value='';const linkAnterior=document.getElementById('resgatar-serie');if(linkAnterior)linkAnterior.hidden=true;pedidoAtual=null;statusEl.textContent='Preparando seu pedido...';
+const acompanharLink=document.getElementById('meu-pedido');
+const copiarAcesso=document.getElementById('copiar-acesso');
+const tentarPix=document.getElementById('tentar-pix');
+function linkDoPedido(order){
+ const url=new URL('./streaming.html',location.href);
+ url.hash=new URLSearchParams({pedido:order.pedido_id,resgate:order.resgate}).toString();
+ return url.href;
+}
+function guardarPedido(order,titulo){
  try{
-   const checkoutData=vipSelecionado?{produto:'grupo_vip_dplay'}:(serieSelecionada?{serie_id:serieSelecionada.id}:{});
+  const key='dplay_receipts_v1',value=JSON.parse(localStorage.getItem(key)||'[]');
+  const all=Array.isArray(value)?value.filter(item=>item&&item.pedido_id!==order.pedido_id):[];
+  all.unshift({pedido_id:order.pedido_id,resgate:order.resgate,titulo,created_at:Date.now()});
+  localStorage.setItem(key,JSON.stringify(all.slice(0,20)));
+ }catch{}
+}
+async function gerarPix(){
+ if(btnPix.disabled)return;
+ btnPix.disabled=true;tentarPix.hidden=true;
+ confirmar.hidden=true;pix.hidden=false;
+ document.getElementById('pix-conteudo').hidden=true;
+ document.getElementById('pix-codigo').value='';
+ const linkAnterior=document.getElementById('resgatar-serie');if(linkAnterior)linkAnterior.hidden=true;
+ statusEl.textContent='Preparando seu pedido...';
+ try{
+  const checkoutData=vipSelecionado?{produto:'grupo_vip_dplay'}:(serieSelecionada?{serie_id:serieSelecionada.id}:{});
+  const produto=vipSelecionado?'grupo_vip_dplay':String(serieSelecionada?.id||'');
+  if(!pedidoAtual||pedidoAtual.produto_local!==produto){
    const signedTelegramData=window.Telegram?.WebApp?.initData;
    if(signedTelegramData)checkoutData.init_data=signedTelegramData;
-   let r=await fetch(API+'/publico/pedido',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(checkoutData)});
-   let d=await r.json();if(!r.ok)throw Error(d.detail||'Não foi possível criar pedido');
-   pedidoAtual=d;
-   statusEl.textContent='Pedido registrado. Preparando Pix...';
-   r=await fetch(API+'/publico/pix',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({pedido_id:d.pedido_id,resgate:d.resgate})});
-   const p=await r.json();if(!r.ok)throw Error(p.detail||'Pix indisponível');
-   document.getElementById('pix-codigo').value=p.pix_copia_cola;
-   const qr=document.getElementById('pix-qr');
-   if(p.pix_qr_code_base64){qr.src='data:image/png;base64,'+p.pix_qr_code_base64;qr.hidden=false;}else{qr.hidden=true;}
-   const lembrete=document.getElementById('lembrete-telegram');
-   lembrete.href='https://t.me/DPlayEpisodiosBot?start=lemb_'+encodeURIComponent(d.resgate);
-   lembrete.hidden=false;
-   document.getElementById('pix-conteudo').hidden=false;
-   statusEl.textContent='Pix gerado. Aguardando confirmação automática do Mercado Pago.';
-   acompanharPedido();
- }catch(e){statusEl.textContent=e.message;}finally{btnPix.disabled=false;}
+   const response=await fetch(API+'/publico/pedido',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(checkoutData)});
+   const order=await response.json();
+   if(!response.ok)throw Error(order.detail||'Não foi possível criar seu pedido.');
+   pedidoAtual={...order,produto_local:produto};
+  }
+  const order=pedidoAtual;
+  guardarPedido(order,vipSelecionado?'Grupo VIP DPlay':String(serieSelecionada?.titulo||'Minha série'));
+  acompanharLink.href=linkDoPedido(order);acompanharLink.hidden=false;
+  copiarAcesso.hidden=false;
+  statusEl.textContent='Pedido salvo. Preparando o Pix...';
+  const response=await fetch(API+'/publico/pix',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({pedido_id:order.pedido_id,resgate:order.resgate})});
+  const payment=await response.json();
+  if(!response.ok)throw Error(payment.detail||'Pix indisponível agora.');
+  document.getElementById('pix-codigo').value=payment.pix_copia_cola;
+  const qr=document.getElementById('pix-qr');
+  if(payment.pix_qr_code_base64){qr.src='data:image/png;base64,'+payment.pix_qr_code_base64;qr.hidden=false;}else{qr.hidden=true;}
+  const lembrete=document.getElementById('lembrete-telegram');
+  lembrete.href='https://t.me/DPlayEpisodiosBot?start=lemb_'+encodeURIComponent(order.resgate);
+  lembrete.hidden=false;
+  document.getElementById('pix-conteudo').hidden=false;
+  statusEl.textContent='Pix pronto. Depois de pagar, toque em “Acompanhar minha compra”.';
+  acompanharPedido();
+ }catch{
+  statusEl.textContent='Não conseguimos preparar o Pix agora. Seu pedido está salvo, se já foi criado. Toque abaixo para tentar novamente.';
+  tentarPix.hidden=false;
+ }finally{btnPix.disabled=false;}
+}
+btnPix.addEventListener('click',gerarPix);
+tentarPix.addEventListener('click',gerarPix);
+copiarAcesso.addEventListener('click',async()=>{
+ if(!pedidoAtual)return;
+ try{await navigator.clipboard.writeText(linkDoPedido(pedidoAtual));copiarAcesso.textContent='Link copiado';}
+ catch{statusEl.textContent='Não foi possível copiar. Use o botão “Acompanhar minha compra” e salve a página.';}
 });
 let verificando=false;
 async function acompanharPedido(){
@@ -191,17 +231,17 @@ async function acompanharPedido(){
      const r=await fetch(url);const d=await r.json();
      if(r.ok&&d.status==='aprovado'){
        const cloud=d.rota_entrega==='nuvem'&&typeof d.acesso_url==='string'&&d.acesso_url.startsWith('https://dplayseries.github.io/dplay-series-loja/streaming.html#');
-       statusEl.textContent=cloud?'✓ Pagamento aprovado! Abrindo sua série na nuvem...':'✓ Pagamento aprovado! Seu acesso está liberado. Abra pelo botão abaixo.';
+       const waiting=d.rota_entrega==='aguardando_nuvem';
+       statusEl.textContent=waiting?'✓ Pagamento confirmado. A nuvem está temporariamente indisponível. Acompanhe sua série pelo botão abaixo.':(cloud?'✓ Pagamento aprovado! Toque abaixo para assistir na nuvem.':'✓ Pagamento aprovado! Toque abaixo para receber sua série.');
        document.getElementById('pix-conteudo').hidden=true;
        let link=document.getElementById('resgatar-serie');
        if(!link){link=document.createElement('a');link.id='resgatar-serie';link.className='buy';link.style.marginTop='14px';statusEl.after(link);}
-       link.textContent=cloud?'▶ ASSISTIR MINHA SÉRIE':(vipSelecionado?'👑 ENTRAR NO GRUPO VIP':'✓ RECEBER MINHA SÉRIE NO TELEGRAM');
-       link.href=cloud?d.acesso_url:d.resgate_url;link.target=cloud?'_self':'_blank';link.rel='noopener noreferrer';link.hidden=false;
+       link.textContent=waiting?'🔄 ACOMPANHAR MINHA SÉRIE':(cloud?'▶ ASSISTIR MINHA SÉRIE':(vipSelecionado?'👑 ENTRAR NO GRUPO VIP':'✓ RECEBER MINHA SÉRIE NO TELEGRAM'));
+       link.href=cloud||waiting?d.acesso_url:d.resgate_url;link.target=cloud||waiting?'_self':'_blank';link.rel='noopener noreferrer';link.hidden=false;
        let alternative=document.getElementById('acesso-nuvem');
        if(!alternative){alternative=document.createElement('a');alternative.id='acesso-nuvem';alternative.className='back-btn';link.after(alternative);}
-       alternative.hidden=cloud||!d.nuvem_url;
+       alternative.hidden=cloud||waiting||!d.nuvem_url;
        if(d.nuvem_url){alternative.href=d.nuvem_url;alternative.textContent='Assistir pela nuvem';alternative.rel='noreferrer';}
-       if(cloud){setTimeout(()=>{if(!modal.hidden)location.assign(d.acesso_url);},1500);}
        break;
      }
      if(!r.ok){statusEl.textContent='Aguardando confirmação segura do pagamento...';}
