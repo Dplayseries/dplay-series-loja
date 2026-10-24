@@ -135,7 +135,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
 .total { display: flex; align-items: center; justify-content: space-between; gap: 15px; color: #bdcce1; font-size: 13px; margin: 24px 0 18px; }
 .total strong { color: #f1f4ff; font-size: 21px; }
 .dialog .buy { display: flex; width: 100%; }
-.fineprint { margin: 16px 0 0; text-align: center; color: #a3b5d2 !important; font-size: 11px; }
+.fineprint { margin: 16px 0 0; text-align: center; color: #c8d5e9 !important; font-size: 14px; line-height: 1.5; }
 .checkout-sub { font-size: 13px; }
 .checkout-sub b { color: #c6b5ff; }
 .payment-status { padding: 16px; border: 1px solid #53688f; border-radius: 13px; color: #e5eeff; background: #20324f; line-height: 1.6; font-size: 16px; margin: 17px 0; }
