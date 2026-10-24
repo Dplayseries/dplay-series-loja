@@ -5,7 +5,7 @@
 </style></head><body><header><strong>DPlay Series</strong></header><main>
 <span class="tag" id="badge">Seu acesso DPlay</span><h1 id="title">Minhas séries</h1>
 <p id="status" role="status" aria-live="polite">Consultando seu acesso...</p><p class="note" id="guide">Se você já pagou, seu pedido continua salvo. Esta página verifica o pagamento e mostra o próximo passo.</p>
-<section class="panel"><div id="player"></div><div id="episodes" class="episodes"></div><div id="purchases"></div></section>
+<section class="panel" id="library-panel" hidden><div id="player"></div><div id="episodes" class="episodes"></div><div id="purchases"></div></section>
 <div class="actions"><button id="retry" type="button" hidden>Verificar meu acesso</button><button id="save" class="secondary" type="button" hidden>Copiar meu link de acesso</button><a class="button secondary" id="telegram" href="https://t.me/DPlayEpisodiosBot" hidden>Receber pelo Telegram</a><a class="button secondary" href="https://t.me/dplaysuporteoficial" target="_blank" rel="noopener noreferrer">Preciso de ajuda</a><a class="button secondary" href="./index.html">Voltar à loja</a></div>
 <p><small>O link de acesso é pessoal. Guarde-o e não o compartilhe. Compras feitas neste aparelho também aparecem em “Minhas séries”.</small></p>
 </main><script>
@@ -15,7 +15,7 @@ const API='https://dplay-series-api.onrender.com';
 const KEY='dplay_receipts_v1';
 const status=document.getElementById('status'), episodes=document.getElementById('episodes'), player=document.getElementById('player');
 const title=document.getElementById('title'), retry=document.getElementById('retry'), save=document.getElementById('save'), telegram=document.getElementById('telegram');
-const purchases=document.getElementById('purchases'), guide=document.getElementById('guide');
+const purchases=document.getElementById('purchases'), guide=document.getElementById('guide'), panel=document.getElementById('library-panel');
 const fragment=new URLSearchParams(location.hash.slice(1));
 let receipt={pedido_id:fragment.get('pedido'),resgate:fragment.get('resgate')};
 let initData='', checking=false, timer=null;
@@ -41,6 +41,7 @@ async function request(path,body){
  }finally{clearTimeout(timeout);}
 }
 function renderEpisodes(items,play){
+ panel.hidden=false;
  episodes.replaceChildren();player.replaceChildren();
  if(!items.length){status.textContent='Compra confirmada. Estamos preparando os vídeos. Toque em “Verificar meu acesso” daqui a pouco.';retry.hidden=false;return false;}
  for(const item of items){
@@ -120,6 +121,7 @@ if(receipt.pedido_id&&receipt.resgate){
 }
 const local=saved();
 if(local.length){
+ panel.hidden=false;
  status.textContent='Compras salvas neste aparelho. Toque na compra para verificar o acesso.';
  guide.textContent='Se comprou em outro aparelho, abra o link recebido na compra ou fale com o suporte.';
  for(const item of local){
@@ -132,11 +134,12 @@ if(local.length){
 try{
  await new Promise((resolve,reject)=>{const script=document.createElement('script');script.src='https://telegram.org/js/telegram-web-app.js';script.onload=resolve;script.onerror=reject;document.head.append(script);});
  initData=window.Telegram?.WebApp?.initData||'';
- if(!initData){status.textContent='Não encontramos uma compra neste aparelho. Abra o link da compra ou entre em “Minhas séries” no bot.';telegram.hidden=false;telegram.textContent='Abrir o bot DPlay';return;}
+ if(!initData){status.textContent='Não encontramos uma compra neste aparelho. Abra o link da compra ou entre em “Minhas séries” no bot.';guide.textContent='Se perdeu o link depois do Pix, toque em “Preciso de ajuda” para recuperar sua compra.';telegram.hidden=false;telegram.textContent='Abrir o bot DPlay';return;}
  window.Telegram.WebApp.ready();
  const library=await request('/streaming/minha-biblioteca');
  if(!library.series?.length){status.textContent='Nenhuma compra aprovada foi encontrada nesta conta. Se já pagou, use o link da compra ou peça ajuda.';return;}
  status.textContent='Selecione uma das suas séries.';
+ panel.hidden=false;
  for(const item of library.series){
   const button=document.createElement('button');button.className='episode';button.type='button';button.textContent=String(item.titulo||'Série');
   button.addEventListener('click',async()=>{
