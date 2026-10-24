@@ -147,7 +147,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
 .back-btn { display: block; min-height: 48px; margin: 12px auto 0; padding: 12px 18px; border: 1px solid #53688f; border-radius: 12px; background: #1b2b4b; color: #e7edff; font-size: 15px; text-align: center; font-weight: 650; cursor: pointer; }
 @supports not (height: 100dvh) { .dialog { max-height: calc(100vh - 40px); } }
 @media (min-width: 1050px) { .grid { grid-template-columns: repeat(5, minmax(0, 1fr)); } }
-@media (max-width: 900px) { .top-premium { display: none; } .dplay-showcase { gap: 20px; padding: 28px; } .hero-copy h1 { font-size: 36px; } .hero-benefits { gap: 9px; } .grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } .vip-panel { flex-wrap: wrap; gap: 18px; } .vip-panel > img { width: 150px; height: 150px; } .vip-action { width: auto; display: flex; align-items: center; gap: 22px; margin-left: 168px; } .vip-price { margin: 0; } .vip-action .buy { width: auto; } }
+@media (max-width: 900px) { .top-premium { display: none; } .dplay-showcase { gap: 20px; padding: 28px; } .hero-copy h1 { font-size: 36px; } .hero-benefits { gap: 9px; } .grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } .vip-panel { flex-wrap: wrap; gap: 18px; } .vip-panel > img { width: 170px; height: 170px; } .vip-action { width: auto; display: flex; align-items: center; gap: 22px; margin-left: 188px; } .vip-price { margin: 0; } .vip-action .buy { width: auto; } }
 @media (max-width: 650px) {
   html { scroll-padding-top: 143px; }
   body { padding-bottom: 78px; }
@@ -191,7 +191,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
   .info .buy { font-size: 10px; min-height: 43px; padding: 11px 5px; }
   .assurance { font-size: 8px; margin-top: 9px; }
   .vip-panel { margin: 22px 0 26px; padding: 22px; border-radius: 20px; gap: 16px; }
-  .vip-panel > img { width: 108px; height: 118px; }
+  .vip-panel > img { width: 130px; height: 140px; }
   .vip-copy { min-width: 150px; }
   .vip-copy h2 { font-size: 24px; }
   .vip-copy p { font-size: 12px; }
