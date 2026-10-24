@@ -138,13 +138,13 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
 .fineprint { margin: 16px 0 0; text-align: center; color: #a3b5d2 !important; font-size: 11px; }
 .checkout-sub { font-size: 13px; }
 .checkout-sub b { color: #c6b5ff; }
-.payment-status { padding: 16px; border: 1px solid #53688f; border-radius: 13px; color: #e5eeff; background: #20324f; line-height: 1.8; font-size: 13px; margin: 17px 0; }
+.payment-status { padding: 16px; border: 1px solid #53688f; border-radius: 13px; color: #e5eeff; background: #20324f; line-height: 1.6; font-size: 16px; margin: 17px 0; }
 .pix-qr { display: block; width: min(100%, 218px); height: auto; max-height: 230px; object-fit: contain; margin: 16px auto; padding: 10px; border-radius: 13px; background: white; }
-.pix-label { display: block; margin: 16px 0 8px; color: #c8c1ff; font-size: 12px; font-weight: 700; }
-#pix-codigo { width: 100%; resize: none; padding: 12px; border: 1px solid #566b91; border-radius: 11px; background: #0b172d; color: #e8f0ff; font: 12px/1.5 monospace; margin-bottom: 12px; }
+.pix-label { display: block; margin: 16px 0 8px; color: #c8c1ff; font-size: 15px; font-weight: 700; }
+#pix-codigo { width: 100%; resize: none; padding: 12px; border: 1px solid #566b91; border-radius: 11px; background: #0b172d; color: #e8f0ff; font: 15px/1.5 monospace; margin-bottom: 12px; }
 #pix-conteudo { padding-bottom: 12px; }
 #copiar-pix { position: relative; z-index: 1; }
-.back-btn { display: block; margin: 20px auto 0; border: 0; background: none; color: #bdc9ff; font-size: 12px; text-align: center; font-weight: 650; }
+.back-btn { display: block; min-height: 48px; margin: 12px auto 0; padding: 12px 18px; border: 1px solid #53688f; border-radius: 12px; background: #1b2b4b; color: #e7edff; font-size: 15px; text-align: center; font-weight: 650; cursor: pointer; }
 @supports not (height: 100dvh) { .dialog { max-height: calc(100vh - 40px); } }
 @media (min-width: 1050px) { .grid { grid-template-columns: repeat(5, minmax(0, 1fr)); } }
 @media (max-width: 900px) { .top-premium { display: none; } .dplay-showcase { gap: 20px; padding: 28px; } .hero-copy h1 { font-size: 36px; } .hero-benefits { gap: 9px; } .grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } .vip-panel { flex-wrap: wrap; gap: 15px; } .vip-panel > img { width: 112px; height: 112px; } .vip-action { width: auto; display: flex; align-items: center; gap: 22px; margin-left: 127px; } .vip-price { margin: 0; } .vip-action .buy { width: auto; } }

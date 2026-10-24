@@ -22,3 +22,5 @@ jobs:
             console.log(path+': scripts validos');
           }
           NODE
+      - name: Simulate payment and delivery states
+        run: node tests/access-flow.cjs
