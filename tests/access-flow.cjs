@@ -11,7 +11,7 @@ class Element{
 }
 async function scenario(order,library,{receipt=true,saved=[]}={}){
  const ids=new Map();
- const element=id=>{if(!ids.has(id)){const node=new Element();node.hidden=['retry','save','telegram'].includes(id);ids.set(id,node);}return ids.get(id);};
+ const element=id=>{if(!ids.has(id)){const node=new Element();node.hidden=['retry','save','telegram','library-panel'].includes(id);ids.set(id,node);}return ids.get(id);};
  const calls=[];
  const location={href:'https://dplayseries.github.io/dplay-series-loja/streaming.html'+(receipt?'#pedido=22222222-2222-4222-8222-222222222222&resgate=receipt-secret-for-tests':''),hash:receipt?'#pedido=22222222-2222-4222-8222-222222222222&resgate=receipt-secret-for-tests':'',assign(){}};
  const storage=new Map([['dplay_receipts_v1',JSON.stringify(saved)]]);
@@ -37,6 +37,7 @@ async function scenario(order,library,{receipt=true,saved=[]}={}){
  const pending=await scenario({status:'pendente'},null);
  assert.match(pending.element('status').textContent,/Aguardando a confirmação do Pix/);
  assert.equal(pending.element('retry').hidden,false);
+ assert.equal(pending.element('library-panel').hidden,true);
  assert.equal(pending.calls.filter(x=>x.endsWith('/streaming/compra')).length,0);
  const waiting=await scenario({status:'aprovado',rota_entrega:'aguardando_nuvem'},null);
  assert.match(waiting.element('status').textContent,/temporariamente indisponível/);
@@ -45,6 +46,7 @@ async function scenario(order,library,{receipt=true,saved=[]}={}){
  const cloud=await scenario({status:'aprovado',rota_entrega:'nuvem'}, {titulo:'Série Teste',episodios:[{chave:'e1',titulo:'Episódio 1'}]});
  assert.equal(cloud.element('title').textContent,'Série Teste');
  assert.equal(cloud.element('episodes').children.length,1);
+ assert.equal(cloud.element('library-panel').hidden,false);
  assert.equal(cloud.element('telegram').hidden,true);
  const telegram=await scenario({status:'aprovado',rota_entrega:'telegram',resgate_url:'https://t.me/DPlayEpisodiosBot?start=r_test',nuvem_url:null},null);
  assert.equal(telegram.element('telegram').hidden,false);
@@ -54,6 +56,7 @@ async function scenario(order,library,{receipt=true,saved=[]}={}){
  assert.equal(offline.element('retry').hidden,false);
  const saved=await scenario(null,null,{receipt:false,saved:[{pedido_id:'saved',resgate:'secret',titulo:'Compra salva'}]});
  assert.equal(saved.element('purchases').children.length,1);
+ assert.equal(saved.element('library-panel').hidden,false);
  assert.equal(saved.calls.length,0);
  console.log('6 cenários de compra e acesso passaram, sem cobrar nem liberar conteúdo real.');
 })().catch(error=>{console.error(error);process.exitCode=1;});
