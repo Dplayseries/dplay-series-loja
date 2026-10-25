@@ -219,3 +219,26 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
 }
 @media (max-width: 350px) { .wrap { padding-right: 12px; padding-left: 12px; } .info { padding: 10px; } .info .buy { font-size: 9px; } .vip-copy { min-width: 135px; } .dplay-showcase { padding: 22px 19px; } }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; } }
+
+/* Banner de assinatura VIP: faixa horizontal com chamada funcional para o checkout. */
+#grupo-vip.vip-cta-banner { position: relative; overflow: hidden; align-items: center; margin: 26px 0 34px; padding: 22px 28px; border: 1px solid #4f82ff; background: linear-gradient(110deg, #141c39, #10172e 76%); box-shadow: inset 0 0 0 1px #bd35ff45, 0 16px 40px #4a37ba36; }
+#grupo-vip.vip-cta-banner::after { content: ""; position: absolute; inset: auto 0 0; height: 2px; background: linear-gradient(90deg, #167dff, #d22dff, #22c6ff); }
+#grupo-vip.vip-cta-banner > img { width: 112px; height: 112px; }
+#grupo-vip.vip-cta-banner .vip-copy .eyebrow { color: #c6a7ff; }
+#grupo-vip.vip-cta-banner .vip-copy h2 { margin: 5px 0; font-size: 24px; }
+#grupo-vip.vip-cta-banner .vip-copy p { margin: 5px 0; line-height: 1.5; }
+#grupo-vip.vip-cta-banner .vip-action { display: flex; align-items: center; gap: 18px; width: auto; margin-left: 0; }
+#grupo-vip.vip-cta-banner .vip-price { margin: 0; white-space: nowrap; color: #d9caff; }
+#grupo-vip.vip-cta-banner .vip-action .buy { width: auto; min-width: 255px; min-height: 56px; border-radius: 18px; background: linear-gradient(90deg, #317be8, #8556df); box-shadow: 0 6px 24px #542ed966; }
+@media (max-width: 900px) {
+  #grupo-vip.vip-cta-banner { gap: 18px; }
+  #grupo-vip.vip-cta-banner .vip-action { flex-wrap: wrap; margin-left: 0; }
+}
+@media (max-width: 650px) {
+  #grupo-vip.vip-cta-banner { padding: 19px; }
+  #grupo-vip.vip-cta-banner > img { width: 94px; height: 100px; }
+  #grupo-vip.vip-cta-banner .vip-action { width: 100%; justify-content: space-between; gap: 10px; padding-top: 14px; border-top: 1px solid #7589ff35; }
+  #grupo-vip.vip-cta-banner .vip-price { font-size: 24px; }
+  #grupo-vip.vip-cta-banner .vip-price small { display: block; font-size: 10px; }
+  #grupo-vip.vip-cta-banner .vip-action .buy { min-width: 0; min-height: 48px; flex: 1; padding: 11px 12px; font-size: 11px; }
+}
