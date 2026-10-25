@@ -17,11 +17,7 @@
 <div class="search-topbar" id="busca-topo"><div class="search-topbar-inner"><label class="search-area" for="pesquisar-series"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-4-4"></path></svg><input id="pesquisar-series" type="search" placeholder="Qual história você procura?" autocomplete="off" enterkeyhint="search" aria-label="Pesquisar séries"><button id="limpar-pesquisa" class="search-clear" type="button" aria-label="Limpar pesquisa" hidden>×</button></label></div></div>
 <main class="wrap" id="inicio">
 <div class="welcome-line"><span>SEU CANTINHO DE HISTÓRIAS</span><span>PREPARE A PIPOCA, A ESCOLHA É SUA</span></div>
-<section id="grupo-vip" class="vip-panel" aria-labelledby="vip-titulo">
-  <img src="grupo-vip.svg" width="210" height="210" loading="eager" fetchpriority="high" decoding="async" alt="Grupo VIP DPlay">
-  <div class="vip-copy"><span class="eyebrow">MAIS HISTÓRIAS POR PERTO</span><h2 id="vip-titulo">Seu momento VIP.</h2><p>Conheça o Grupo VIP DPlay e escolha o acesso por assinatura mensal.</p><p>Convite individual. Entrada vinculada à conta do comprador.</p></div>
-  <div class="vip-action"><p class="vip-price">R$ 19,90 <small>por mês</small></p><button type="button" class="buy" onclick="abrirCheckout(null,true)">👑 QUERO ACESSAR O VIP</button></div>
-</section>
+
 <section class="dplay-showcase" aria-labelledby="boas-vindas">
   <div class="hero-copy">
     <span class="eyebrow">Bem-vindo à DPlay</span>
@@ -31,6 +27,12 @@
     <div class="hero-benefits"><span>◇ Pagamento via Pix</span><span>♡ Suporte por perto</span><span>▶ Acesso digital</span></div>
   </div>
   <div class="dplay-showcase-art"><img src="dplay-banner-premium.webp" alt="DPlay Entretenimento — seu universo de séries e histórias" width="960" height="540" fetchpriority="high" decoding="async"></div>
+</section>
+
+<section id="grupo-vip" class="vip-panel vip-cta-banner" aria-labelledby="vip-titulo">
+  <img src="grupo-vip.svg" width="210" height="210" loading="eager" fetchpriority="high" decoding="async" alt="Grupo VIP DPlay">
+  <div class="vip-copy"><span class="eyebrow">DPLAY • GRUPO VIP</span><h2 id="vip-titulo">Destaques da semana</h2><p>Entre no Grupo VIP DPlay por assinatura mensal e acompanhe nossas novidades.</p><p>Acesso individual vinculado à conta do comprador.</p></div>
+  <div class="vip-action"><p class="vip-price">R$ 19,90 <small>por mês</small></p><button type="button" class="buy" onclick="abrirCheckout(null,true)">👑 QUERO ACESSAR O VIP</button></div>
 </section>
 
 <section id="top-semana" hidden aria-label="Escolhas da comunidade">
