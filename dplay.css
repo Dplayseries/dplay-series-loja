@@ -255,3 +255,14 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
   #grupo-vip.vip-art-banner { margin: 22px 0 26px; border-radius: 12px; }
   #grupo-vip .vip-art-button { left: 67%; top: 68%; width: 31%; height: 26%; min-height: 44px; border-radius: 12px; }
 }
+
+
+/* Destaque inicial: imagem grande no topo, seguida das informações e ações. */
+.dplay-showcase { display: flex; flex-direction: column; align-items: stretch; gap: 24px; padding: 24px; }
+.dplay-showcase-art { order: -1; width: 100%; transform: none; }
+.dplay-showcase-art img { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover; }
+.hero-copy { width: 100%; }
+@media (max-width: 650px) {
+  .dplay-showcase { gap: 18px; padding: 16px; }
+  .dplay-showcase-art { border-radius: 14px; }
+}
