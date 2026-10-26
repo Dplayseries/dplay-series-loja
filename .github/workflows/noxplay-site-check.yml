@@ -20,7 +20,9 @@ jobs:
         with:
           node-version: '22'
       - name: Verify checkout JavaScript
-        run: node --check noxplay-site/checkout.js
+        run: |
+          node --check noxplay-site/checkout.js
+          node --check noxplay-site/library.js
       - name: Verify inline storefront JavaScript
         run: |
           python - <<'PY'
@@ -37,3 +39,4 @@ jobs:
         run: |
           grep -q 'NoxCheckout.initialize' noxplay-site/index.html
           grep -q 'checkout_habilitado === true' noxplay-site/checkout.js
+          grep -q 'NoxLibrary.save(serie,key)' noxplay-site/checkout.js
