@@ -36,6 +36,7 @@ const status=document.getElementById("status");
 const search=document.getElementById("pesquisa");
 let all=[];
 let reservationsEnabled=false;
+let lastCatalogSync=null;
 async function reservarSerie(serie,button){
   if(!reservationsEnabled)return;
   button.disabled=true;button.textContent="Registrando reserva...";
@@ -87,9 +88,10 @@ async function load(){
       const id=String(s.id).toLowerCase();
       if(seen.has(id))return false;seen.add(id);return true;
     });
-    status.textContent=all.length+" séries no catálogo compartilhado. Compras NoxPlay ainda não estão habilitadas."+(reservationsEnabled?" Reservas gratuitas estão disponíveis.":"");
+    lastCatalogSync=new Date();
+    status.textContent=all.length+" séries disponíveis, sincronizadas com a DPlay às "+lastCatalogSync.toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit"})+". Compras NoxPlay ainda não estão habilitadas."+(reservationsEnabled?" Reservas gratuitas estão disponíveis.":"");
     render();
-  }catch(e){status.textContent="O catálogo está temporariamente indisponível. Tente novamente mais tarde."}
+  }catch(e){status.textContent=lastCatalogSync ? "Falha na atualização. Exibindo "+all.length+" séries da última sincronização. Nova tentativa automática em até 2 minutos." : "O catálogo está temporariamente indisponível. Tente novamente mais tarde."}
   finally{clearTimeout(timeout)}
 }
 load();
