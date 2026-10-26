@@ -19,7 +19,7 @@ body{min-height:100vh;background:#080f23;color:white;font-family:system-ui,sans-
 .nox-notice{background:#191d3d;border:1px solid #65468e;padding:14px;border-radius:12px;line-height:1.5}
 </style></head>
 <body>
-<header class="nox-header"><a class="nox-logo" href="./noxplay.html">NOX<span>PLAY</span></a><span>Suas histórias, sua escolha</span></header>
+<header class="nox-header"><a class="nox-logo" href="./">NOX<span>PLAY</span></a><span>Suas histórias, sua escolha</span></header>
 <main class="nox-content">
 <h1>Escolha sua próxima série</h1>
 <p class="nox-notice" id="status" role="status">Estamos preparando o catálogo compartilhado. Compras NoxPlay ainda não estão habilitadas.</p>
@@ -28,7 +28,7 @@ body{min-height:100vh;background:#080f23;color:white;font-family:system-ui,sans-
 </main>
 <script>
 "use strict";
-const CATALOG_API="https://dplay-series-api.onrender.com";
+const CATALOG_API="https://noxplay-api-stage.onrender.com";
 const NOX_API="https://noxplay-api-stage.onrender.com";
 const price="R$ 4,00";
 const grid=document.getElementById("catalogo");
@@ -55,7 +55,7 @@ function render(){
   for(const s of all.filter(x=>x.titulo.toLocaleLowerCase("pt-BR").includes(term))){
     const article=document.createElement("article");article.className="nox-card";
     const img=document.createElement("img");img.alt="Capa de "+s.titulo;
-    img.loading="lazy";img.src=CATALOG_API+"/catalogo/capa/"+encodeURIComponent(String(s.id));
+    img.loading="lazy";img.src=CATALOG_API+"/noxplay/catalogo/capa/"+encodeURIComponent(String(s.id));
     const content=document.createElement("div");content.className="nox-card-content";
     const h2=document.createElement("h2");h2.textContent=s.titulo;
     const amount=document.createElement("strong");amount.textContent=price;
@@ -77,7 +77,7 @@ async function load(){
   const controller=new AbortController();
   const timeout=setTimeout(()=>controller.abort(),18000);
   try{
-    const res=await fetch(CATALOG_API+"/catalogo/series",{cache:"no-store",signal:controller.signal});
+    const res=await fetch(CATALOG_API+"/noxplay/catalogo/series",{cache:"no-store",signal:controller.signal});
     if(!res.ok)throw Error("Não foi possível carregar o catálogo");
     const data=await res.json();
     if(!Array.isArray(data.series))throw Error("Resposta inválida");
@@ -93,5 +93,7 @@ async function load(){
   finally{clearTimeout(timeout)}
 }
 load();
+// Atualiza o catálogo existente e os novos títulos sem recarregar a página.
+setInterval(()=>{if(!document.hidden)load();},120000);
 </script>
 </body></html>
