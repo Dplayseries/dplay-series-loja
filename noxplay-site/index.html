@@ -1,128 +1,151 @@
 <!doctype html>
 <html lang="pt-BR">
-<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#080f23">
-<meta name="description" content="NoxPlay: descubra sua próxima série.">
-<title>NoxPlay | Catálogo de séries</title>
-
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#111013">
+<meta name="description" content="NoxPlay: explore um catálogo de séries e minisséries atualizado automaticamente.">
+<title>NoxPlay — Sua próxima história começa aqui</title>
 <style>
-body{min-height:100vh;background:#080f23;color:white;font-family:system-ui,sans-serif}
-.nox-header{max-width:1160px;margin:auto;padding:24px;display:flex;justify-content:space-between;align-items:center}
-.nox-logo{font-size:2rem;font-weight:900;letter-spacing:.03em;color:white;text-decoration:none}
-.nox-logo span{color:#ba83ff}.nox-content{max-width:1160px;margin:auto;padding:22px}
-.nox-search{width:100%;max-width:550px;box-sizing:border-box;padding:16px;border-radius:12px;background:#161c35;color:white;border:1px solid #8252c7;font-size:1rem}
-.nox-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:20px;margin-top:24px}
-.nox-card{background:#171a35;border:1px solid #383450;border-radius:16px;overflow:hidden}
-.nox-card img{width:100%;aspect-ratio:3/4;object-fit:cover;background:#302947}
-.nox-card-content{padding:12px}.nox-card h2{font-size:1rem;line-height:1.4;min-height:2.8em;margin:0 0 12px}
-.nox-card strong{color:#f27fd0}.nox-button{background:#6846a2;color:white;border:0;border-radius:10px;padding:12px;width:100%;margin-top:10px;opacity:.8}
-.nox-notice{background:#191d3d;border:1px solid #65468e;padding:14px;border-radius:12px;line-height:1.5}
-</style></head>
+:root{color-scheme:dark;--bg:#100f12;--panel:#1c1a1e;--panel2:#242126;--border:#383136;--ink:#faf6f3;--muted:#bfb3ab;--orange:#ff8b29;--orange2:#ffb365}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;line-height:1.45}
+button,input,select{font:inherit}button{cursor:pointer}button:disabled{cursor:not-allowed;opacity:.52}a{color:inherit;text-decoration:none}
+.shell{width:min(1160px,calc(100% - 36px));margin-inline:auto}
+.site-header{position:sticky;top:0;z-index:10;backdrop-filter:blur(16px);background:#131014ed;border-bottom:1px solid #393035}
+.header-inner{height:76px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.logo{font-weight:950;font-size:clamp(23px,3vw,32px);letter-spacing:-1.2px;white-space:nowrap}
+.logo .accent{color:var(--orange)}.logo-mark{display:inline-grid;place-items:center;width:35px;height:35px;border-radius:11px;background:linear-gradient(125deg,#ffbc6b,#ff781b);color:#1b1010;font-size:22px;transform:rotate(-8deg);margin-right:9px}
+.header-controls{display:flex;gap:12px;align-items:center}.nav-link{color:#e9dad1;font-size:14px}
+.library-toggle{border:1px solid #6e4433;border-radius:12px;background:#2b201e;color:#fff;padding:11px 14px;font-weight:650}
+.library-toggle:hover,.nav-link:hover{border-color:var(--orange);color:var(--orange)}
+.hero{position:relative;overflow:hidden;padding:clamp(55px,8vw,96px) 0 70px;background:radial-gradient(ellipse 50% 80% at 88% 47%,#8c390e7f,transparent 78%),linear-gradient(150deg,#241a1b 5%,#1a1619 55%,#140f10 100%);border-bottom:1px solid #322729}
+.hero::after{content:"";position:absolute;width:350px;height:350px;border:1px solid #b9643345;border-radius:38%;right:-100px;top:-150px;transform:rotate(28deg);pointer-events:none}
+.hero-inner{position:relative;z-index:1;max-width:760px}
+.eyebrow{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.15em;color:var(--orange2);margin:0 0 18px}
+.hero h1{font-size:clamp(38px,5.8vw,69px);line-height:1.08;letter-spacing:-.055em;margin:0 0 20px;font-weight:850}
+.hero h1 span{color:var(--orange)}
+.hero p.lead{max-width:625px;color:#decbbd;font-size:clamp(15px,2vw,19px);margin:0 0 25px}
+.hero-tags{display:flex;flex-wrap:wrap;gap:10px}.hero-tag{font-size:13px;font-weight:600;color:#e9d3c4;background:#302324c9;border:1px solid #6a4134;border-radius:999px;padding:8px 12px}
+.content{padding:44px 0 74px;min-height:540px}
+.section-heading{display:flex;justify-content:space-between;align-items:end;gap:15px;flex-wrap:wrap;margin-bottom:17px}
+.section-heading h2{font-size:clamp(25px,3.3vw,36px);letter-spacing:-.04em;margin:0 0 5px}
+.subtext{color:var(--muted);margin:0;font-size:14px}
+.count-pill{border:1px solid #67442d;background:#332116;padding:9px 14px;border-radius:12px;color:var(--orange2);font-weight:800;white-space:nowrap}
+.toolbar{display:flex;gap:12px;margin:22px 0 12px;flex-wrap:wrap}
+.search-wrap{flex:1 1 270px}.search-wrap label,.sort-wrap label{display:block;font-size:13px;color:#e6d5c9;margin-bottom:7px}
+.search,.sorting{width:100%;background:#242126;border:1px solid #4c4144;color:#fff;border-radius:11px;padding:14px 15px;outline:none}
+.search:focus,.sorting:focus{border-color:var(--orange);box-shadow:0 0 0 3px #ff8b292a}
+.sort-wrap{flex:0 1 220px}
+.status-line{display:flex;align-items:center;gap:10px;justify-content:space-between;flex-wrap:wrap;background:#211d1f;border:1px solid #403337;border-radius:11px;padding:11px 14px;margin:16px 0 22px}
+#status{font-size:13px;color:#ddcbc3;margin:0}#status[data-error="1"]{color:#ffc691}
+.small-button{border:1px solid #594843;border-radius:9px;color:#f0ded0;background:#322a2b;padding:8px 11px;font-size:13px}
+.catalog-topline{font-size:13px;color:var(--muted);margin:0 0 12px}
+.series-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:19px}
+.series-card{min-width:0;overflow:hidden;background:var(--panel);border:1px solid var(--border);border-radius:15px;transition:transform .18s,border-color .18s}
+.series-card:hover{transform:translateY(-3px);border-color:#956348}
+.series-cover{display:block;width:100%;aspect-ratio:3/4;background:linear-gradient(150deg,#422b21,#1d1b1f);border:0;padding:0;overflow:hidden;position:relative}
+.series-cover img{width:100%;height:100%;display:block;object-fit:cover;transition:transform .25s}.series-cover:hover img{transform:scale(1.04)}
+.series-cover img.no-cover,.detail-cover img.no-cover{background:linear-gradient(140deg,#63321c,#22191a)}
+.series-body{padding:13px;display:flex;flex-direction:column;gap:10px;min-height:148px}
+.series-body h3{font-size:14px;line-height:1.4;margin:0;min-height:2.8em;font-weight:700;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.series-price{color:var(--orange2);font-size:16px;font-weight:850}
+.series-action,.primary{border:0;color:#201009;border-radius:10px;background:linear-gradient(120deg,#ffa248,#ff7b20);padding:11px 10px;font-size:12.5px;font-weight:800}
+.series-action:hover:not(:disabled),.primary:hover:not(:disabled){filter:brightness(1.09)}.series-action{margin-top:auto;width:100%;min-height:39px}
+.series-action:disabled{background:#3a302b;color:#c8b0a4;opacity:1}
+.empty{padding:40px 20px;border:1px dashed #61514b;border-radius:15px;text-align:center;color:var(--muted)}
+.more-row{text-align:center;margin:28px 0}.more{background:var(--panel2);border:1px solid #74503b;color:#fce4d1;border-radius:11px;padding:12px 22px}
+.library-panel{margin-top:18px;border:1px solid #6b4532;background:#251d1b;padding:22px;border-radius:15px}
+.library-panel h2{font-size:20px;margin:0 0 8px}
+.site-footer{padding:30px 0;border-top:1px solid #392e31;color:#b8aaa5;font-size:13px}.footer-inner{display:flex;gap:10px;justify-content:space-between;flex-wrap:wrap}
+.modal{color:var(--ink);background:#211b1d;border:1px solid #82513a;border-radius:18px;padding:25px;max-width:490px;width:min(94%,490px);box-shadow:0 20px 90px #0009}
+.modal::backdrop{background:#000b;backdrop-filter:blur(4px)}.modal.wide{max-width:840px;width:min(94%,840px)}
+.modal-top{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:15px}.modal-top h2{font-size:24px;letter-spacing:-.035em;margin:0}
+.close-button{border:1px solid #59453f;background:#342a2b;color:#fff;padding:8px 12px;border-radius:9px}
+.modal input{width:100%;background:#30282b;border:1px solid #795443;padding:12px;color:white;border-radius:10px;margin:8px 0 13px}
+.modal input:focus{outline:2px solid var(--orange)}
+.modal button:not(.close-button){border-radius:10px;padding:10px 14px}
+.modal a{color:var(--orange2);text-decoration:underline}.modal img{max-width:100%;object-fit:contain}
+.detail-layout{display:grid;grid-template-columns:130px 1fr;gap:19px;align-items:start}
+.detail-cover img{width:100%;aspect-ratio:3/4;object-fit:cover;border-radius:10px;background:#513527}
+.detail-label{font-size:12px;text-transform:uppercase;letter-spacing:.1em;font-weight:800;color:var(--orange);margin:0 0 10px}
+.detail-actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:15px}
+.player-frame{width:100%;aspect-ratio:16/9;border:0;margin-top:15px;background:#100c0c}
+#nox-player-episodes button{padding:8px 10px;border:1px solid #855139;border-radius:9px;color:#fff;background:#3b2925;margin:5px}
+@media(max-width:1020px){.series-grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
+@media(max-width:700px){.series-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:11px}.series-body{padding:10px}.series-action{font-size:11px}.hero{padding:58px 0}.header-inner{height:66px}.nav-link{display:none}}
+@media(max-width:460px){.series-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.series-body{min-height:147px}.series-body h3{font-size:13px}.logo{font-size:23px}.header-controls{gap:6px}.library-toggle{font-size:12px;padding:9px}.detail-layout{grid-template-columns:90px 1fr;gap:12px}.modal{padding:17px}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.series-card,.series-cover img{transition:none}}
+</style>
+</head>
 <body>
-<header class="nox-header"><a class="nox-logo" href="./">NOX<span>PLAY</span></a><span>Suas histórias, sua escolha</span></header>
-<main class="nox-content">
-<h1>Escolha sua próxima série</h1>
-<p class="nox-notice" id="status" role="status">Estamos preparando o catálogo compartilhado. Compras NoxPlay ainda não estão habilitadas.</p>
-<label for="pesquisa">Pesquisar séries</label><div><input id="pesquisa" class="nox-search" type="search" placeholder="Digite o nome da série" autocomplete="off"></div>
-<button type="button" id="nox-library-show" style="padding:12px;border-radius:10px;border:1px solid #8252c7;color:white;background:#30204c;margin-top:18px;cursor:pointer">Minha biblioteca</button>
-<section id="nox-library-area" hidden aria-label="Séries compradas"><h2>Minhas séries</h2><p id="nox-library-empty">Após uma compra confirmada, suas séries aparecerão aqui neste navegador.</p><div id="nox-library-list"></div></section>
-<div id="catalogo" class="nox-grid" aria-live="polite"></div>
+<header class="site-header">
+  <div class="shell header-inner">
+    <a href="./" class="logo" aria-label="NoxPlay início"><span class="logo-mark">▶</span>NOX<span class="accent">PLAY</span></a>
+    <div class="header-controls">
+      <a class="nav-link" href="#catalogo-section">Explorar catálogo</a>
+      <button type="button" id="nox-library-show" class="library-toggle">Minha biblioteca</button>
+    </div>
+  </div>
+</header>
+<section class="hero" aria-label="Bem-vindo à NoxPlay">
+  <div class="shell hero-inner">
+    <p class="eyebrow">NOXPLAY · SEU UNIVERSO DE HISTÓRIAS</p>
+    <h1>Uma nova história.<br><span>A cada clique.</span></h1>
+    <p class="lead">Descubra séries e minisséries em um catálogo conectado e atualizado com novos títulos. Encontre sua próxima história favorita.</p>
+    <div class="hero-tags"><span class="hero-tag">Catálogo compartilhado</span><span class="hero-tag">Busca rápida</span><span class="hero-tag">Atualização automática</span></div>
+  </div>
+</section>
+<main class="shell content">
+  <section id="nox-library-area" class="library-panel" hidden aria-label="Minhas séries">
+    <h2>Minha biblioteca</h2>
+    <p class="subtext" id="nox-library-empty">Após uma compra confirmada, suas séries aparecerão aqui neste navegador.</p>
+    <div id="nox-library-list"></div>
+  </section>
+  <section id="catalogo-section" aria-label="Catálogo de séries">
+    <div class="section-heading">
+      <div><p class="eyebrow">ESCOLHA O QUE ASSISTIR</p><h2>Explore nosso catálogo</h2><p class="subtext">Todos os títulos existentes e novos, sincronizados com a DPlay.</p></div>
+      <span class="count-pill"><span id="catalog-total">—</span> séries</span>
+    </div>
+    <div class="toolbar">
+      <div class="search-wrap"><label for="pesquisa">Encontre sua série</label><input class="search" id="pesquisa" type="search" placeholder="Pesquisar por título..." autocomplete="off" spellcheck="false"></div>
+      <div class="sort-wrap"><label for="ordenacao">Ordenar por</label><select id="ordenacao" class="sorting"><option value="default">Ordem do catálogo</option><option value="az">Nome: A a Z</option><option value="za">Nome: Z a A</option></select></div>
+    </div>
+    <div class="status-line"><p id="status" role="status">Carregando catálogo compartilhado...</p><button type="button" class="small-button" id="catalog-retry">Atualizar</button></div>
+    <p class="catalog-topline" id="catalog-counter" aria-live="polite">Preparando o catálogo...</p>
+    <div id="catalogo" class="series-grid"></div>
+    <div class="empty" id="catalog-empty" hidden>Nenhuma série encontrada. Experimente outra pesquisa.</div>
+    <div class="more-row"><button type="button" class="more" id="catalog-more" hidden>Carregar mais séries</button></div>
+  </section>
 </main>
-<dialog id="nox-checkout-dialog" style="background:#171a35;color:white;border:1px solid #8252c7;border-radius:16px;padding:24px;max-width:450px;width:90%">
-  <form method="dialog"><button type="submit">Fechar</button></form>
-  <h2 id="nox-checkout-title">Comprar série</h2><p>Valor: <strong>R$ 4,00</strong> por Pix</p>
-  <form id="nox-checkout-form"><label for="nox-checkout-email">E-mail</label>
-  <input type="email" id="nox-checkout-email" autocomplete="email" required maxlength="254" style="width:100%;padding:12px;margin:12px 0">
-  <button id="nox-checkout-submit" type="submit">Gerar Pix</button></form>
-  <p id="nox-checkout-message" role="status"></p>
-  <div id="nox-checkout-pix" hidden>
-  <img id="nox-checkout-qr" alt="QR Code Pix" width="240" hidden>
-  <label for="nox-checkout-code">Pix copia e cola</label><input id="nox-checkout-code" readonly style="width:100%;padding:10px">
-  <button id="nox-checkout-copy" type="button">Copiar código</button>
-  <p><a id="nox-checkout-ticket" hidden target="_blank" rel="noopener noreferrer">Ver instruções</a></p></div>
+<footer class="site-footer"><div class="shell footer-inner"><span>© NoxPlay · Um catálogo, sua próxima história.</span><span>Pagamentos e pedidos NoxPlay independentes da DPlay.</span></div></footer>
+
+<dialog id="nox-details" class="modal">
+  <div class="modal-top"><h2>Detalhes da série</h2><form method="dialog"><button class="close-button" type="submit">Fechar</button></form></div>
+  <div class="detail-layout">
+    <div id="nox-details-cover" class="detail-cover"></div>
+    <div><p class="detail-label">SÉRIE · NOXPLAY</p><h3 id="nox-details-title" style="font-size:22px;line-height:1.25;margin:0 0 12px"></h3>
+      <strong class="series-price">R$ 4,00</strong>
+      <p class="subtext">Consulte a disponibilidade de compra diretamente nesta página.</p>
+      <div class="detail-actions"><button id="nox-details-buy" type="button" class="primary" disabled>Compras em preparação</button><button id="nox-details-share" type="button" class="small-button">Compartilhar série</button></div>
+      <p id="nox-details-feedback" role="status"></p>
+    </div>
+  </div>
 </dialog>
-<dialog id="nox-player-dialog" style="background:#171a35;color:white;border:1px solid #8252c7;border-radius:16px;padding:18px;max-width:800px;width:94%">
-  <form method="dialog"><button type="submit">Fechar player</button></form>
-  <h2 id="nox-player-title">Minha série</h2>
+<dialog id="nox-checkout-dialog" class="modal">
+  <div class="modal-top"><h2 id="nox-checkout-title">Comprar série</h2><form method="dialog"><button type="submit" class="close-button">Fechar</button></form></div>
+  <p>Valor: <strong class="series-price">R$ 4,00</strong> por Pix</p>
+  <form id="nox-checkout-form"><label for="nox-checkout-email">E-mail para acompanhar seu pedido</label><input type="email" id="nox-checkout-email" autocomplete="email" required maxlength="254" placeholder="voce@email.com"><button type="submit" id="nox-checkout-submit" class="primary">Gerar Pix</button></form>
+  <p id="nox-checkout-message" role="status"></p>
+  <div id="nox-checkout-pix" hidden><img id="nox-checkout-qr" alt="QR Code Pix" width="220" hidden><label for="nox-checkout-code">Pix copia e cola</label><input id="nox-checkout-code" readonly><button id="nox-checkout-copy" class="small-button" type="button">Copiar Pix</button><p><a id="nox-checkout-ticket" hidden target="_blank" rel="noopener noreferrer">Ver instruções do Pix</a></p></div>
+</dialog>
+<dialog id="nox-player-dialog" class="modal wide">
+  <div class="modal-top"><h2 id="nox-player-title">Minha série</h2><form method="dialog"><button class="close-button" type="submit">Fechar player</button></form></div>
   <p id="nox-player-status" role="status"></p>
   <div id="nox-player-episodes"></div>
-  <iframe id="nox-player-video" title="Reprodução protegida" style="width:100%;aspect-ratio:16/9;border:0;margin-top:18px" allow="autoplay;encrypted-media;fullscreen;picture-in-picture" allowfullscreen referrerpolicy="no-referrer"></iframe>
+  <iframe id="nox-player-video" class="player-frame" title="Reprodução protegida" allow="autoplay;encrypted-media;fullscreen;picture-in-picture" allowfullscreen referrerpolicy="no-referrer"></iframe>
 </dialog>
-<script src="./library.js"></script>
-<script src="./checkout.js"></script>
-
-<script>
-"use strict";
-const CATALOG_API="https://noxplay-api-stage.onrender.com";
-const NOX_API="https://noxplay-api-stage.onrender.com";
-const price="R$ 4,00";
-const grid=document.getElementById("catalogo");
-const status=document.getElementById("status");
-const search=document.getElementById("pesquisa");
-let all=[];
-let reservationsEnabled=false;
-let checkoutEnabled=false;
-let lastCatalogSync=null;
-async function reservarSerie(serie,button){
-  if(!reservationsEnabled)return;
-  button.disabled=true;button.textContent="Registrando reserva...";
-  try{
-    const response=await fetch(NOX_API+"/noxplay/pedido",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({serie_id:serie.id})});
-    if(!response.ok)throw new Error("Reserva indisponível");
-    const result=await response.json();
-    if(result.status!=="rascunho"||result.pix_disponivel!==false)throw new Error("Resposta inválida");
-    status.textContent="Reserva registrada. Nenhum pagamento foi cobrado. Identificador: "+String(result.pedido_id);
-    button.textContent="Reserva registrada";
-  }catch(error){status.textContent="Não foi possível registrar a reserva. Nenhuma cobrança foi realizada.";button.disabled=!reservationsEnabled;button.textContent="Reservar sem pagar";}
-}
-
-function render(){
-  const term=search.value.trim().toLocaleLowerCase("pt-BR");
-  const fragment=document.createDocumentFragment();
-  for(const s of all.filter(x=>x.titulo.toLocaleLowerCase("pt-BR").includes(term))){
-    const article=document.createElement("article");article.className="nox-card";
-    const img=document.createElement("img");img.alt="Capa de "+s.titulo;
-    img.loading="lazy";img.src=CATALOG_API+"/noxplay/catalogo/capa/"+encodeURIComponent(String(s.id));
-    const content=document.createElement("div");content.className="nox-card-content";
-    const h2=document.createElement("h2");h2.textContent=s.titulo;
-    const amount=document.createElement("strong");amount.textContent=price;
-    const button=document.createElement("button");button.className="nox-button";button.disabled=true;
-    button.textContent=checkoutEnabled?"Comprar por Pix":reservationsEnabled?"Reservar sem pagar":"Compra em preparação";button.title=checkoutEnabled?"Pagamento Pix":"Pix NoxPlay ainda está em preparação";
-    button.disabled=!(checkoutEnabled||reservationsEnabled);
-    button.addEventListener("click",()=>checkoutEnabled?NoxCheckout.open(s):reservarSerie(s,button));
-    content.append(h2,amount,button);article.append(img,content);fragment.append(article);
-  }
-  grid.replaceChildren(fragment);
-}
-search.addEventListener("input",render);
-async function load(){
-  checkoutEnabled=await NoxCheckout.initialize();
-  try{
-    const configResponse=await fetch(NOX_API+"/noxplay/config",{cache:"no-store"});
-    if(configResponse.ok){const config=await configResponse.json();reservationsEnabled=config.loja_id==="noxplay"&&config.reservas_habilitadas===true&&config.checkout_habilitado===false;}
-  }catch{reservationsEnabled=false;}
-
-  const controller=new AbortController();
-  const timeout=setTimeout(()=>controller.abort(),18000);
-  try{
-    const res=await fetch(CATALOG_API+"/noxplay/catalogo/series",{cache:"no-store",signal:controller.signal});
-    if(!res.ok)throw Error("Não foi possível carregar o catálogo");
-    const data=await res.json();
-    if(!Array.isArray(data.series))throw Error("Resposta inválida");
-    const seen=new Set();
-    all=data.series.filter(s=>{
-      if(!s||!s.id||typeof s.titulo!=="string"||!s.titulo.trim())return false;
-      const id=String(s.id).toLowerCase();
-      if(seen.has(id))return false;seen.add(id);return true;
-    });
-    lastCatalogSync=new Date();
-    status.textContent=all.length+" séries disponíveis, sincronizadas com a DPlay às "+lastCatalogSync.toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit"})+". "+(checkoutEnabled?"Compras Pix habilitadas.":"Compras NoxPlay ainda não estão habilitadas.")+(reservationsEnabled?" Reservas gratuitas estão disponíveis.":"");
-    render();
-  }catch(e){status.textContent=lastCatalogSync ? "Falha na atualização. Exibindo "+all.length+" séries da última sincronização. Nova tentativa automática em até 2 minutos." : "O catálogo está temporariamente indisponível. Tente novamente mais tarde."}
-  finally{clearTimeout(timeout)}
-}
-load();
-// Atualiza o catálogo existente e os novos títulos sem recarregar a página.
-setInterval(()=>{if(!document.hidden)load();},120000);
-</script>
-</body></html>
+<script src="./library.js" defer></script>
+<script src="./checkout.js" defer></script>
+<script src="./catalog.js" defer></script>
+</body>
+</html>
