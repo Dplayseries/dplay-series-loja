@@ -65,7 +65,12 @@ const NoxCheckout = (() => {
       const data=await res.json();
       if (data.estado==="pago") {
         clearInterval(timer);timer=null;
-        status.textContent="Pagamento confirmado. Acesse sua biblioteca para assistir.";
+        if(data.entrega_habilitada===true){
+          NoxLibrary.save(serie,key);
+          status.textContent="Pagamento confirmado! Acesse Minha biblioteca para assistir.";
+        }else{
+          status.textContent="Pagamento confirmado. A liberação da série está sendo verificada.";
+        }
       }
     } catch {}
   }
