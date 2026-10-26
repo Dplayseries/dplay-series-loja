@@ -28,7 +28,8 @@ body{min-height:100vh;background:#080f23;color:white;font-family:system-ui,sans-
 </main>
 <script>
 "use strict";
-const API="https://dplay-series-api.onrender.com";
+const CATALOG_API="https://dplay-series-api.onrender.com";
+const NOX_API="https://noxplay-api-stage.onrender.com";
 const price="R$ 4,00";
 const grid=document.getElementById("catalogo");
 const status=document.getElementById("status");
@@ -39,7 +40,7 @@ async function reservarSerie(serie,button){
   if(!reservationsEnabled)return;
   button.disabled=true;button.textContent="Registrando reserva...";
   try{
-    const response=await fetch(API+"/noxplay/pedido",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({serie_id:serie.id})});
+    const response=await fetch(NOX_API+"/noxplay/pedido",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({serie_id:serie.id})});
     if(!response.ok)throw new Error("Reserva indisponível");
     const result=await response.json();
     if(result.status!=="rascunho"||result.pix_disponivel!==false)throw new Error("Resposta inválida");
@@ -54,7 +55,7 @@ function render(){
   for(const s of all.filter(x=>x.titulo.toLocaleLowerCase("pt-BR").includes(term))){
     const article=document.createElement("article");article.className="nox-card";
     const img=document.createElement("img");img.alt="Capa de "+s.titulo;
-    img.loading="lazy";img.src=API+"/catalogo/capa/"+encodeURIComponent(String(s.id));
+    img.loading="lazy";img.src=CATALOG_API+"/catalogo/capa/"+encodeURIComponent(String(s.id));
     const content=document.createElement("div");content.className="nox-card-content";
     const h2=document.createElement("h2");h2.textContent=s.titulo;
     const amount=document.createElement("strong");amount.textContent=price;
@@ -69,14 +70,14 @@ function render(){
 search.addEventListener("input",render);
 async function load(){
   try{
-    const configResponse=await fetch(API+"/noxplay/config",{cache:"no-store"});
+    const configResponse=await fetch(NOX_API+"/noxplay/config",{cache:"no-store"});
     if(configResponse.ok){const config=await configResponse.json();reservationsEnabled=config.loja_id==="noxplay"&&config.reservas_habilitadas===true&&config.checkout_habilitado===false;}
   }catch{reservationsEnabled=false;}
 
   const controller=new AbortController();
   const timeout=setTimeout(()=>controller.abort(),18000);
   try{
-    const res=await fetch(API+"/catalogo/series",{cache:"no-store",signal:controller.signal});
+    const res=await fetch(CATALOG_API+"/catalogo/series",{cache:"no-store",signal:controller.signal});
     if(!res.ok)throw Error("Não foi possível carregar o catálogo");
     const data=await res.json();
     if(!Array.isArray(data.series))throw Error("Resposta inválida");
