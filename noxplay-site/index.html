@@ -26,6 +26,21 @@ body{min-height:100vh;background:#080f23;color:white;font-family:system-ui,sans-
 <label for="pesquisa">Pesquisar séries</label><div><input id="pesquisa" class="nox-search" type="search" placeholder="Digite o nome da série" autocomplete="off"></div>
 <div id="catalogo" class="nox-grid" aria-live="polite"></div>
 </main>
+<dialog id="nox-checkout-dialog" style="background:#171a35;color:white;border:1px solid #8252c7;border-radius:16px;padding:24px;max-width:450px;width:90%">
+  <form method="dialog"><button type="submit">Fechar</button></form>
+  <h2 id="nox-checkout-title">Comprar série</h2><p>Valor: <strong>R$ 4,00</strong> por Pix</p>
+  <form id="nox-checkout-form"><label for="nox-checkout-email">E-mail</label>
+  <input type="email" id="nox-checkout-email" autocomplete="email" required maxlength="254" style="width:100%;padding:12px;margin:12px 0">
+  <button id="nox-checkout-submit" type="submit">Gerar Pix</button></form>
+  <p id="nox-checkout-message" role="status"></p>
+  <div id="nox-checkout-pix" hidden>
+  <img id="nox-checkout-qr" alt="QR Code Pix" width="240" hidden>
+  <label for="nox-checkout-code">Pix copia e cola</label><input id="nox-checkout-code" readonly style="width:100%;padding:10px">
+  <button id="nox-checkout-copy" type="button">Copiar código</button>
+  <p><a id="nox-checkout-ticket" hidden target="_blank" rel="noopener noreferrer">Ver instruções</a></p></div>
+</dialog>
+<script src="./checkout.js"></script>
+
 <script>
 "use strict";
 const CATALOG_API="https://noxplay-api-stage.onrender.com";
@@ -36,6 +51,7 @@ const status=document.getElementById("status");
 const search=document.getElementById("pesquisa");
 let all=[];
 let reservationsEnabled=false;
+let checkoutEnabled=false;
 let lastCatalogSync=null;
 async function reservarSerie(serie,button){
   if(!reservationsEnabled)return;
@@ -61,15 +77,16 @@ function render(){
     const h2=document.createElement("h2");h2.textContent=s.titulo;
     const amount=document.createElement("strong");amount.textContent=price;
     const button=document.createElement("button");button.className="nox-button";button.disabled=true;
-    button.textContent=reservationsEnabled?"Reservar sem pagar":"Compra em preparação";button.title="Pix NoxPlay ainda não está configurado";
-    button.disabled=!reservationsEnabled;
-    button.addEventListener("click",()=>reservarSerie(s,button));
+    button.textContent=checkoutEnabled?"Comprar por Pix":reservationsEnabled?"Reservar sem pagar":"Compra em preparação";button.title=checkoutEnabled?"Pagamento Pix":"Pix NoxPlay ainda está em preparação";
+    button.disabled=!(checkoutEnabled||reservationsEnabled);
+    button.addEventListener("click",()=>checkoutEnabled?NoxCheckout.open(s):reservarSerie(s,button));
     content.append(h2,amount,button);article.append(img,content);fragment.append(article);
   }
   grid.replaceChildren(fragment);
 }
 search.addEventListener("input",render);
 async function load(){
+  checkoutEnabled=await NoxCheckout.initialize();
   try{
     const configResponse=await fetch(NOX_API+"/noxplay/config",{cache:"no-store"});
     if(configResponse.ok){const config=await configResponse.json();reservationsEnabled=config.loja_id==="noxplay"&&config.reservas_habilitadas===true&&config.checkout_habilitado===false;}
@@ -89,7 +106,7 @@ async function load(){
       if(seen.has(id))return false;seen.add(id);return true;
     });
     lastCatalogSync=new Date();
-    status.textContent=all.length+" séries disponíveis, sincronizadas com a DPlay às "+lastCatalogSync.toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit"})+". Compras NoxPlay ainda não estão habilitadas."+(reservationsEnabled?" Reservas gratuitas estão disponíveis.":"");
+    status.textContent=all.length+" séries disponíveis, sincronizadas com a DPlay às "+lastCatalogSync.toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit"})+". (checkoutEnabled?"Compras Pix habilitadas.":"Compras NoxPlay ainda não estão habilitadas.")+(reservationsEnabled?" Reservas gratuitas estão disponíveis.":"");
     render();
   }catch(e){status.textContent=lastCatalogSync ? "Falha na atualização. Exibindo "+all.length+" séries da última sincronização. Nova tentativa automática em até 2 minutos." : "O catálogo está temporariamente indisponível. Tente novamente mais tarde."}
   finally{clearTimeout(timeout)}
