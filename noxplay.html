@@ -34,6 +34,20 @@ const grid=document.getElementById("catalogo");
 const status=document.getElementById("status");
 const search=document.getElementById("pesquisa");
 let all=[];
+let reservationsEnabled=false;
+async function reservarSerie(serie,button){
+  if(!reservationsEnabled)return;
+  button.disabled=true;button.textContent="Registrando reserva...";
+  try{
+    const response=await fetch(API+"/noxplay/pedido",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({serie_id:serie.id})});
+    if(!response.ok)throw new Error("Reserva indisponível");
+    const result=await response.json();
+    if(result.status!=="rascunho"||result.pix_disponivel!==false)throw new Error("Resposta inválida");
+    status.textContent="Reserva registrada. Nenhum pagamento foi cobrado. Identificador: "+String(result.pedido_id);
+    button.textContent="Reserva registrada";
+  }catch(error){status.textContent="Não foi possível registrar a reserva. Nenhuma cobrança foi realizada.";button.disabled=!reservationsEnabled;button.textContent="Reservar sem pagar";}
+}
+
 function render(){
   const term=search.value.trim().toLocaleLowerCase("pt-BR");
   const fragment=document.createDocumentFragment();
@@ -45,13 +59,20 @@ function render(){
     const h2=document.createElement("h2");h2.textContent=s.titulo;
     const amount=document.createElement("strong");amount.textContent=price;
     const button=document.createElement("button");button.className="nox-button";button.disabled=true;
-    button.textContent="Compra em preparação";button.title="Pix NoxPlay ainda não está configurado";
+    button.textContent=reservationsEnabled?"Reservar sem pagar":"Compra em preparação";button.title="Pix NoxPlay ainda não está configurado";
+    button.disabled=!reservationsEnabled;
+    button.addEventListener("click",()=>reservarSerie(s,button));
     content.append(h2,amount,button);article.append(img,content);fragment.append(article);
   }
   grid.replaceChildren(fragment);
 }
 search.addEventListener("input",render);
 async function load(){
+  try{
+    const configResponse=await fetch(API+"/noxplay/config",{cache:"no-store"});
+    if(configResponse.ok){const config=await configResponse.json();reservationsEnabled=config.loja_id==="noxplay"&&config.reservas_habilitadas===true&&config.checkout_habilitado===false;}
+  }catch{reservationsEnabled=false;}
+
   const controller=new AbortController();
   const timeout=setTimeout(()=>controller.abort(),18000);
   try{
@@ -65,7 +86,7 @@ async function load(){
       const id=String(s.id).toLowerCase();
       if(seen.has(id))return false;seen.add(id);return true;
     });
-    status.textContent=all.length+" séries no catálogo compartilhado. Compras NoxPlay ainda não estão habilitadas.";
+    status.textContent=all.length+" séries no catálogo compartilhado. Compras NoxPlay ainda não estão habilitadas."+(reservationsEnabled?" Reservas gratuitas estão disponíveis.":"");
     render();
   }catch(e){status.textContent="O catálogo está temporariamente indisponível. Tente novamente mais tarde."}
   finally{clearTimeout(timeout)}
