@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="pt-BR">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#080f23">
+<meta name="description" content="NoxPlay: descubra sua próxima série.">
+<title>NoxPlay | Catálogo de séries</title>
+
+<style>
+body{min-height:100vh;background:#080f23;color:white;font-family:system-ui,sans-serif}
+.nox-header{max-width:1160px;margin:auto;padding:24px;display:flex;justify-content:space-between;align-items:center}
+.nox-logo{font-size:2rem;font-weight:900;letter-spacing:.03em;color:white;text-decoration:none}
+.nox-logo span{color:#ba83ff}.nox-content{max-width:1160px;margin:auto;padding:22px}
+.nox-search{width:100%;max-width:550px;box-sizing:border-box;padding:16px;border-radius:12px;background:#161c35;color:white;border:1px solid #8252c7;font-size:1rem}
+.nox-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:20px;margin-top:24px}
+.nox-card{background:#171a35;border:1px solid #383450;border-radius:16px;overflow:hidden}
+.nox-card img{width:100%;aspect-ratio:3/4;object-fit:cover;background:#302947}
+.nox-card-content{padding:12px}.nox-card h2{font-size:1rem;line-height:1.4;min-height:2.8em;margin:0 0 12px}
+.nox-card strong{color:#f27fd0}.nox-button{background:#6846a2;color:white;border:0;border-radius:10px;padding:12px;width:100%;margin-top:10px;opacity:.8}
+.nox-notice{background:#191d3d;border:1px solid #65468e;padding:14px;border-radius:12px;line-height:1.5}
+</style></head>
+<body>
+<header class="nox-header"><a class="nox-logo" href="./noxplay.html">NOX<span>PLAY</span></a><span>Suas histórias, sua escolha</span></header>
+<main class="nox-content">
+<h1>Escolha sua próxima série</h1>
+<p class="nox-notice" id="status" role="status">Estamos preparando o catálogo compartilhado. Compras NoxPlay ainda não estão habilitadas.</p>
+<label for="pesquisa">Pesquisar séries</label><div><input id="pesquisa" class="nox-search" type="search" placeholder="Digite o nome da série" autocomplete="off"></div>
+<div id="catalogo" class="nox-grid" aria-live="polite"></div>
+</main>
+<script>
+"use strict";
+const CATALOG_API="https://dplay-series-api.onrender.com";
+const NOX_API="https://noxplay-api-stage.onrender.com";
+const price="R$ 4,00";
+const grid=document.getElementById("catalogo");
+const status=document.getElementById("status");
+const search=document.getElementById("pesquisa");
+let all=[];
+let reservationsEnabled=false;
+async function reservarSerie(serie,button){
+  if(!reservationsEnabled)return;
+  button.disabled=true;button.textContent="Registrando reserva...";
+  try{
+    const response=await fetch(NOX_API+"/noxplay/pedido",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({serie_id:serie.id})});
+    if(!response.ok)throw new Error("Reserva indisponível");
+    const result=await response.json();
+    if(result.status!=="rascunho"||result.pix_disponivel!==false)throw new Error("Resposta inválida");
+    status.textContent="Reserva registrada. Nenhum pagamento foi cobrado. Identificador: "+String(result.pedido_id);
+    button.textContent="Reserva registrada";
+  }catch(error){status.textContent="Não foi possível registrar a reserva. Nenhuma cobrança foi realizada.";button.disabled=!reservationsEnabled;button.textContent="Reservar sem pagar";}
+}
+
+function render(){
+  const term=search.value.trim().toLocaleLowerCase("pt-BR");
+  const fragment=document.createDocumentFragment();
+  for(const s of all.filter(x=>x.titulo.toLocaleLowerCase("pt-BR").includes(term))){
+    const article=document.createElement("article");article.className="nox-card";
+    const img=document.createElement("img");img.alt="Capa de "+s.titulo;
+    img.loading="lazy";img.src=CATALOG_API+"/catalogo/capa/"+encodeURIComponent(String(s.id));
+    const content=document.createElement("div");content.className="nox-card-content";
+    const h2=document.createElement("h2");h2.textContent=s.titulo;
+    const amount=document.createElement("strong");amount.textContent=price;
+    const button=document.createElement("button");button.className="nox-button";button.disabled=true;
+    button.textContent=reservationsEnabled?"Reservar sem pagar":"Compra em preparação";button.title="Pix NoxPlay ainda não está configurado";
+    button.disabled=!reservationsEnabled;
+    button.addEventListener("click",()=>reservarSerie(s,button));
+    content.append(h2,amount,button);article.append(img,content);fragment.append(article);
+  }
+  grid.replaceChildren(fragment);
+}
+search.addEventListener("input",render);
+async function load(){
+  try{
+    const configResponse=await fetch(NOX_API+"/noxplay/config",{cache:"no-store"});
+    if(configResponse.ok){const config=await configResponse.json();reservationsEnabled=config.loja_id==="noxplay"&&config.reservas_habilitadas===true&&config.checkout_habilitado===false;}
+  }catch{reservationsEnabled=false;}
+
+  const controller=new AbortController();
+  const timeout=setTimeout(()=>controller.abort(),18000);
+  try{
+    const res=await fetch(CATALOG_API+"/catalogo/series",{cache:"no-store",signal:controller.signal});
+    if(!res.ok)throw Error("Não foi possível carregar o catálogo");
+    const data=await res.json();
+    if(!Array.isArray(data.series))throw Error("Resposta inválida");
+    const seen=new Set();
+    all=data.series.filter(s=>{
+      if(!s||!s.id||typeof s.titulo!=="string"||!s.titulo.trim())return false;
+      const id=String(s.id).toLowerCase();
+      if(seen.has(id))return false;seen.add(id);return true;
+    });
+    status.textContent=all.length+" séries no catálogo compartilhado. Compras NoxPlay ainda não estão habilitadas."+(reservationsEnabled?" Reservas gratuitas estão disponíveis.":"");
+    render();
+  }catch(e){status.textContent="O catálogo está temporariamente indisponível. Tente novamente mais tarde."}
+  finally{clearTimeout(timeout)}
+}
+load();
+</script>
+</body></html>
