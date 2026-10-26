@@ -56,3 +56,27 @@ jobs:
           grep -q 'checkout_habilitado === true' noxplay-site/checkout.js
           grep -q 'NoxLibrary.save(serie,key)' noxplay-site/checkout.js
           grep -q 'NoxCheckout.initialize' noxplay-site/catalog.js
+      - name: Verify live NoxPlay website and API
+        timeout-minutes: 5
+        run: |
+          python - <<'PY'
+          import json,urllib.request,time
+          base="https://noxplay-loja-stage.onrender.com/"
+          for path,needle in [("",b"NOXPLAY"),("catalog.js",b"catalogo/series"),
+                              ("checkout.js",b"noxplay/checkout"),
+                              ("library.js",b"noxplay/player")]:
+              url=base+path
+              for attempt in range(4):
+                  try:
+                      with urllib.request.urlopen(url,timeout=50) as response:
+                          content=response.read()
+                      assert needle in content,(path,"Unexpected published script")
+                      break
+                  except (OSError,TimeoutError):
+                      if attempt==3:raise
+                      time.sleep(6)
+          with urllib.request.urlopen("https://noxplay-api-stage.onrender.com/health",timeout=50) as response:
+              state=json.load(response)
+              assert state["service"]=="noxplay" and state["status"]=="ok"
+          print("LIVE_SITE_AND_API_OK")
+          PY
