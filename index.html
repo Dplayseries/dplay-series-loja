@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#080f23"><meta name="description" content="Seu próximo capítulo começa na DPlay. Explore as séries, compre pelo Pix e encontre seu acesso na nuvem ou no Telegram.">
+<meta name="theme-color" content="#100d1b"><meta name="referrer" content="no-referrer"><meta name="description" content="Seu próximo capítulo começa na DPlay. Explore as séries, compre pelo Pix e encontre seu acesso na nuvem ou no Telegram.">
 <title>DPlay Series | Sua próxima história começa aqui</title>
 
 
@@ -13,7 +13,7 @@
 </head>
 <body>
 <a class="skip-link" href="#destaques">Pular para o catálogo</a>
-<header class="top"><div class="top-inner"><a class="brand" href="#inicio" aria-label="DPlay Series início"><img src="dplay-identidade.png" alt="Identidade DPlay"><span>DPLAY <span>SERIES</span></span></a><div class="top-actions"><span class="top-premium">SEU MOMENTO DPLAY</span><button type="button" class="search-shortcut" aria-label="Ir para pesquisa" onclick="document.getElementById('busca-topo').scrollIntoView({behavior:'smooth',block:'start'});setTimeout(()=>document.getElementById('pesquisar-series').focus(),350)">⌕</button><a class="top-link" href="./streaming.html" aria-label="Já comprei, minhas séries">Já comprei · Minhas séries</a><a class="top-link" href="https://t.me/dplaysuporteoficial" target="_blank" rel="noopener noreferrer">Fale com a DPlay ↗</a></div></div></header>
+<header class="top"><div class="top-inner"><a class="brand" href="#inicio" aria-label="DPlay Series início"><img src="dplay-identidade.png" alt="Identidade DPlay"><span>DPLAY <span>SERIES</span></span></a><div class="top-actions"><span class="top-premium">SEU MOMENTO DPLAY</span><button type="button" class="search-shortcut" aria-label="Ir para pesquisa" onclick="document.getElementById('busca-topo').scrollIntoView({behavior:'smooth',block:'start'});setTimeout(()=>document.getElementById('pesquisar-series').focus(),350)">⌕</button><a class="top-link wallet-link" href="./carteira.html">◇ Minha carteira</a><a class="top-link" href="./streaming.html" aria-label="Já comprei, minhas séries">Já comprei · Minhas séries</a><a class="top-link" href="https://t.me/dplaysuporteoficial" target="_blank" rel="noopener noreferrer">Fale com a DPlay ↗</a></div></div></header>
 <div class="search-topbar" id="busca-topo"><div class="search-topbar-inner"><label class="search-area" for="pesquisar-series"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-4-4"></path></svg><input id="pesquisar-series" type="search" placeholder="Qual história você procura?" autocomplete="off" enterkeyhint="search" aria-label="Pesquisar séries"><button id="limpar-pesquisa" class="search-clear" type="button" aria-label="Limpar pesquisa" hidden>×</button></label></div></div>
 <main class="wrap" id="inicio">
 <div class="welcome-line"><span>SEU CANTINHO DE HISTÓRIAS</span><span>PREPARE A PIPOCA, A ESCOLHA É SUA</span></div>
@@ -33,11 +33,16 @@
 
 <section id="grupo-vip" class="vip-art-banner" aria-label="Grupo VIP DPlay, assinatura mensal de R$ 19,90">
   <div class="vip-art-visual">
-    <img class="vip-art-image" src="./vip-grupo-banner.jpg" width="1200" height="582" loading="eager" fetchpriority="high" decoding="async" alt="Grupo VIP DPlay por R$ 19,90 por mês">
+    <img class="vip-art-image" src="./vip-grupo-banner.jpg" width="1200" height="582" loading="lazy" decoding="async" alt="Grupo VIP DPlay por R$ 19,90 por mês">
     <button class="vip-art-button" type="button" aria-label="Quero acessar o Grupo VIP por R$ 19,90 por mês" title="Quero acessar o Grupo VIP" onclick="abrirCheckout(null,true)"><span>Quero acessar o VIP</span></button>
   </div>
   <p class="vip-art-description">Novidades da DPlay, avisos de novos títulos e um espaço exclusivo para quem ama séries — tudo em um só lugar.</p>
 </section>
+
+<section id="combos" aria-labelledby="combo-title" class="combos-section">
+<div class="section-head"><div><span class="section-kicker">MAIS PLAY, MAIS VANTAGENS</span><h2 id="combo-title">Histórias para<br><em>levar juntas.</em></h2></div><a class="hero-secondary" href="./carteira.html">Minha carteira ↗</a></div>
+<div class="combo-grid"><article class="combo-card"><span class="eyebrow">SEU PRIMEIRO PLAY</span><h3>Uma história</h3><strong>R$ 4<span>,00</span></strong><p>1 crédito para escolher a série que quiser.</p><a class="secondary-button" href="./carteira.html">Adicionar crédito ↗</a></article><article class="combo-card featured"><span class="eyebrow">COMBO DPLAY</span><h3>Três histórias</h3><strong>R$ 10<span>,00</span></strong><p>3 créditos. Escolha suas séries agora ou depois.</p><a class="buy" href="./carteira.html">Quero este combo ↗</a></article><article class="combo-card"><span class="eyebrow">PARA MARATONAR</span><h3>Cinco histórias</h3><strong>R$ 15<span>,00</span></strong><p>5 créditos para fazer sua própria maratona.</p><a class="secondary-button" href="./carteira.html">Quero cinco séries ↗</a></article></div>
+<p class="fineprint">Cada série custa 1 crédito. Combos e saldo ficam na sua carteira. Grupo VIP vendido separadamente.</p></section>
 
 <section id="top-semana" hidden aria-label="Escolhas da comunidade">
   <div class="section-head"><div><span class="section-kicker">A COMUNIDADE ESCOLHEU</span><h2>Histórias em <em>destaque</em></h2></div><small>Pedidos confirmados</small></div>
@@ -72,7 +77,7 @@
 <footer class="footer"><div><strong>DPlay Series</strong><br>Histórias para acompanhar o seu momento.</div><div>Precisou de uma mão? <a href="https://t.me/dplaysuporteoficial" target="_blank" rel="noopener noreferrer">Fale com a gente ↗</a><br>© DPlay Series · Entretenimento digital</div></footer>
 <div id="modal" class="modal" hidden role="dialog" aria-modal="true" aria-labelledby="modal-title"><div class="dialog checkout-dialog">
 <button id="fechar" class="xclose" type="button" aria-label="Fechar">×</button>
-<div id="etapa-confirmar"><span class="eyebrow">✦ Checkout DPlay</span><h2 id="modal-title">Confirmar pedido</h2><div class="order-summary"><img src="" alt="Capa da série selecionada"><div><strong>Série selecionada</strong><small>Série completa · Acesso digital</small><b>R$ 4,00</b></div></div><div class="total"><span>Total a pagar</span><strong>R$ 4,00</strong></div><button id="gerar-pix" class="buy" type="button">◆ GERAR PIX — R$ 4,00</button><p class="fineprint">Depois de pagar, toque em “Acompanhar minha compra” para saber como assistir.</p></div>
+<div id="etapa-confirmar"><span class="eyebrow">✦ Checkout DPlay</span><h2 id="modal-title">Confirmar pedido</h2><div class="order-summary"><img src="" alt="Capa da série selecionada"><div><strong>Série selecionada</strong><small>Série completa · Acesso digital</small><b>R$ 4,00</b></div></div><div class="total"><span>Total a pagar</span><strong>R$ 4,00</strong></div><button id="gerar-pix" class="buy" type="button">◆ GERAR PIX — R$ 4,00</button><a id="usar-creditos" class="secondary-button" href="./carteira.html">Comprar com 1 crédito da carteira</a><p class="fineprint">Depois de pagar, toque em “Acompanhar minha compra” para saber como assistir.</p></div>
 <div id="etapa-pix" hidden><span class="eyebrow">✦ Pagamento Pix</span><h2>Pagamento via Pix</h2><p class="checkout-sub">Série selecionada <b>— R$ 4,00</b></p><div id="payment-status" class="payment-status" role="status">Preparando checkout...</div><div id="pix-conteudo" hidden><img id="pix-qr" class="pix-qr" alt="QR Code Pix do Mercado Pago"><label for="pix-codigo" class="pix-label">Pix Copia e Cola</label><textarea id="pix-codigo" readonly rows="4"></textarea><button class="buy" id="copiar-pix" type="button">Copiar código PIX</button>
 <a id="lembrete-telegram" class="buy" target="_blank" rel="noopener noreferrer" hidden style="display:block;text-align:center;margin-top:12px;background:linear-gradient(110deg,#6138b6,#a72bc5);text-decoration:none">🔔 Receber lembrete no Telegram</a>
 <p style="font-size:14px;color:#c7b7d6;margin:8px 0 0">Opcional: apenas 1 aviso se o Pix continuar pendente após 30 minutos.</p></div><a class="buy" id="meu-pedido" hidden style="display:block;text-align:center;margin-top:14px;text-decoration:none">Acompanhar minha compra</a><button class="back-btn" id="copiar-acesso" type="button" hidden>Copiar link da minha compra</button><button class="back-btn" id="tentar-pix" type="button" hidden>Tentar gerar Pix novamente</button><button class="back-btn" id="voltar-confirmar" type="button">← Voltar ao pedido</button></div>
@@ -86,6 +91,10 @@ let serieSelecionada=null;
 let vipSelecionado=false;
 let ultimoFocoCheckout=null;
 function abrirCheckout(serie=null,vip=false){
+  pollGeneration++;
+  const walletLink=document.getElementById('usar-creditos');
+  walletLink.hidden=vip||!serie;
+  walletLink.href='./carteira.html'+(serie?'?serie='+encodeURIComponent(serie.id):'');
   serieSelecionada=serie;
   vipSelecionado=vip;
   const titulo=vip ? 'Grupo VIP DPlay' : (serie ? serie.titulo : 'Série selecionada');
@@ -201,12 +210,14 @@ async function gerarPix(){
    pedidoAtual={...order,produto_local:produto};
   }
   const order=pedidoAtual;
+  const selectedProduct=produto;
   guardarPedido(order,vipSelecionado?'Grupo VIP DPlay':String(serieSelecionada?.titulo||'Minha série'));
   acompanharLink.href=linkDoPedido(order);acompanharLink.hidden=false;
   copiarAcesso.hidden=false;
   statusEl.textContent='Pedido salvo. Preparando o Pix...';
   const response=await fetch(API+'/publico/pix',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({pedido_id:order.pedido_id,resgate:order.resgate})});
   const payment=await response.json();
+  if((vipSelecionado?'grupo_vip_dplay':String(serieSelecionada?.id||''))!==selectedProduct)return;
   if(!response.ok)throw Error(payment.detail||'Pix indisponível agora.');
   document.getElementById('pix-codigo').value=payment.pix_copia_cola;
   const qr=document.getElementById('pix-qr');
@@ -229,15 +240,17 @@ copiarAcesso.addEventListener('click',async()=>{
  try{await navigator.clipboard.writeText(linkDoPedido(pedidoAtual));copiarAcesso.textContent='Link copiado';}
  catch{statusEl.textContent='Não foi possível copiar. Use o botão “Acompanhar minha compra” e salve a página.';}
 });
-let verificando=false;
+let pollGeneration=0;
 async function acompanharPedido(){
- if(verificando||!pedidoAtual)return;
- verificando=true;
+ if(!pedidoAtual)return;
+ const current=pedidoAtual;
+ const generation=++pollGeneration;
  for(let i=0;i<240;i++){
-   if(!pedidoAtual||modal.hidden)break;
+   if(pedidoAtual!==current||modal.hidden||generation!==pollGeneration)break;
    try{
      const url=API+'/publico/pedido/status?pedido_id='+encodeURIComponent(pedidoAtual.pedido_id)+'&resgate='+encodeURIComponent(pedidoAtual.resgate);
      const r=await fetch(url);const d=await r.json();
+     if(pedidoAtual!==current||modal.hidden||generation!==pollGeneration)break;
      if(r.ok&&d.status==='aprovado'){
        const cloud=d.rota_entrega==='nuvem'&&typeof d.acesso_url==='string'&&d.acesso_url.startsWith('https://dplayseries.github.io/dplay-series-loja/streaming.html#');
        const waiting=d.rota_entrega==='aguardando_nuvem';
@@ -257,7 +270,7 @@ async function acompanharPedido(){
    }catch(e){}
    await new Promise(resolve=>setTimeout(resolve,15000+Math.floor(Math.random()*3000)));
  }
- verificando=false;
+
 }
 document.getElementById('copiar-pix').addEventListener('click',async()=>{
  const codigo=document.getElementById('pix-codigo').value;

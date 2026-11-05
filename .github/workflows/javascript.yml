@@ -14,13 +14,14 @@ jobs:
         run: |
           node <<'NODE'
           const fs=require('fs'),vm=require('vm');
-          for(const path of ['index.html','streaming.html']){
+          for(const path of ['index.html','streaming.html','carteira.html','checkout.html']){
             const html=fs.readFileSync(path,'utf8');
             const scripts=[...html.matchAll(new RegExp('<script[^>]*>([^]*?)</script>','g'))];
             if(!scripts.length)throw new Error('No scripts found: '+path);
             for(const match of scripts)new vm.Script(match[1],{filename:path});
             console.log(path+': scripts validos');
           }
+          new vm.Script(fs.readFileSync('wallet.js','utf8'),{filename:'wallet.js'});
           NODE
       - name: Simulate payment and delivery states
         run: node tests/access-flow.cjs
