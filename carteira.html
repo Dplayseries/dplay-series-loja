@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="referrer" content="no-referrer"><meta name="theme-color" content="#100d1b">
+<title>Minha carteira | DPlay Series</title>
+<link rel="stylesheet" href="dplay.css">
+</head>
+<body class="wallet-page">
+<header class="top"><div class="top-inner"><a class="brand" href="./index.html"><img src="dplay-identidade.png" alt=""><span>DPLAY <span>SERIES</span></span></a><a class="top-link" href="./index.html#destaques">← Explorar séries</a></div></header>
+<main class="wallet-wrap">
+<span class="eyebrow">MAIS HISTÓRIAS, MAIS VANTAGENS</span><h1>Seu próximo play<br>já tem <em>lugar.</em></h1>
+<p class="wallet-intro">Escolha um combo, pague com Pix e use os créditos nas séries que quiser. Cada série custa 1 crédito. O VIP é comprado separadamente.</p>
+<section class="wallet-balance" aria-label="Saldo da carteira"><div><span>MINHA CARTEIRA DPLAY</span><h2 id="balance">— créditos</h2><p id="wallet-status" role="status">Abra sua carteira para consultar o saldo.</p></div><button class="secondary-button" id="refresh" type="button" disabled>Atualizar saldo</button></section>
+<div id="wallet-start" class="wallet-panel"><h2>Comece por aqui</h2><p>Crie uma carteira ou recupere uma que você já usa.</p><button class="buy" id="create" type="button">Criar minha carteira</button></div>
+<section id="selected" class="wallet-panel" hidden><span class="eyebrow">SUA ESCOLHA</span><h2 id="selected-title">Série selecionada</h2><p>Use 1 crédito para liberar esta série.</p><button class="buy" id="spend" type="button" disabled>Comprar por 1 crédito</button><a id="selected-access" class="secondary-button" hidden>Abrir minha série ↗</a></section>
+<section aria-labelledby="packs-title"><div class="section-head"><div><span class="section-kicker">VOCÊ ESCOLHE O RITMO</span><h2 id="packs-title">Mais séries.<br><em>Menos por história.</em></h2></div></div><div id="packs" class="combo-grid" aria-busy="true"></div></section>
+<section id="payment" class="wallet-panel" hidden aria-labelledby="payment-title"><h2 id="payment-title">Adicionar créditos com Pix</h2><p id="pix-status" role="status"></p><div id="pix-content" hidden><img id="qr" class="pix-qr" alt="QR Code Pix"><label for="pix-code">Pix Copia e Cola</label><textarea id="pix-code" readonly rows="4"></textarea><button id="copy-pix" class="buy" type="button">Copiar código Pix</button></div><button class="secondary-button" id="check-payment" type="button">Verificar pagamento</button><button class="secondary-button" id="retry-pix" type="button" hidden>Tentar gerar Pix novamente</button></section>
+<section id="purchases-panel" class="wallet-panel" hidden><h2>Suas séries</h2><div id="purchases"></div></section>
+<details class="wallet-panel"><summary>Guardar ou recuperar minha carteira</summary><p>Salve seu código em um lugar seguro. Ele permite recuperar o saldo em outro aparelho. Quem tiver esse código poderá usar seus créditos.</p><label for="recovery-code">Código da carteira atual</label><input id="recovery-code" readonly autocomplete="off"><button id="copy-code" class="secondary-button" type="button">Copiar meu código</button><hr><label for="restore-code">Já tenho uma carteira</label><input id="restore-code" placeholder="Cole seu código aqui" autocomplete="off" spellcheck="false"><button id="restore" class="secondary-button" type="button">Recuperar carteira</button><p id="recovery-status" role="status"></p></details>
+<section id="history-panel" class="wallet-panel" hidden><h2>Extrato de créditos</h2><div id="history"></div></section>
+<p class="fineprint">Os créditos são liberados após a confirmação do Pix. A carteira fica salva neste navegador; guarde o código para usar em outro aparelho.</p>
+<a class="state-support" href="https://t.me/dplaysuporteoficial" target="_blank" rel="noopener noreferrer">Precisa de ajuda? Fale com a DPlay ↗</a>
+</main><script src="wallet.js" defer></script>
+</body></html>
