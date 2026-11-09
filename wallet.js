@@ -118,7 +118,7 @@
    $('packs').setAttribute('aria-busy','false');
   }catch(e){state(e.message)}
   if(code){await refresh();try{const pending=JSON.parse(store.get('dplay_wallet_pending_v1')||'null');if(pending?.wallet===code.slice(-12)){order=pending;$('payment').hidden=false;$('pix-status').textContent='Você tem um Pix iniciado. Verifique o pagamento ou continue abaixo.';$('retry-pix').hidden=false;watch()}}catch{}}
-  if(sid){$('selected').hidden=false;try{const catalog=await api('/catalogo/series');const series=catalog.series.find(item=>item.id===sid);if(series)$('selected-title').textContent=series.titulo;else{$('selected-title').textContent='Série indisponível';$('spend').hidden=true}}catch{}}
+  if(sid){$('selected').hidden=false;try{const series=await api('/catalogo/series/'+encodeURIComponent(sid));$('selected-title').textContent=series.titulo}catch{$('selected-title').textContent='Não foi possível conferir esta série. Atualize a página para tentar novamente.';$('spend').hidden=true}}
  }
  start();
 })();
