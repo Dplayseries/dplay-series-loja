@@ -1,0 +1,82 @@
+name: NoxPlay storefront checks
+on:
+  push:
+    branches: [feature/noxplay-multiloja]
+    paths:
+      - 'noxplay-site/**'
+      - '.github/workflows/noxplay-site-check.yml'
+  pull_request:
+    paths:
+      - 'noxplay-site/**'
+      - '.github/workflows/noxplay-site-check.yml'
+permissions:
+  contents: read
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validate NoxPlay browser scripts
+        run: |
+          node --check noxplay-site/checkout.js
+          node --check noxplay-site/library.js
+          node --check noxplay-site/catalog.js
+      - name: Validate accessible storefront and checkout gates
+        run: |
+          python - <<'PY'
+          from html.parser import HTMLParser
+          from pathlib import Path
+          text=Path("noxplay-site/index.html").read_text()
+          required={"catalogo", "catalog-counter", "catalog-total", "catalog-retry",
+            "catalog-empty", "catalog-more", "status", "pesquisa", "ordenacao",
+            "nox-details", "nox-details-title", "nox-details-cover",
+            "nox-details-buy", "nox-details-share", "nox-details-feedback",
+            "nox-library-show", "nox-library-area", "nox-library-list",
+            "nox-library-empty", "nox-checkout-dialog", "nox-checkout-title",
+            "nox-checkout-form", "nox-checkout-email", "nox-checkout-submit",
+            "nox-checkout-message", "nox-checkout-pix", "nox-checkout-code",
+            "nox-checkout-qr", "nox-checkout-ticket", "nox-checkout-copy",
+            "nox-player-dialog", "nox-player-title", "nox-player-status",
+            "nox-player-episodes", "nox-player-video"}
+          class Parser(HTMLParser):
+              def __init__(self):
+                  super().__init__(); self.ids=[]; self.scripts=[]
+              def handle_starttag(self,tag,attrs):
+                  a=dict(attrs)
+                  if "id" in a:self.ids.append(a["id"])
+                  if tag=="script" and a.get("src"):self.scripts.append(a["src"])
+          p=Parser();p.feed(text)
+          assert required.issubset(p.ids),required-set(p.ids)
+          assert len(p.ids)==len(set(p.ids)),"duplicate DOM ids"
+          assert p.scripts==["./library.js","./checkout.js","./catalog.js"],p.scripts
+          PY
+          grep -q 'checkout_habilitado === true' noxplay-site/checkout.js
+          grep -q 'NoxLibrary.save(serie,key)' noxplay-site/checkout.js
+          grep -q 'NoxCheckout.initialize' noxplay-site/catalog.js
+      - name: Verify live NoxPlay website and API
+        timeout-minutes: 5
+        run: |
+          python - <<'PY'
+          import json,urllib.request,time
+          base="https://noxplay-loja-stage.onrender.com/"
+          for path,needle in [("",b"NOXPLAY"),("catalog.js",b"catalogo/series"),
+                              ("checkout.js",b"noxplay/checkout"),
+                              ("library.js",b"noxplay/player")]:
+              url=base+path
+              for attempt in range(4):
+                  try:
+                      with urllib.request.urlopen(url,timeout=50) as response:
+                          content=response.read()
+                      assert needle in content,(path,"Unexpected published script")
+                      break
+                  except (OSError,TimeoutError):
+                      if attempt==3:raise
+                      time.sleep(6)
+          with urllib.request.urlopen("https://noxplay-api-stage.onrender.com/health",timeout=50) as response:
+              state=json.load(response)
+              assert state["service"]=="noxplay" and state["status"]=="ok"
+          print("LIVE_SITE_AND_API_OK")
+          PY
