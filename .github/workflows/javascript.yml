@@ -27,3 +27,6 @@ jobs:
         run: node tests/access-flow.cjs
       - name: Preserve existing wallet series links
         run: node tests/wallet-catalog.cjs
+      - name: Prevent stale checkout responses
+        run: node tests/checkout-race.cjs
+

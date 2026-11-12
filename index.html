@@ -192,6 +192,11 @@ function guardarPedido(order,titulo){
 }
 async function gerarPix(){
  if(btnPix.disabled)return;
+ const selectedSeries=serieSelecionada;
+ const selectedVip=vipSelecionado;
+ const selectedProduct=selectedVip?'grupo_vip_dplay':String(selectedSeries?.id||'');
+ const selectedGeneration=pollGeneration;
+ const stillSelected=()=>!modal.hidden&&pollGeneration===selectedGeneration;
  btnPix.disabled=true;tentarPix.hidden=true;
  confirmar.hidden=true;pix.hidden=false;
  document.getElementById('pix-conteudo').hidden=true;
@@ -199,25 +204,26 @@ async function gerarPix(){
  const linkAnterior=document.getElementById('resgatar-serie');if(linkAnterior)linkAnterior.hidden=true;
  statusEl.textContent='Preparando seu pedido...';
  try{
-  const checkoutData=vipSelecionado?{produto:'grupo_vip_dplay'}:(serieSelecionada?{serie_id:serieSelecionada.id}:{});
-  const produto=vipSelecionado?'grupo_vip_dplay':String(serieSelecionada?.id||'');
+  const checkoutData=selectedVip?{produto:'grupo_vip_dplay'}:(selectedSeries?{serie_id:selectedSeries.id}:{});
+  const produto=selectedProduct;
   if(!pedidoAtual||pedidoAtual.produto_local!==produto){
    const signedTelegramData=window.Telegram?.WebApp?.initData;
    if(signedTelegramData)checkoutData.init_data=signedTelegramData;
    const response=await fetch(API+'/publico/pedido',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(checkoutData)});
    const order=await response.json();
    if(!response.ok)throw Error(order.detail||'Não foi possível criar seu pedido.');
+   guardarPedido(order,selectedVip?'Grupo VIP DPlay':String(selectedSeries?.titulo||'Minha série'));
+   if(!stillSelected())return;
    pedidoAtual={...order,produto_local:produto};
   }
   const order=pedidoAtual;
-  const selectedProduct=produto;
-  guardarPedido(order,vipSelecionado?'Grupo VIP DPlay':String(serieSelecionada?.titulo||'Minha série'));
+  guardarPedido(order,selectedVip?'Grupo VIP DPlay':String(selectedSeries?.titulo||'Minha série'));
   acompanharLink.href=linkDoPedido(order);acompanharLink.hidden=false;
   copiarAcesso.hidden=false;
   statusEl.textContent='Pedido salvo. Preparando o Pix...';
   const response=await fetch(API+'/publico/pix',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({pedido_id:order.pedido_id,resgate:order.resgate})});
   const payment=await response.json();
-  if((vipSelecionado?'grupo_vip_dplay':String(serieSelecionada?.id||''))!==selectedProduct)return;
+  if(!stillSelected())return;
   if(!response.ok)throw Error(payment.detail||'Pix indisponível agora.');
   document.getElementById('pix-codigo').value=payment.pix_copia_cola;
   const qr=document.getElementById('pix-qr');
@@ -229,6 +235,7 @@ async function gerarPix(){
   statusEl.textContent='Pix pronto. Depois de pagar, toque em “Acompanhar minha compra”.';
   acompanharPedido();
  }catch{
+  if(!stillSelected())return;
   statusEl.textContent='Não conseguimos preparar o Pix agora. Seu pedido está salvo, se já foi criado. Toque abaixo para tentar novamente.';
   tentarPix.hidden=false;
  }finally{btnPix.disabled=false;}
@@ -383,4 +390,5 @@ carregarCatalogoDplay();
 
 </script>
 </body></html>
+
 
