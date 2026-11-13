@@ -29,4 +29,7 @@ jobs:
         run: node tests/wallet-catalog.cjs
       - name: Prevent stale checkout responses
         run: node tests/checkout-race.cjs
+      - name: Search previews and title ranking
+        run: node --test tests/title-search.cjs
+
 
