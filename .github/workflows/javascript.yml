@@ -31,5 +31,8 @@ jobs:
         run: node tests/checkout-race.cjs
       - name: Search previews and title ranking
         run: node --test tests/title-search.cjs
+      - name: Reference recovery never charges or exposes private data
+        run: node --test tests/reference-recovery.cjs
+
 
 
