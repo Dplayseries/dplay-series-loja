@@ -31,6 +31,7 @@
   
 </section>
 
+<p id="catalogo-referencia" class="catalog-loading" role="status" hidden>Vitrine recuperada de uma cópia anterior. Consulte disponibilidade e preço no <a href="https://t.me/dplaysuporteoficial" target="_blank" rel="noopener noreferrer">atendimento pelo Telegram</a>. Compras automáticas temporariamente indisponíveis. Já pagou? Não gere outro Pix para o mesmo pedido.</p>
 <section id="destaques" aria-labelledby="catalogo-titulo" tabindex="-1">
   <div class="section-head"><div><span class="section-kicker">EXPLORE NO SEU RITMO</span><h2 id="catalogo-titulo">Qual vai ser o<br>seu próximo <em>play?</em></h2></div><small id="total-series" aria-live="polite">Buscando suas próximas histórias…</small></div>
   <div class="chips"><a class="chip active" href="#destaques">Todas as séries</a><a class="chip" href="#busca-topo" onclick="document.getElementById('pesquisar-series').focus()">Encontrar um título</a><a class="chip" href="https://t.me/dplaysuporteoficial" target="_blank" rel="noopener noreferrer">Me ajuda a escolher ♡</a></div>
@@ -158,10 +159,12 @@ function wireTitleSuggestions(input,panel){
 const modal=document.getElementById('modal');
 const confirmar=document.getElementById('etapa-confirmar');
 const pix=document.getElementById('etapa-pix');
+let catalogoReferencia=false;
 let serieSelecionada=null;
 let vipSelecionado=false;
 let ultimoFocoCheckout=null;
 function abrirCheckout(serie=null,vip=false){
+  if(catalogoReferencia){location.href='https://t.me/dplaysuporteoficial';return;}
   pollGeneration++;
   const walletLink=document.getElementById('usar-creditos');
   walletLink.hidden=vip||!serie;
@@ -395,22 +398,22 @@ function criarCardSerie(serie){
  const card=document.createElement('article');card.className='card';card.dataset.seriesId=String(serie.id);
  const poster=document.createElement('div');poster.className='poster';
  const img=document.createElement('img');
- img.src=API+'/catalogo/capa/'+encodeURIComponent(String(serie.id));
+ if(!catalogoReferencia)img.src=API+'/catalogo/capa/'+encodeURIComponent(String(serie.id));else{img.hidden=true;poster.classList.add('cover-unavailable');}
  img.alt='Capa de '+serie.titulo;img.loading='lazy';img.decoding='async';img.width=300;img.height=400;
  img.addEventListener('error',()=>{img.hidden=true;poster.classList.add('cover-unavailable');},{once:true});
- const pill=document.createElement('span');pill.className='pill';pill.textContent='Acesso digital';
+ const pill=document.createElement('span');pill.className='pill';pill.textContent=catalogoReferencia?'Consultar disponibilidade':'Acesso digital';
  poster.append(img,pill);
  const info=document.createElement('div');info.className='info';
  const title=document.createElement('h3');title.textContent=serie.titulo;title.title=serie.titulo;
  const genre=document.createElement('p');genre.className='genre';genre.textContent='Para o seu próximo play';
  const priceRow=document.createElement('div');priceRow.className='price-row';
- const caption=document.createElement('span');caption.className='price-caption';caption.textContent='Sua série por';
- const price=document.createElement('span');price.className='price';price.textContent='R$ 4,00';
+ const caption=document.createElement('span');caption.className='price-caption';caption.textContent=catalogoReferencia?'Atendimento pelo Telegram':'Sua série por';
+ const price=document.createElement('span');price.className='price';price.textContent=catalogoReferencia?'Consultar':'R$ 4,00';
  priceRow.append(caption,price);
  const button=document.createElement('button');button.className='buy';button.type='button';
- button.textContent='Quero essa série';button.setAttribute('aria-label','Ver pedido de '+serie.titulo+' por R$ 4,00');
+ button.textContent=catalogoReferencia?'Consultar no Telegram':'Quero essa série';button.setAttribute('aria-label','Ver pedido de '+serie.titulo+' por R$ 4,00');
  button.addEventListener('click',()=>abrirCheckout({id:String(serie.id),titulo:serie.titulo}));
- const note=document.createElement('div');note.className='assurance';note.textContent='Liberada após a confirmação do Pix';
+ const note=document.createElement('div');note.className='assurance';note.textContent=catalogoReferencia?'Confirme o título com o atendimento':'Liberada após a confirmação do Pix';
  info.append(title,genre,priceRow,button,note);card.append(poster,info);
  return card;
 }
@@ -431,10 +434,21 @@ async function carregarCatalogoDplay(){
  const controller=new AbortController();
  const timeout=setTimeout(()=>controller.abort(),18000);
  try{
-  const response=await fetch(API+'/catalogo/series',{signal:controller.signal,cache:'no-store'});
-  if(!response.ok)throw new Error('Catálogo indisponível');
-  const data=await response.json();
-  if(!Array.isArray(data.series))throw new Error('Resposta inválida');
+  let data;
+  try{
+   const response=await fetch(API+'/catalogo/series',{signal:controller.signal,cache:'no-store'});
+   if(!response.ok)throw new Error('Catálogo indisponível');
+   data=await response.json();if(!Array.isArray(data.series))throw new Error('Resposta inválida');
+   catalogoReferencia=false;
+  }catch{
+   const reference=await fetch('./catalogo-recuperado.json',{cache:'no-store'});
+   if(!reference.ok)throw new Error('Referência indisponível');
+   const snapshot=await reference.json();
+   if(snapshot.mode!=='reference_only'||!Array.isArray(snapshot.series))throw new Error('Referência inválida');
+   data={series:snapshot.series.map(item=>({id:item.id,titulo:item.title}))};catalogoReferencia=true;
+  }
+  document.getElementById('catalogo-referencia').hidden=!catalogoReferencia;
+  document.getElementById('combos').hidden=catalogoReferencia;document.getElementById('grupo-vip').hidden=catalogoReferencia;
   const ids=new Set();
   const series=data.series.filter(serie=>{
    if(!serie||typeof serie.titulo!=='string'||!serie.titulo.trim()||!serie.id)return false;
@@ -446,7 +460,7 @@ async function carregarCatalogoDplay(){
   const fragment=document.createDocumentFragment();
   for(const serie of series)fragment.append(criarCardSerie(serie));
   grade.replaceChildren(fragment);
-  total.textContent=series.length.toLocaleString('pt-BR')+' '+(series.length===1?'série disponível':'séries disponíveis');
+  total.textContent=series.length.toLocaleString('pt-BR')+' '+(catalogoReferencia?'títulos de referência':(series.length===1?'série disponível':'séries disponíveis'));
   grade.hidden=series.length===0;catalogoEstado=series.length?'ready':'empty';
   if(!series.length){
    document.getElementById('catalogo-estado-titulo').textContent='Novas histórias estão a caminho.';
@@ -454,7 +468,7 @@ async function carregarCatalogoDplay(){
    estado.hidden=false;
   }
   filtrarSeries();
-  atualizarTopSemana(series);
+  if(!catalogoReferencia)atualizarTopSemana(series);
  }catch{
   catalogoEstado='error';total.textContent='Vamos tentar de novo?';grade.replaceChildren();
   document.getElementById('catalogo-estado-titulo').textContent='O catálogo demorou um pouquinho.';
@@ -470,6 +484,7 @@ carregarCatalogoDplay();
 
 </script>
 </body></html>
+
 
 
 
