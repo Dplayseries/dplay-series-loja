@@ -9,7 +9,7 @@
 
 
 
-<link rel="stylesheet" href="./dplay.css?v=20261118-neon">
+<link rel="stylesheet" href="./dplay.css?v=20261118-populares">
 </head>
 <body class="dplay-neon">
 <a class="skip-link" href="#destaques">Pular para o catálogo</a>
@@ -35,7 +35,7 @@
 <section id="destaques" aria-labelledby="catalogo-titulo" tabindex="-1">
   <div class="section-head"><div><span class="section-kicker">EXPLORE NO SEU RITMO</span><h2 id="catalogo-titulo">Qual vai ser o<br>seu próximo <em>play?</em></h2></div><small id="total-series" aria-live="polite">Buscando suas próximas histórias…</small></div>
   <div class="chips"><button class="chip active" id="neon-all" type="button" aria-pressed="true">▶ Todas as séries</button><a class="chip" href="#busca-topo" onclick="document.getElementById('pesquisar-series').focus()">☆ Encontrar um título</a><button class="chip" id="neon-discover" type="button" disabled>♡ Me ajuda a escolher</button><button class="chip" id="neon-saved" type="button" aria-pressed="false">♥ Minha lista <span id="neon-count">0</span></button></div>
-  <section class="neon-shelf" id="neon-shelf" hidden aria-labelledby="neon-heading"><div class="neon-heading"><h3 id="neon-heading">♛ Séries em destaque</h3><a href="#catalogo-completo">Ver todas →</a></div><div id="neon-rail" class="neon-rail"></div></section><div id="catalogo-completo" class="neon-heading" tabindex="-1"><h3>✦ Catálogo DPlay</h3></div>
+  <section class="neon-shelf" id="neon-shelf" hidden aria-labelledby="neon-heading"><div class="neon-heading"><h3 id="neon-heading">♛ Mais populares</h3><a href="#catalogo-completo">Ver todas →</a></div><p id="neon-ranking-status" class="search-feedback" role="status">Carregando os títulos mais vendidos…</p><div id="neon-rail" class="neon-rail"></div></section><div id="catalogo-completo" class="neon-heading" tabindex="-1"><h3>✦ Catálogo DPlay</h3></div>
   <p id="resultado-pesquisa" class="search-feedback" role="status" aria-live="polite"></p>
   <p id="nenhuma-serie" class="search-empty" hidden><strong>Ainda não encontramos esse título.</strong>Tente parte do nome ou outra palavra.<br><button id="limpar-busca-vazia" class="secondary-button" type="button">Ver todas as séries</button></p>
   <p id="catalogo-aviso" class="catalog-loading" role="status" aria-live="polite">Preparando o catálogo para você…</p>
@@ -217,35 +217,27 @@ document.addEventListener('keydown',event=>{
 let pedidoAtual=null;
 // Pagamentos ficam indisponíveis enquanto a API estiver em homologação.
 const API='https://dplay-series-api.onrender.com';
+let rankingLoading=false;
 async function atualizarTopSemana(series){
- const secao=document.getElementById('top-semana');
- const lista=document.getElementById('top-semana-lista');
- secao.hidden=true;
+ if(rankingLoading)return;
+ rankingLoading=true;
+ const status=document.getElementById('neon-ranking-status');
  const controller=new AbortController();
  const timer=setTimeout(()=>controller.abort(),15000);
  try{
   const response=await fetch(API+'/catalogo/mais-assistidas',{cache:'no-store',signal:controller.signal});
-  if(!response.ok)return;
+  if(!response.ok)throw new Error('Ranking indisponível');
   const ranking=await response.json();
-  if(!ranking.exibir||!Array.isArray(ranking.series)||!ranking.series.length)return;
-  const porId=new Map(series.map(serie=>[String(serie.id),serie]));
-  const cards=document.createDocumentFragment();
-  ranking.series.forEach((item,indice)=>{
-   const serie=porId.get(String(item.id));
-   if(!serie)return;
-   const card=document.createElement('button');card.className='ranking-card';card.type='button';
-   const img=document.createElement('img');
-   img.src=API+'/catalogo/capa/'+encodeURIComponent(serie.id);
-   img.alt='';img.loading='lazy';img.decoding='async';img.width=59;img.height=79;
-   const numero=document.createElement('span');numero.className='ranking-position';numero.textContent=String(indice+1);
-   const nome=document.createElement('span');nome.className='ranking-name';nome.textContent=serie.titulo;
-   card.append(img,numero,nome);
-   card.setAttribute('aria-label','Ver pedido de '+serie.titulo);
-   card.addEventListener('click',()=>abrirCheckout(serie));
-   cards.append(card);
-  });
-  lista.replaceChildren(cards);secao.hidden=lista.children.length===0;
- }catch{secao.hidden=true;}finally{clearTimeout(timer);}
+  if(!Array.isArray(ranking.series))throw new Error('Ranking inválido');
+  const porId=new Map(searchableSeries.map(serie=>[String(serie.id),serie]));
+  const seen=new Set();
+  const populares=ranking.series.filter(row=>row&&Number.isSafeInteger(row.vendas)&&row.vendas>0&&porId.has(String(row.id))).sort((a,b)=>b.vendas-a.vendas||String(a.id).localeCompare(String(b.id))).filter(row=>{const id=String(row.id);if(seen.has(id))return false;seen.add(id);return true;}).slice(0,5).map(row=>porId.get(String(row.id)));
+  if(catalogoEstado!=='ready'||catalogoReferencia)return;
+  renderNeonShelf(populares);updateFavorites();
+  status.textContent=populares.length?'':'As séries mais vendidas aparecem aqui após a primeira venda confirmada.';
+ }catch{
+  renderNeonShelf([]);status.textContent='Não foi possível atualizar o ranking agora.';
+ }finally{clearTimeout(timer);rankingLoading=false;}
 }
 const statusEl=document.getElementById('payment-status');
 const btnPix=document.getElementById('gerar-pix');
@@ -386,7 +378,7 @@ function renderNeonShelf(series){
  for(const item of series.slice(0,6)){
   const card=document.createElement('article');card.className='neon-feature';const open=document.createElement('button');open.type='button';open.className='neon-open';open.setAttribute('aria-label','Ver pedido de '+item.titulo);
   const img=document.createElement('img');img.src=API+'/catalogo/capa/'+encodeURIComponent(item.id);img.alt='';img.loading='lazy';img.decoding='async';img.addEventListener('error',()=>{img.hidden=true;},{once:true});
-  const name=document.createElement('span');name.className='neon-title';name.textContent=item.titulo;const play=document.createElement('span');play.className='neon-play';play.textContent='▶';
+  const name=document.createElement('span');name.className='neon-title';name.textContent=item.titulo;const play=document.createElement('span');play.className='neon-play';play.setAttribute('aria-hidden','true');play.innerHTML='<svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h2l3 13h12l3-9H5"/><circle cx="9" cy="21" r="1"/><circle cx="18" cy="21" r="1"/></svg>';
   open.append(img,name,play);open.addEventListener('click',()=>abrirCheckout(item));card.append(open,favorite(item));rail.append(card);
  }
 }
@@ -483,7 +475,7 @@ async function carregarCatalogoDplay(){
    if(ids.has(id))return false;
    ids.add(id);return true;
   });
-  searchableSeries=series;renderNeonShelf(series);document.getElementById('neon-discover').disabled=!series.length||catalogoReferencia;
+  searchableSeries=series;renderNeonShelf([]);document.getElementById('neon-ranking-status').textContent='Carregando os títulos mais vendidos…';document.getElementById('neon-discover').disabled=!series.length||catalogoReferencia;
   const fragment=document.createDocumentFragment();
   for(const serie of series)fragment.append(criarCardSerie(serie));
   grade.replaceChildren(fragment);updateFavorites();
@@ -509,6 +501,8 @@ async function carregarCatalogoDplay(){
 }
 document.getElementById('tentar-catalogo').addEventListener('click',carregarCatalogoDplay);
 carregarCatalogoDplay();
+document.addEventListener('visibilitychange',()=>{if(!document.hidden&&catalogoEstado==='ready'&&!catalogoReferencia)atualizarTopSemana(searchableSeries);});
+setInterval(()=>{if(!document.hidden&&catalogoEstado==='ready'&&!catalogoReferencia)atualizarTopSemana(searchableSeries);},60000);
 
 </script>
 </body></html>
