@@ -501,7 +501,23 @@ async function carregarCatalogoDplay(){
 }
 document.getElementById('tentar-catalogo').addEventListener('click',carregarCatalogoDplay);
 carregarCatalogoDplay();
-document.addEventListener('visibilitychange',()=>{if(!document.hidden&&catalogoEstado==='ready'&&!catalogoReferencia)atualizarTopSemana(searchableSeries);});
+let refreshingCatalog=false;
+async function refreshLiveCatalog(){
+ if(document.hidden||refreshingCatalog||catalogoEstado==='requesting'||!modal.hidden)return;
+ refreshingCatalog=true;
+ const controller=new AbortController();
+ const timeout=setTimeout(()=>controller.abort(),10000);
+ try{
+  const response=await fetch(API+'/catalogo/series',{cache:'no-store',signal:controller.signal});
+  if(!response.ok)return;
+  const data=await response.json();
+  if(!Array.isArray(data.series))return;
+  const signature=items=>JSON.stringify(items.map(s=>[String(s.id),s.titulo]));
+  if(signature(data.series)!==signature(searchableSeries)||catalogoEstado!=='ready')await carregarCatalogoDplay();
+ }catch{}finally{clearTimeout(timeout);refreshingCatalog=false;}
+}
+document.addEventListener('visibilitychange',()=>{if(!document.hidden){refreshLiveCatalog();if(catalogoEstado==='ready'&&!catalogoReferencia)atualizarTopSemana(searchableSeries);}});
+setInterval(refreshLiveCatalog,15000);
 setInterval(()=>{if(!document.hidden&&catalogoEstado==='ready'&&!catalogoReferencia)atualizarTopSemana(searchableSeries);},60000);
 
 </script>
