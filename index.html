@@ -9,11 +9,11 @@
 
 
 
-<link rel="stylesheet" href="./dplay.css?v=20261113-banner-small">
+<link rel="stylesheet" href="./dplay.css?v=20261118-neon">
 </head>
-<body>
+<body class="dplay-neon">
 <a class="skip-link" href="#destaques">Pular para o catálogo</a>
-<header class="top"><div class="top-inner"><a class="brand" href="#inicio" aria-label="DPlay Series início"><img src="dplay-identidade.png" alt="Identidade DPlay"><span>DPLAY <span>SERIES</span></span></a><div class="top-actions"><span class="top-premium">SEU MOMENTO DPLAY</span><button type="button" class="search-shortcut" aria-label="Ir para pesquisa" onclick="document.getElementById('busca-topo').scrollIntoView({behavior:'smooth',block:'start'});setTimeout(()=>document.getElementById('pesquisar-series').focus(),350)">⌕</button><a class="top-link wallet-link" href="./carteira.html">◇ Minha carteira</a><a class="top-link" href="./streaming.html" aria-label="Já comprei, minhas séries">Já comprei · Minhas séries</a><a class="top-link" href="https://t.me/dplaysuporteoficial" target="_blank" rel="noopener noreferrer">Fale com a DPlay ↗</a></div></div></header>
+<header class="top"><div class="top-inner"><a class="brand" href="#inicio" aria-label="DPlay Series início"><img src="dplay-identidade.png" alt="Identidade DPlay"><span>DPLAY <span>|</span> Loja <span aria-hidden="true">♥</span></span></a><div class="top-actions"><span class="top-premium">SEU MOMENTO DPLAY</span><button type="button" class="search-shortcut" aria-label="Ir para pesquisa" onclick="document.getElementById('busca-topo').scrollIntoView({behavior:'smooth',block:'start'});setTimeout(()=>document.getElementById('pesquisar-series').focus(),350)"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></svg></button><a class="top-link wallet-link" href="./carteira.html">◇ Minha carteira</a><a class="top-link" href="./streaming.html" aria-label="Já comprei, minhas séries">Já comprei · Minhas séries</a><a class="top-link" href="https://t.me/dplaysuporteoficial" target="_blank" rel="noopener noreferrer">Fale com a DPlay ↗</a></div></div></header>
 <div class="search-topbar" id="busca-topo"><div class="search-topbar-inner"><label class="search-area" for="pesquisar-series"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-4-4"></path></svg><input id="pesquisar-series" type="search" placeholder="Qual história você procura?" autocomplete="off" enterkeyhint="search" aria-label="Pesquisar séries"><button id="limpar-pesquisa" class="search-clear" type="button" aria-label="Limpar pesquisa" hidden>×</button></label><section id="title-suggestions" class="search-preview" aria-label="Sugestões de séries" hidden></section></div></div>
 <main class="wrap" id="inicio">
 <div class="welcome-line"><span>SEU CANTINHO DE HISTÓRIAS</span><span>PREPARE A PIPOCA, A ESCOLHA É SUA</span></div>
@@ -21,9 +21,9 @@
 <section class="dplay-showcase" aria-labelledby="boas-vindas">
   <div class="dplay-showcase-art"><img src="dplay-banner-premium.webp" alt="DPlay Entretenimento — seu universo de séries e histórias" width="960" height="540" fetchpriority="high" decoding="async"></div>
   <div class="hero-copy">
-    <span class="eyebrow">Bem-vindo à DPlay</span>
-    <h1 id="boas-vindas">Sua próxima história<br> <span>começa aqui.</span></h1>
-    <p>Um drama que emociona, um romance para torcer, uma história para maratonar. Encontre a sua e aproveite o seu momento.</p>
+    <span class="eyebrow hero-tag">♛ SEU CANTINHO DE HISTÓRIAS</span>
+    <h1 id="boas-vindas">Bem-vindo à <span>DPlay!</span></h1>
+    <p class="hero-subtitle">Sua próxima história<br>começa aqui. ♡</p>
     <div class="hero-actions"><a class="dplay-showcase-button" href="#destaques">Encontrar minha série <span aria-hidden="true">↗</span></a><a class="hero-secondary" href="#como-funciona">Como funciona</a></div>
   
     <div class="hero-benefits"><span>◇ Pagamento via Pix</span><span>♡ Suporte por perto</span><span>▶ Acesso digital</span></div>
@@ -34,7 +34,8 @@
 <p id="catalogo-referencia" class="catalog-loading" role="status" hidden>Vitrine recuperada de uma cópia anterior. Consulte disponibilidade e preço no <a href="https://t.me/dplaysuporteoficial" target="_blank" rel="noopener noreferrer">atendimento pelo Telegram</a>. Compras automáticas temporariamente indisponíveis. Já pagou? Não gere outro Pix para o mesmo pedido.</p>
 <section id="destaques" aria-labelledby="catalogo-titulo" tabindex="-1">
   <div class="section-head"><div><span class="section-kicker">EXPLORE NO SEU RITMO</span><h2 id="catalogo-titulo">Qual vai ser o<br>seu próximo <em>play?</em></h2></div><small id="total-series" aria-live="polite">Buscando suas próximas histórias…</small></div>
-  <div class="chips"><a class="chip active" href="#destaques">Todas as séries</a><a class="chip" href="#busca-topo" onclick="document.getElementById('pesquisar-series').focus()">Encontrar um título</a><a class="chip" href="https://t.me/dplaysuporteoficial" target="_blank" rel="noopener noreferrer">Me ajuda a escolher ♡</a></div>
+  <div class="chips"><button class="chip active" id="neon-all" type="button" aria-pressed="true">▶ Todas as séries</button><a class="chip" href="#busca-topo" onclick="document.getElementById('pesquisar-series').focus()">☆ Encontrar um título</a><button class="chip" id="neon-discover" type="button" disabled>♡ Me ajuda a escolher</button><button class="chip" id="neon-saved" type="button" aria-pressed="false">♥ Minha lista <span id="neon-count">0</span></button></div>
+  <section class="neon-shelf" id="neon-shelf" hidden aria-labelledby="neon-heading"><div class="neon-heading"><h3 id="neon-heading">♛ Séries em destaque</h3><a href="#catalogo-completo">Ver todas →</a></div><div id="neon-rail" class="neon-rail"></div></section><div id="catalogo-completo" class="neon-heading" tabindex="-1"><h3>✦ Catálogo DPlay</h3></div>
   <p id="resultado-pesquisa" class="search-feedback" role="status" aria-live="polite"></p>
   <p id="nenhuma-serie" class="search-empty" hidden><strong>Ainda não encontramos esse título.</strong>Tente parte do nome ou outra palavra.<br><button id="limpar-busca-vazia" class="secondary-button" type="button">Ver todas as séries</button></p>
   <p id="catalogo-aviso" class="catalog-loading" role="status" aria-live="polite">Preparando o catálogo para você…</p>
@@ -367,12 +368,38 @@ const resultadoPesquisa=document.getElementById('resultado-pesquisa');
 const nenhumaSerie=document.getElementById('nenhuma-serie');
 let catalogoEstado='loading';
 let searchableSeries=[];
+let onlySaved=false;
+let savedIds=new Set();
+try{const value=JSON.parse(localStorage.getItem('dplay_favorites_v1')||'[]');if(Array.isArray(value))savedIds=new Set(value.filter(x=>typeof x==='string'));}catch{}
+function updateFavorites(){
+ document.getElementById('neon-count').textContent=String(searchableSeries.filter(s=>savedIds.has(String(s.id))).length);
+ document.querySelectorAll('.neon-favorite').forEach(b=>{const active=savedIds.has(b.dataset.seriesId);b.textContent=active?'♥':'♡';b.setAttribute('aria-pressed',String(active));});
+}
+function favorite(serie){
+ const b=document.createElement('button');b.type='button';b.className='neon-favorite';b.dataset.seriesId=String(serie.id);b.setAttribute('aria-label','Salvar '+serie.titulo);b.setAttribute('aria-pressed',String(savedIds.has(String(serie.id))));b.textContent=savedIds.has(String(serie.id))?'♥':'♡';
+ b.addEventListener('click',()=>{const key=String(serie.id);if(savedIds.has(key))savedIds.delete(key);else savedIds.add(key);try{localStorage.setItem('dplay_favorites_v1',JSON.stringify([...savedIds]));}catch{}updateFavorites();if(onlySaved)filtrarSeries();});return b;
+}
+function selectFavorites(value){onlySaved=value;for(const [id,active] of [['neon-all',!value],['neon-saved',value]]){const b=document.getElementById(id);b.classList.toggle('active',active);b.setAttribute('aria-pressed',String(active));}filtrarSeries();}
+function renderNeonShelf(series){
+ const rail=document.getElementById('neon-rail');rail.replaceChildren();
+ if(catalogoReferencia)return;
+ for(const item of series.slice(0,6)){
+  const card=document.createElement('article');card.className='neon-feature';const open=document.createElement('button');open.type='button';open.className='neon-open';open.setAttribute('aria-label','Ver pedido de '+item.titulo);
+  const img=document.createElement('img');img.src=API+'/catalogo/capa/'+encodeURIComponent(item.id);img.alt='';img.loading='lazy';img.decoding='async';img.addEventListener('error',()=>{img.hidden=true;},{once:true});
+  const name=document.createElement('span');name.className='neon-title';name.textContent=item.titulo;const play=document.createElement('span');play.className='neon-play';play.textContent='▶';
+  open.append(img,name,play);open.addEventListener('click',()=>abrirCheckout(item));card.append(open,favorite(item));rail.append(card);
+ }
+}
+document.getElementById('neon-all').addEventListener('click',()=>{pesquisaSeries.value='';selectFavorites(false);});
+document.getElementById('neon-saved').addEventListener('click',()=>{pesquisaSeries.value='';selectFavorites(!onlySaved);});
+document.getElementById('neon-discover').addEventListener('click',()=>{if(searchableSeries.length&&!catalogoReferencia)abrirCheckout(searchableSeries[Math.floor(Math.random()*searchableSeries.length)]);});
 const searchPreview=document.getElementById('title-suggestions');
 wireTitleSuggestions(pesquisaSeries,searchPreview);
 function previewSeries(){showTitleSuggestions({input:pesquisaSeries,panel:searchPreview,items:searchableSeries,titleOf:item=>item.titulo,coverOf:item=>API+'/catalogo/capa/'+encodeURIComponent(item.id),onSelect:item=>{searchPreview.hidden=true;abrirCheckout(item);},onMore:()=>document.getElementById('destaques').scrollIntoView({behavior:'smooth',block:'start'})});}
 function normalizarBusca(valor){return String(valor||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLocaleLowerCase('pt-BR').trim();}
 function filtrarSeries(){
  const busca=normalizarBusca(pesquisaSeries.value);
+ document.getElementById('neon-shelf').hidden=!!busca||onlySaved||catalogoEstado!=='ready'||catalogoReferencia||!searchableSeries.length;
  limparPesquisa.hidden=!pesquisaSeries.value;
  previewSeries();
  if(catalogoEstado!=='ready'){resultadoPesquisa.textContent='';nenhumaSerie.hidden=true;return;}
@@ -381,13 +408,13 @@ function filtrarSeries(){
  const cards=document.querySelectorAll('#catalogo-grade .card');
  let encontrados=0;
  for(const card of cards){
-  const corresponde=!busca||matches.has(card.dataset.seriesId);
+  const corresponde=(!busca||matches.has(card.dataset.seriesId))&&(!onlySaved||savedIds.has(card.dataset.seriesId));
   card.style.order=busca?String(matches.get(card.dataset.seriesId)??9999):'';
   card.hidden=!corresponde;
   if(corresponde)encontrados++;
  }
- resultadoPesquisa.textContent=busca?`${encontrados} ${encontrados===1?'história encontrada':'histórias encontradas'}`:'';
- nenhumaSerie.hidden=!(busca&&encontrados===0);
+ resultadoPesquisa.textContent=(busca||onlySaved)?`${encontrados} ${encontrados===1?'história encontrada':'histórias encontradas'}`:'';
+ nenhumaSerie.hidden=!((busca||onlySaved)&&encontrados===0);
 }
 function limparBusca(){pesquisaSeries.value='';filtrarSeries();pesquisaSeries.focus();}
 pesquisaSeries.addEventListener('input',filtrarSeries);
@@ -402,7 +429,7 @@ function criarCardSerie(serie){
  img.alt='Capa de '+serie.titulo;img.loading='lazy';img.decoding='async';img.width=300;img.height=400;
  img.addEventListener('error',()=>{img.hidden=true;poster.classList.add('cover-unavailable');},{once:true});
  const pill=document.createElement('span');pill.className='pill';pill.textContent=catalogoReferencia?'Consultar disponibilidade':'Acesso digital';
- poster.append(img,pill);
+ poster.append(img,pill);if(!catalogoReferencia){const open=document.createElement('button');open.type='button';open.className='neon-cover-open';open.setAttribute('aria-label','Ver pedido de '+serie.titulo);open.addEventListener('click',()=>abrirCheckout(serie));poster.append(open,favorite(serie));}
  const info=document.createElement('div');info.className='info';
  const title=document.createElement('h3');title.textContent=serie.titulo;title.title=serie.titulo;
  const genre=document.createElement('p');genre.className='genre';genre.textContent='Para o seu próximo play';
@@ -456,10 +483,10 @@ async function carregarCatalogoDplay(){
    if(ids.has(id))return false;
    ids.add(id);return true;
   });
-  searchableSeries=series;
+  searchableSeries=series;renderNeonShelf(series);document.getElementById('neon-discover').disabled=!series.length||catalogoReferencia;
   const fragment=document.createDocumentFragment();
   for(const serie of series)fragment.append(criarCardSerie(serie));
-  grade.replaceChildren(fragment);
+  grade.replaceChildren(fragment);updateFavorites();
   total.textContent=series.length.toLocaleString('pt-BR')+' '+(catalogoReferencia?'títulos de referência':(series.length===1?'série disponível':'séries disponíveis'));
   grade.hidden=series.length===0;catalogoEstado=series.length?'ready':'empty';
   if(!series.length){
@@ -470,6 +497,7 @@ async function carregarCatalogoDplay(){
   filtrarSeries();
   if(!catalogoReferencia)atualizarTopSemana(series);
  }catch{
+  searchableSeries=[];renderNeonShelf([]);updateFavorites();document.getElementById('neon-discover').disabled=true;
   catalogoEstado='error';total.textContent='Vamos tentar de novo?';grade.replaceChildren();
   document.getElementById('catalogo-estado-titulo').textContent='O catálogo demorou um pouquinho.';
   document.getElementById('catalogo-estado-texto').textContent='Não conseguimos mostrar as séries agora. Tente novamente em instantes. Se precisar, nosso suporte está por perto.';
