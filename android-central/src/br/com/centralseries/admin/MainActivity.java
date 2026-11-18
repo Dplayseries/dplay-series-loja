@@ -80,8 +80,8 @@ public final class MainActivity extends Activity {
         if(isFinishing()) return;
         new AlertDialog.Builder(this).setTitle("Central Séries")
             .setMessage("Não foi possível acessar o painel. Verifique a conexão e tente novamente.")
-            .setPositiveButton("Tentar novamente",(d,w)->web.loadUrl(PANEL))
-            .setNegativeButton("Fechar",(d,w)->finish()).show();
+            .setPositiveButton("Tentar novamente", new android.content.DialogInterface.OnClickListener(){public void onClick(android.content.DialogInterface d,int w){web.loadUrl(PANEL);}})
+            .setNegativeButton("Fechar", new android.content.DialogInterface.OnClickListener(){public void onClick(android.content.DialogInterface d,int w){finish();}}).show();
     }
     @Override protected void onActivityResult(int request,int result,Intent data){
         super.onActivityResult(request,result,data);
