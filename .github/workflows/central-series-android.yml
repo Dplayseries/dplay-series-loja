@@ -1,0 +1,28 @@
+name: Central Series Android
+on:
+  push:
+    branches: [app/central-series-android]
+    paths:
+      - android-central/**
+      - .github/workflows/central-series-android.yml
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  apk:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build and verify signed APK
+        run: bash android-central/build.sh
+      - name: Publish APK
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          tag=central-series-android-v1.0
+          if gh release view "$tag" >/dev/null 2>&1; then
+            echo "Version already published; refusing to replace its signing identity."
+            exit 1
+          fi
+          gh release create "$tag" android-central/dist/Central-Series.apk android-central/dist/Central-Series.apk.sha256 --target "$GITHUB_SHA" --title "Central Séries Android 1.0" --notes "Aplicativo Android para acessar o painel privado DPlay + NoxPlay. Requer senha e conexão à internet. Instale somente de uma fonte confiável."
