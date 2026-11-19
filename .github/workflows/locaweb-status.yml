@@ -15,15 +15,15 @@ jobs:
           python3 - <<'PY'
           import json, time, urllib.request
           url="https://177-153-53-229.sslip.io/health"
-          for _ in range(1):
+          for _ in range(18):
               try:
                   with urllib.request.urlopen(url, timeout=8) as r:
                       p=json.load(r)
                   state=p.get("private_greeting") or {}
                   print(json.dumps({"public_health":p.get("status"),"private_greeting":state}),flush=True)
-                  if state.get("revision")=="private-reply-v3" and state.get("subscription") not in ("checking",None):
+                  if state.get("revision")=="private-reply-v4-single-store" and state.get("subscription") not in ("checking",None):
                       break
               except Exception as exc:
                   print(type(exc).__name__,flush=True)
-              pass
+              time.sleep(10)
           PY
