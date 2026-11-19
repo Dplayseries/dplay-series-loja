@@ -1,4 +1,4 @@
-name: Locaweb - verificacao externa
+name: NoxPlay - resposta do privado
 on:
   push:
     branches: [ops/locaweb-status]
@@ -8,32 +8,22 @@ permissions:
 jobs:
   status:
     runs-on: ubuntu-latest
-    timeout-minutes: 3
+    timeout-minutes: 4
     steps:
-      - name: Check public endpoints without customer data
-        shell: bash
+      - name: Verify business greeting deployment, no personal data
         run: |
           python3 - <<'PY'
-          import json, urllib.request, concurrent.futures
-          base="https://177-153-53-229.sslip.io"
-          def check(item):
-              name,path,kind=item
+          import json, time, urllib.request
+          url="https://177-153-53-229.sslip.io/health"
+          for _ in range(12):
               try:
-                  req=urllib.request.Request(base+path,headers={"User-Agent":"DPlay-HealthCheck/1.0"})
-                  with urllib.request.urlopen(req,timeout=10) as r:
-                      data=r.read(2000000)
-                      if kind=="manifest":
-                          p=json.loads(data); assert p["start_url"]=="/painel/"; result={"installed_version":True}
-                      elif kind=="panel":
-                          result={"panel":b"Central" in data and b"manifest.webmanifest" in data}
-                      elif kind=="catalog":
-                          p=json.loads(data); result={"titles":len(p if isinstance(p,list) else p.get("series",[]))}
-                      else:
-                          p=json.loads(data); result={"status":p.get("status","unknown")}
-                      return {"check":name,"http":r.status,**result}
+                  with urllib.request.urlopen(url, timeout=8) as r:
+                      p=json.load(r)
+                  state=p.get("private_greeting") or {}
+                  print(json.dumps({"public_health":p.get("status"),"private_greeting":state}),flush=True)
+                  if state.get("revision")=="private-reply-v3" and state.get("subscription") not in ("checking",None):
+                      break
               except Exception as exc:
-                  return {"check":name,"error":type(exc).__name__}
-          jobs=[("noxplay","/health","health"),("dplay","/dplay-api/health","health"),("painel","/painel/","panel"),("android_manifest","/painel/manifest.webmanifest","manifest"),("catalogo_dplay","/dplay-api/catalogo/series","catalog"),("catalogo_noxplay","/catalog","catalog")]
-          with concurrent.futures.ThreadPoolExecutor(max_workers=6) as executor:
-              for r in executor.map(check,jobs): print(json.dumps(r))
+                  print(type(exc).__name__,flush=True)
+              time.sleep(10)
           PY
