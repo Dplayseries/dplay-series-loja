@@ -15,7 +15,7 @@ jobs:
           python3 - <<'PY'
           import json, time, urllib.request
           url="https://177-153-53-229.sslip.io/health"
-          for _ in range(12):
+          for _ in range(1):
               try:
                   with urllib.request.urlopen(url, timeout=8) as r:
                       p=json.load(r)
@@ -25,5 +25,5 @@ jobs:
                       break
               except Exception as exc:
                   print(type(exc).__name__,flush=True)
-              time.sleep(10)
+              pass
           PY
