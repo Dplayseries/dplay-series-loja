@@ -376,3 +376,83 @@ a.buy{display:block;text-decoration:none;text-align:center}.buy:hover,.dplay-sho
 @media(min-width:900px){.dplay-neon .neon-rail{grid-auto-columns:calc((100% - 56px)/5)}}
 @media(max-width:650px){.dplay-neon .top-inner{padding:10px 12px;min-height:62px}.dplay-neon .brand img{width:38px;height:38px}.dplay-neon .brand{gap:6px;font-size:clamp(12px,3.4vw,17px)}.dplay-neon .top-actions{gap:5px}.dplay-neon .top-actions .wallet-link{display:inline-flex!important;padding:8px;font-size:10px;white-space:nowrap}.dplay-neon .search-shortcut{width:34px;height:34px;min-height:34px}.dplay-neon .wrap{padding-inline:12px}.dplay-neon .search-topbar{top:62px;padding:5px 12px 9px}.dplay-neon .search-area{min-height:42px}.dplay-neon .search-area input{font-size:14px;padding:11px 0}.dplay-neon .dplay-showcase{grid-template-columns:minmax(0,1.45fr) minmax(0,1fr);padding:14px 12px;min-height:174px;border-radius:17px;margin:8px 0 19px}.dplay-neon .dplay-showcase-art{inset:-14px -12px -14px -8px}.dplay-neon .hero-tag{font-size:7px;padding:5px 7px;letter-spacing:.03em}.dplay-neon .hero-copy h1{font-size:clamp(19px,5.5vw,29px);margin:8px 0 5px}.dplay-neon .hero-copy p.hero-subtitle{font-size:clamp(14px,4vw,21px)}.dplay-neon .hero-actions{gap:6px;margin-top:10px}.dplay-neon .hero-actions .dplay-showcase-button{min-height:36px;padding:7px 8px;font-size:10px}.dplay-neon .hero-secondary{font-size:10px}.dplay-neon .section-head{margin:22px 0 14px}.dplay-neon .section-head h2{font-size:clamp(25px,6.6vw,35px)}.dplay-neon .chips{gap:7px}.dplay-neon .chip{padding:9px 11px;font-size:10px}.dplay-neon .neon-rail{grid-auto-columns:calc((100% - 24px)/2.6);gap:9px}.dplay-neon .neon-feature{border-radius:12px}.dplay-neon .neon-title{left:7px;bottom:8px;right:30px;font-size:11px}.dplay-neon .neon-play{width:25px;height:25px;right:5px;bottom:6px;font-size:11px}.dplay-neon .neon-favorite{width:29px;height:29px;font-size:18px}.dplay-neon .grid .card{border-radius:12px}.dplay-neon .mobile-nav{padding-bottom:max(8px,env(safe-area-inset-bottom))}}
 @media(prefers-reduced-motion:reduce){.dplay-neon *{scroll-behavior:auto}}
+
+
+/* DPlay: combos em primeiro plano, toque delicado — paleta violeta/rosa original. */
+.dplay-neon #combos{
+  position:relative; isolation:isolate; scroll-margin-top:116px;
+  margin:8px 0 30px; padding:clamp(16px,2.4vw,26px);
+  border:1px solid #ba78e9; border-radius:22px;
+  background:radial-gradient(circle at 100% 0%,#a943bc2e,transparent 52%),linear-gradient(120deg,#27143c,#1a102b 72%,#25143b);
+  box-shadow:0 10px 30px #1006195c,0 0 18px #b145e22c,inset 0 1px #f1d4ff26;
+}
+.dplay-neon #combos:before{
+  content:"♡";position:absolute;right:18px;top:4px;pointer-events:none;
+  color:#ffa8e84c;font-size:46px;font-weight:400;line-height:1;
+}
+.dplay-neon #combos .section-head{
+  position:relative;margin:0 0 10px;align-items:center;gap:10px;
+}
+.dplay-neon #combos .section-head h2{
+  font-size:clamp(23px,3vw,33px);line-height:1.13;margin-top:5px;letter-spacing:-.025em;
+}
+.dplay-neon #combos .section-kicker{font-size:10px;color:#f4b9ed;letter-spacing:.1em}
+.dplay-neon #combos .hero-secondary{
+  position:relative;z-index:2;display:inline-flex;align-items:center;
+  min-height:38px;flex:none;white-space:nowrap;
+  border:1px solid #936bb8;border-radius:999px;padding:8px 13px;
+  color:#f7ddff;background:#46295c88;text-decoration:none;
+  font-size:11px;font-weight:700;
+}
+.dplay-neon #combos .hero-secondary:hover{background:#6a3b83}
+.dplay-neon .combo-lead{color:#e7d2f3;font-size:clamp(12px,1.35vw,14px);line-height:1.45;margin:0 0 14px;max-width:620px}
+.dplay-neon #combos .combo-grid{max-width:900px;gap:12px}
+.dplay-neon #combos .combo-card{
+  position:relative;border:1px solid #8a5bab;
+  background:linear-gradient(145deg,#38224e,#241635);
+  box-shadow:0 4px 12px #12081e65,inset 0 1px #eed2ff1c;
+  transition:border-color .18s,transform .18s,box-shadow .18s;
+}
+.dplay-neon #combos .combo-card.featured{
+  border-color:#eb9bdf;background:linear-gradient(145deg,#57335e,#312045);
+  box-shadow:0 0 20px #c85deb33,inset 0 1px #ffd8fb30;
+}
+.dplay-neon #combos .combo-card:hover{border-color:#efbfff;transform:translateY(-2px);box-shadow:0 10px 24px #12071c72}
+.dplay-neon #combos .combo-card .eyebrow{color:#efb6ef}
+.dplay-neon #combos .combo-card>strong{color:#fff4ff}
+.dplay-neon #combos .combo-card p{color:#e4cfed}
+.dplay-neon #combos .combo-card .buy{
+  display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(110deg,#c18cff,#f0a4d7);border:0;border-radius:9px;
+  color:#22122f;text-shadow:none;box-shadow:none;font-weight:800;
+}
+.dplay-neon #combos .combo-card .buy:hover{filter:brightness(1.1)}
+.dplay-neon #combos .fineprint{
+  margin:11px 0 0;font-size:11px;line-height:1.45;text-align:center;color:#cdb5da;
+}
+.dplay-neon .hero-copy .hero-tag{background:linear-gradient(100deg,#8a26c6,#b23b9c)}
+.dplay-neon .hero-copy p.hero-subtitle{color:#ffe8ff}
+.dplay-neon .hero-secondary[href="#combos"]{
+  min-height:36px;display:inline-flex;align-items:center;
+  border:1px solid #db93f5;border-radius:999px;padding:7px 14px;
+  background:#54277688;text-decoration:none;font-weight:750;
+}
+.dplay-neon .hero-secondary[href="#combos"]:hover{background:#76399c}
+@media(max-width:650px){
+  .dplay-neon #combos{margin:5px 0 20px;padding:13px;border-radius:17px;scroll-margin-top:114px}
+  .dplay-neon #combos:before{font-size:32px;right:12px}
+  .dplay-neon #combos .section-head{margin:0 0 7px}
+  .dplay-neon #combos .section-head h2{font-size:clamp(21px,6vw,27px)}
+  .dplay-neon #combos .section-kicker{font-size:9px}
+  .dplay-neon #combos .hero-secondary{font-size:10px;padding:6px 9px;min-height:35px}
+  .dplay-neon .combo-lead{font-size:11px;margin:0 0 10px}
+  .dplay-neon #combos .combo-grid{gap:9px}
+  .dplay-neon #combos .combo-card{padding:10px;border-radius:12px}
+  .dplay-neon #combos .combo-card h3{font-size:19px}
+  .dplay-neon #combos .combo-card>strong{font-size:23px}
+  .dplay-neon #combos .combo-card .buy{font-size:11px;padding:8px 4px}
+  .dplay-neon #combos .fineprint{font-size:10px}
+}
+@media(prefers-reduced-motion:reduce){
+  .dplay-neon #combos .combo-card{transition:none;transform:none}
+}
