@@ -1,4 +1,4 @@
-name: NoxPlay - resposta do privado
+name: Verificar combos no topo em producao
 on:
   push:
     branches: [ops/locaweb-status]
@@ -6,24 +6,41 @@ on:
 permissions:
   contents: read
 jobs:
-  status:
+  verify:
     runs-on: ubuntu-latest
-    timeout-minutes: 4
+    timeout-minutes: 8
     steps:
-      - name: Verify business greeting deployment, no personal data
+      - name: Verify public layout and stylesheet without private data
+        shell: bash
         run: |
           python3 - <<'PY'
           import json, time, urllib.request
-          url="https://177-153-53-229.sslip.io/health"
-          for _ in range(18):
+          base = "https://177-153-53-229.sslip.io"
+          def get(path):
+              req = urllib.request.Request(base+path, headers={"Cache-Control":"no-cache","User-Agent":"DPlay-layout-check/1.0"})
+              with urllib.request.urlopen(req,timeout=20) as resp:
+                  if resp.status!=200: raise RuntimeError("HTTP status")
+                  return resp.read(1000000).decode("utf-8")
+          for number in range(36):
               try:
-                  with urllib.request.urlopen(url, timeout=8) as r:
-                      p=json.load(r)
-                  state=p.get("private_greeting") or {}
-                  print(json.dumps({"public_health":p.get("status"),"private_greeting":state}),flush=True)
-                  if state.get("revision")=="private-reply-v4-single-store" and state.get("subscription") not in ("checking",None):
+                  dplay=get("/dplay/")
+                  nox=get("/")
+                  css=get("/dplay/dplay.css?v=20261122-combos-topo-fofo")
+                  ncss=get("/combo-cards.css?v=20261122-topo")
+                  state={
+                   "dplay_order":0<=dplay.find('<section id="combos"')<dplay.find('<section id="destaques"'),
+                   "nox_order":0<=nox.find('<section class="nox-combos wrap" id="combos"')<nox.find('<section class="catalog wrap" id="catalogo"'),
+                   "dplay_style":'DPlay: combos em primeiro plano' in css and '20261122-combos-topo-fofo' in dplay,
+                   "nox_style":'NoxPlay: combos visíveis logo após o início' in ncss and '20261122-topo' in nox,
+                   "dplay_tom":'seu próximo <em>xodó?' in dplay,
+                  }
+                  print(json.dumps({"attempt":number+1,**state},ensure_ascii=False),flush=True)
+                  if all(state.values()):
+                      print("LAYOUT_DEPLOYED_OK",flush=True)
                       break
-              except Exception as exc:
-                  print(type(exc).__name__,flush=True)
+              except Exception as e:
+                  print(json.dumps({"attempt":number+1,"error":type(e).__name__}),flush=True)
               time.sleep(10)
+          else:
+              raise SystemExit("LAYOUT_NOT_DEPLOYED")
           PY
