@@ -9,7 +9,7 @@
 
 
 
-<link rel="stylesheet" href="./dplay.css?v=20261118-populares">
+<link rel="stylesheet" href="./dplay.css?v=20261122-combos-topo-fofo">
 </head>
 <body class="dplay-neon">
 <a class="skip-link" href="#destaques">Pular para o catálogo</a>
@@ -21,10 +21,10 @@
 <section class="dplay-showcase" aria-labelledby="boas-vindas">
   <div class="dplay-showcase-art"><img src="dplay-banner-premium.webp" alt="DPlay Entretenimento — seu universo de séries e histórias" width="960" height="540" fetchpriority="high" decoding="async"></div>
   <div class="hero-copy">
-    <span class="eyebrow hero-tag">♛ SEU CANTINHO DE HISTÓRIAS</span>
+    <span class="eyebrow hero-tag">♡ SEU CANTINHO DE HISTÓRIAS</span>
     <h1 id="boas-vindas">Bem-vindo à <span>DPlay!</span></h1>
-    <p class="hero-subtitle">Sua próxima história<br>começa aqui. ♡</p>
-    <div class="hero-actions"><a class="dplay-showcase-button" href="#destaques">Encontrar minha série <span aria-hidden="true">↗</span></a><a class="hero-secondary" href="#como-funciona">Como funciona</a></div>
+    <p class="hero-subtitle">Histórias que aquecem<br>o coração. ♡</p>
+    <div class="hero-actions"><a class="dplay-showcase-button" href="#destaques">Escolher minha história <span aria-hidden="true">↗</span></a><a class="hero-secondary" href="#combos">♡ Ver combos</a></div>
   
     <div class="hero-benefits"><span>◇ Pagamento via Pix</span><span>♡ Suporte por perto</span><span>▶ Acesso digital</span></div>
   </div>
@@ -32,10 +32,16 @@
 </section>
 
 <p id="catalogo-referencia" class="catalog-loading" role="status" hidden>Vitrine recuperada de uma cópia anterior. Consulte disponibilidade e preço no <a href="https://t.me/dplaysuporteoficial" target="_blank" rel="noopener noreferrer">atendimento pelo Telegram</a>. Compras automáticas temporariamente indisponíveis. Já pagou? Não gere outro Pix para o mesmo pedido.</p>
+<section id="combos" aria-labelledby="combo-title" class="combos-section">
+<div class="section-head"><div><span class="section-kicker">♡ COMBOS PARA SUA PRÓXIMA MARATONA</span><h2 id="combo-title">Mais histórias,<br><em>mais carinho. ♡</em></h2></div><a class="hero-secondary" href="./carteira.html">Minha carteira ↗</a></div>
+<p class="combo-lead">Mais capítulos para amar, pagando menos. Escolha seu combo e use os créditos no seu ritmo. ♡</p>
+<div class="combo-grid"><article class="combo-card"><span class="eyebrow">♡ COMBO DPLAY</span><h3>5 séries</h3><strong>R$ 10<span>,00</span></strong><p>5 créditos para escolher suas séries.</p><a class="buy" href="./carteira.html">Comprar 5 séries ↗</a></article><article class="combo-card featured"><span class="eyebrow">✦ MAIS HISTÓRIAS</span><h3>7 séries</h3><strong>R$ 15<span>,00</span></strong><p>7 créditos para a sua próxima maratona.</p><a class="buy" href="./carteira.html">Comprar 7 séries ↗</a></article></div>
+<p class="fineprint">Cada série custa 1 crédito. Combos e saldo ficam na sua carteira. Grupo VIP vendido separadamente.</p></section>
+
 <section id="destaques" aria-labelledby="catalogo-titulo" tabindex="-1">
-  <div class="section-head"><div><span class="section-kicker">EXPLORE NO SEU RITMO</span><h2 id="catalogo-titulo">Qual vai ser o<br>seu próximo <em>play?</em></h2></div><small id="total-series" aria-live="polite">Buscando suas próximas histórias…</small></div>
+  <div class="section-head"><div><span class="section-kicker">UM UNIVERSO DE HISTÓRIAS PRA VOCÊ</span><h2 id="catalogo-titulo">Qual história vai ser<br>seu próximo <em>xodó? ♡</em></h2></div><small id="total-series" aria-live="polite">Buscando suas próximas histórias…</small></div>
   <div class="chips"><button class="chip active" id="neon-all" type="button" aria-pressed="true">▶ Todas as séries</button><a class="chip" href="#busca-topo" onclick="document.getElementById('pesquisar-series').focus()">☆ Encontrar um título</a><button class="chip" id="neon-discover" type="button" disabled>♡ Me ajuda a escolher</button><button class="chip" id="neon-saved" type="button" aria-pressed="false">♥ Minha lista <span id="neon-count">0</span></button></div>
-  <section class="neon-shelf" id="neon-shelf" hidden aria-labelledby="neon-heading"><div class="neon-heading"><h3 id="neon-heading">♛ Mais populares</h3><a href="#catalogo-completo">Ver todas →</a></div><p id="neon-ranking-status" class="search-feedback" role="status">Carregando os títulos mais vendidos…</p><div id="neon-rail" class="neon-rail"></div></section><div id="catalogo-completo" class="neon-heading" tabindex="-1"><h3>✦ Catálogo DPlay</h3></div>
+  <section class="neon-shelf" id="neon-shelf" hidden aria-labelledby="neon-heading"><div class="neon-heading"><h3 id="neon-heading">♡ Queridinhas da DPlay</h3><a href="#catalogo-completo">Ver todas →</a></div><p id="neon-ranking-status" class="search-feedback" role="status">Carregando os títulos mais vendidos…</p><div id="neon-rail" class="neon-rail"></div></section><div id="catalogo-completo" class="neon-heading" tabindex="-1"><h3>✦ Seu cantinho de histórias</h3></div>
   <p id="resultado-pesquisa" class="search-feedback" role="status" aria-live="polite"></p>
   <p id="nenhuma-serie" class="search-empty" hidden><strong>Ainda não encontramos esse título.</strong>Tente parte do nome ou outra palavra.<br><button id="limpar-busca-vazia" class="secondary-button" type="button">Ver todas as séries</button></p>
   <p id="catalogo-aviso" class="catalog-loading" role="status" aria-live="polite">Preparando o catálogo para você…</p>
@@ -56,10 +62,6 @@
   <p class="vip-art-description">Novidades da DPlay, avisos de novos títulos e um espaço exclusivo para quem ama séries — tudo em um só lugar.</p>
 </section>
 
-<section id="combos" aria-labelledby="combo-title" class="combos-section">
-<div class="section-head"><div><span class="section-kicker">MAIS PLAY, MAIS VANTAGENS</span><h2 id="combo-title">Histórias para<br><em>levar juntas.</em></h2></div><a class="hero-secondary" href="./carteira.html">Minha carteira ↗</a></div>
-<div class="combo-grid"><article class="combo-card"><span class="eyebrow">COMBO DPLAY</span><h3>5 séries</h3><strong>R$ 10<span>,00</span></strong><p>5 créditos para escolher suas séries.</p><a class="buy" href="./carteira.html">Comprar 5 séries ↗</a></article><article class="combo-card featured"><span class="eyebrow">MAIS HISTÓRIAS</span><h3>7 séries</h3><strong>R$ 15<span>,00</span></strong><p>7 créditos para a sua próxima maratona.</p><a class="buy" href="./carteira.html">Comprar 7 séries ↗</a></article></div>
-<p class="fineprint">Cada série custa 1 crédito. Combos e saldo ficam na sua carteira. Grupo VIP vendido separadamente.</p></section>
 
 <section id="top-semana" hidden aria-label="Escolhas da comunidade">
   <div class="section-head"><div><span class="section-kicker">A COMUNIDADE ESCOLHEU</span><h2>Histórias em <em>destaque</em></h2></div><small>Pedidos confirmados</small></div>
