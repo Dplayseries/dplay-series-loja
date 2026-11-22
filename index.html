@@ -189,7 +189,7 @@ function abrirCheckout(serie=null,vip=false){
   document.querySelector('.order-summary b').textContent=vip?'R$ 19,90/mês':'R$ 4,00';
   document.querySelector('.total strong').textContent=vip?'R$ 19,90 (mensalidade)':'R$ 4,00';
   document.getElementById('gerar-pix').textContent=vip?'◆ GERAR PIX — R$ 19,90 (mensalidade)':'◆ GERAR PIX — R$ 4,00';
-  document.querySelector('.fineprint').textContent=vip?'Depois de pagar, toque em “Acompanhar minha compra” para receber seu acesso ao Grupo VIP.':'Depois de pagar, toque em “Acompanhar minha compra” para saber como assistir à série.';
+  document.querySelector('#etapa-confirmar .fineprint').textContent=vip?'Depois de pagar, toque em “Acompanhar minha compra” para receber seu acesso ao Grupo VIP.':'Depois de pagar, toque em “Acompanhar minha compra” para saber como assistir à série.';
   ultimoFocoCheckout=document.activeElement;
   document.body.classList.add('checkout-open');
   document.getElementById('copiar-pix').textContent='Copiar código PIX';
